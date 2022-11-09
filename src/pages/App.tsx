@@ -4,7 +4,10 @@ import Columns from "../components/Columns";
 export default () => {
     return (
         <HeaderBar>
-            <Columns />
+            <Columns>
+                <div>Servers</div>
+                <div>Messages</div>
+            </Columns>
         </HeaderBar>
     );
 };

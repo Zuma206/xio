@@ -8,16 +8,20 @@
     flex: 1;
     display: flex;
     overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    color: $font;
 }
 
 .left {
     flex: 1;
     background-color: $bgTop;
+    scroll-snap-align: start;
 }
 
 .right {
     flex: 3;
     background-color: $bgBottom;
+    scroll-snap-align: start;
 }
 
 @media screen and (max-width: 920px) {
