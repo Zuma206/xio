@@ -1,0 +1,29 @@
+@import "./Global.scss";
+
+.button {
+    composes: button from "./HeaderBar.module.scss";
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    overflow-x: scroll;
+}
+
+.left {
+    flex: 1;
+    background-color: $bgTop;
+}
+
+.right {
+    flex: 3;
+    background-color: $bgBottom;
+}
+
+@media screen and (max-width: 920px) {
+    .left,
+    .right {
+        flex: none;
+        width: 100vw;
+    }
+}

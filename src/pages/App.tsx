@@ -1,9 +1,10 @@
 import HeaderBar from "../components/HeaderBar";
+import Columns from "../components/Columns";
 
 export default () => {
     return (
         <HeaderBar>
-            <h1>Hello, World!</h1>
+            <Columns />
         </HeaderBar>
     );
 };
