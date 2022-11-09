@@ -1,0 +1,34 @@
+@import "./ColorScheme.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.headerBar {
+    background-color: $bgTop;
+    padding: 0.5em 1em 0.5em 1em;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.headerBar > div {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.headerBar > div:nth-of-type(2) {
+    justify-content: right;
+}
+
+.logo {
+    height: 3em;
+}
+
+.profilePic {
+    height: 2.5em;
+    border-radius: 100%;
+    outline: white solid 1px;
+}

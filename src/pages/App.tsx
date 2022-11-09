@@ -1,3 +1,9 @@
+import HeaderBar from "../components/HeaderBar";
+
 export default () => {
-    return <h1>Hello, World!</h1>;
+    return (
+        <HeaderBar>
+            <h1>Hello, World!</h1>
+        </HeaderBar>
+    );
 };
