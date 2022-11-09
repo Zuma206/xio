@@ -1,4 +1,4 @@
-@import "./ColorScheme.scss";
+@import "./Global.scss";
 
 .container {
     display: flex;
@@ -10,7 +10,7 @@
     padding: 0.5em 1em 0.5em 1em;
     display: flex;
     align-items: center;
-    color: white;
+    color: $font;
 }
 
 .headerBar > div {
@@ -30,5 +30,28 @@
 .profilePic {
     height: 2.5em;
     border-radius: 100%;
-    outline: white solid 1px;
+    outline: $outline;
+    margin: 0.4em;
+}
+
+.button {
+    font-size: 1em;
+    background-color: $bgBottom;
+    color: white;
+    font-family: "Inter", sans-serif;
+    border: none;
+    cursor: pointer;
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 1em;
+    margin: 0.4em;
+    outline: $outline;
+}
+
+.button:hover {
+    outline: $outlineInverted;
+}
+
+.button:active {
+    outline: $outlineActive;
+    color: $fontDark;
 }

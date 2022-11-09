@@ -11,6 +11,8 @@ export default ({ children }: React.PropsWithChildren) => {
                 </div>
 
                 <div>
+                    <button className={styles.button}>Profile Picture</button>
+                    <button className={styles.button}>Sign Out</button>
                     <img
                         src="https://lh3.googleusercontent.com/ogw/AOh-ky2B6XOWkd0-x6YylezroKu_3UWQt6GvhNfodttwvA=s32-c-mo"
                         alt="XIO"
