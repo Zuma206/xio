@@ -25,6 +25,9 @@ div take the rest of the screen height.
     display: flex;
     align-items: center;
     color: $font;
+    border-bottom: 0.5em solid;
+    border-image: linear-gradient(to right, $xTL, $xTR, $xTL, $xTR, $xTL, $xTR)
+        1;
 }
 
 .headerBar > div {
