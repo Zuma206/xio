@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "../styles/HeaderBar.module.scss";
-import logo from "../assets/bitmap.png";
+import logo from "../assets/xlogo.svg";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase";
 import { getAuthSetter, useAuth } from "../api";
