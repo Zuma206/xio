@@ -33,23 +33,26 @@ div take the rest of the screen height.
 .headerBar > div {
     display: flex;
     align-items: center;
-    flex: 1;
 }
 
 .headerBar > div:nth-of-type(2) {
-    justify-content: right;
+    flex: 1;
+}
+
+.headerBar > div:nth-of-type(3) {
+    overflow-x: scroll;
 }
 
 .logo {
     height: 2em;
-    margin: 0.5em;
+    margin: 0.25em 1em 0.25em 0em;
 }
 
 .profilePic {
     height: 2.5em;
     border-radius: 100%;
     outline: $outline;
-    margin: 0.4em;
+    margin: 0em 0.4em 0em 0.4em;
 }
 
 .button {
@@ -63,6 +66,7 @@ div take the rest of the screen height.
     border-radius: 1em;
     margin: 0.4em;
     outline: $outline;
+    white-space: nowrap;
 }
 
 .button:hover {

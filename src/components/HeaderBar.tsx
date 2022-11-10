@@ -3,7 +3,7 @@ import styles from "../styles/HeaderBar.module.scss";
 import logo from "../assets/xlogo.svg";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase";
-import { getAuthSetter, useAuth } from "../xio";
+import { getAuthSetter, useAuth, getGravatar } from "../xio";
 
 export default ({ children }: React.PropsWithChildren) => {
     // get user auth from the client api
@@ -22,10 +22,37 @@ export default ({ children }: React.PropsWithChildren) => {
                     <img src={logo} alt="XIO" className={styles.logo} />
                 </div>
 
+                <div></div>
+
                 <div>
                     {/* Check if user is signed in */}
                     {user ? (
-                        <div>{user.displayName}</div>
+                        <>
+                            <button
+                                className={styles.button}
+                                onClick={() => {
+                                    open(
+                                        "https://en.gravatar.com/emails/",
+                                        "_blank"
+                                    );
+                                }}
+                            >
+                                Gravatar
+                            </button>
+                            <button
+                                className={styles.button}
+                                onClick={() => {
+                                    auth.signOut();
+                                }}
+                            >
+                                Sign Out
+                            </button>
+                            <img
+                                src={getGravatar(user.email ?? "")}
+                                alt={user.displayName ?? "Logged In"}
+                                className={styles.profilePic}
+                            />
+                        </>
                     ) : (
                         <button
                             className={styles.button}
