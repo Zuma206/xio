@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../styles/HeaderBar.module.scss";
 import logo from "../assets/bitmap.png";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "../firebase";
+import { getAuthSetter, useAuth } from "../api";
 
 export default ({ children }: React.PropsWithChildren) => {
+    // get user auth from the client api
+    const user = useAuth();
+    const setUser = getAuthSetter();
+
+    useEffect(() => {
+        // Register listener to keep auth state up to date
+        auth.onAuthStateChanged(setUser);
+    }, []);
+
     return (
         <div className={styles.container}>
             <div className={styles.headerBar}>
@@ -11,13 +23,19 @@ export default ({ children }: React.PropsWithChildren) => {
                 </div>
 
                 <div>
-                    <button className={styles.button}>Change Avatar</button>
-                    <button className={styles.button}>Sign Out</button>
-                    <img
-                        src="https://lh3.googleusercontent.com/ogw/AOh-ky2B6XOWkd0-x6YylezroKu_3UWQt6GvhNfodttwvA=s32-c-mo"
-                        alt="XIO"
-                        className={styles.profilePic}
-                    />
+                    {/* Check if user is signed in */}
+                    {user ? (
+                        <div>{user.displayName}</div>
+                    ) : (
+                        <button
+                            className={styles.button}
+                            onClick={() => {
+                                signInWithPopup(auth, new GoogleAuthProvider());
+                            }}
+                        >
+                            Sign In
+                        </button>
+                    )}
                 </div>
             </div>
             <div className={styles.content}>{children}</div>
