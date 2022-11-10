@@ -1,7 +1,7 @@
 import { useState } from "react";
 import HeaderBar from "../components/HeaderBar";
 import Columns from "../components/Columns";
-import { AuthContext } from "../api";
+import { AuthContext } from "../xio";
 import { User } from "firebase/auth";
 
 export default () => {

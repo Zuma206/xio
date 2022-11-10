@@ -3,7 +3,7 @@ import styles from "../styles/HeaderBar.module.scss";
 import logo from "../assets/xlogo.svg";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase";
-import { getAuthSetter, useAuth } from "../api";
+import { getAuthSetter, useAuth } from "../xio";
 
 export default ({ children }: React.PropsWithChildren) => {
     // get user auth from the client api
