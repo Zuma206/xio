@@ -1,5 +1,11 @@
 @import "./Global.scss";
 
+/*
+Container holds the headerBar and the content divs.
+This allows headerbar to have static height, while also having the content
+div take the rest of the screen height.
+*/
+
 .container {
     display: flex;
     flex-direction: column;

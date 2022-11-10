@@ -5,7 +5,8 @@ import { AuthContext } from "../api";
 import { User } from "firebase/auth";
 
 export default () => {
-    const authState = useState<null | User>(null);
+    // Create user auth state for auth context
+    const authState = useState<User | null>(null);
 
     return (
         <AuthContext.Provider value={authState}>
