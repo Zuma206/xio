@@ -1,0 +1,39 @@
+@import "./Global.scss";
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba($color: black, $alpha: 0.3);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.error {
+    background-color: $bgBottom;
+    color: $font;
+    align-self: flex-start;
+    min-width: 35vw;
+    box-sizing: border-box;
+    padding: 2em;
+    border-radius: 0em 0em 1em 1em;
+    $border: 0.5em solid $error;
+    border-left: $border;
+    border-right: $border;
+    border-bottom: $border;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.message {
+    flex: 1;
+    margin-bottom: 1em;
+}

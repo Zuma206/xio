@@ -4,6 +4,7 @@ import Columns from "../components/Columns";
 import { AuthContext } from "../xio";
 import { User } from "firebase/auth";
 import { auth } from "../firebase";
+import Error from "../components/Error";
 
 export default () => {
     // Create user auth state for auth context
@@ -22,6 +23,7 @@ export default () => {
                     <div>Messages</div>
                 </Columns>
             </HeaderBar>
+            <Error />
         </AuthContext.Provider>
     );
 };

@@ -9,3 +9,27 @@ $xTL: #ab2a06ff;
 $xTR: #ff7f00ff;
 $xBL: #d06a0bff;
 $xBR: #ffc001ff;
+$error: #ff4646;
+
+.button {
+    font-size: 1em;
+    background-color: $bgBottom;
+    color: white;
+    font-family: "Inter", sans-serif;
+    border: none;
+    cursor: pointer;
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 1em;
+    margin: 0.4em;
+    outline: $outline;
+    white-space: nowrap;
+}
+
+.button:hover {
+    outline: $outlineInverted;
+}
+
+.button:active {
+    outline: $outlineActive;
+    color: $fontDark;
+}
