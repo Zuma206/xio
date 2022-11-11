@@ -1,10 +1,11 @@
 import styles from "../styles/UserProfile.module.scss";
-import { useAuth, getGravatar } from "../xio";
+import { useAuth, getGravatar, useError } from "../xio";
 import { auth } from "../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 export default () => {
     const user = useAuth();
+    const [catchError] = useError("Sign In Error");
 
     return user ? (
         <>
@@ -34,7 +35,9 @@ export default () => {
         <button
             className={styles.button}
             onClick={() => {
-                signInWithPopup(auth, new GoogleAuthProvider());
+                signInWithPopup(auth, new GoogleAuthProvider()).catch(
+                    catchError
+                );
             }}
         >
             Sign In
