@@ -2,7 +2,13 @@ import styles from "../styles/HeaderBar.module.scss";
 import logo from "../assets/xlogo.svg";
 import UserProfile from "./UserProfile";
 
-export default ({ children }: React.PropsWithChildren) => {
+interface props extends React.PropsWithChildren {
+    showProfile?: boolean;
+}
+
+export default ({ children, showProfile }: props) => {
+    const renderProfile = showProfile ?? false;
+
     return (
         <div className={styles.container}>
             <div className={styles.headerBar}>
@@ -12,9 +18,7 @@ export default ({ children }: React.PropsWithChildren) => {
 
                 <div></div>
 
-                <div>
-                    <UserProfile />
-                </div>
+                <div>{renderProfile ? <UserProfile /> : null}</div>
             </div>
             <div className={styles.content}>{children}</div>
         </div>
