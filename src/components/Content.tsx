@@ -17,6 +17,6 @@ export default () => {
             <AccountSetup />
         )
     ) : (
-        <div>Loading</div>
+        <div>Loading...</div>
     );
 };
