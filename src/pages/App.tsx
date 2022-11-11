@@ -6,31 +6,49 @@ import {
     ErrorContext,
     ExtendedError,
     LoadingContext,
+    useXIOUser,
+    XIOUser,
+    UserStatus,
 } from "../xio";
-import { User } from "firebase/auth";
 import { auth } from "../firebase";
 import Error from "../components/Error";
 import Loading from "../components/Loading";
+import Content from "../components/Content";
 
 export default () => {
     // Create user auth state for auth context
-    const authState = useState<User | null>(null);
+    const authState = useState<XIOUser | UserStatus>("unknown");
     const errorState = useState<ExtendedError | null>(null);
     const loadingState = useState<number>(0);
+    const [user] = useXIOUser();
 
     useEffect(() => {
         // Register listener to keep auth state up to date
-        auth.onAuthStateChanged(authState[1]);
+        auth.onAuthStateChanged((googleUser) => {
+            if (googleUser) {
+                authState[1]({
+                    googleUser,
+                    username: null,
+                    gravatar: null,
+                    activated: false,
+                    fetched: false,
+                });
+            } else {
+                authState[1]("known");
+            }
+        });
     }, []);
 
     return (
         <AuthContext.Provider value={authState}>
             <LoadingContext.Provider value={loadingState}>
                 <ErrorContext.Provider value={errorState}>
-                    <HeaderBar>
+                    <HeaderBar showProfile={true}>
                         <Columns>
                             <div>Servers</div>
-                            <div>Messages</div>
+                            <div>
+                                <Content />
+                            </div>
                         </Columns>
                     </HeaderBar>
                     <Error />

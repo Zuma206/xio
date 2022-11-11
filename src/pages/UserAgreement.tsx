@@ -8,10 +8,22 @@ export default () => {
             <div className={styles.notFound}>
                 <h1>XIO User Agreement</h1>
 
-                <p>You will have your account permenantly disabled if you:</p>
+                <p>
+                    You will have your account permenantly disabled if you break
+                    the golden rules:
+                </p>
                 <ol>
                     <li>
-                        Exploit any rules or restrictions (such as rate limits)
+                        Discrimination is prohibited (this includes saying
+                        discriminatory words).
+                    </li>
+                    <li>
+                        Attempting to bypass limitations, or attempting to
+                        exploit the database
+                    </li>
+                    <li>
+                        Misusing features to attempt to break other user's
+                        experience
                     </li>
                 </ol>
 
