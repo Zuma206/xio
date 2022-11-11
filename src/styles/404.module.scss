@@ -1,0 +1,11 @@
+@import "./Global.scss";
+
+.notFound {
+    background-color: $bgBottom;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3em;
+    color: $font;
+}
