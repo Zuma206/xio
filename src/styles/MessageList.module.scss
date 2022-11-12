@@ -1,1 +1,24 @@
 @import "./Global.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.messageList {
+    flex: 1;
+    overflow-y: scroll;
+}
+
+.messageBox {
+    display: flex;
+    box-sizing: border-box;
+    border-top: 1px solid black;
+    padding: 2em;
+}
+
+.messageText {
+    composes: text;
+    flex: 1;
+}

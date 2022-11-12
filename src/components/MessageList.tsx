@@ -34,14 +34,23 @@ export default ({ channelId }: props) => {
     }, [channelId]);
 
     return messages ? (
-        <div>
-            {messages.map((message) => {
-                return (
-                    <div key={message.id}>
-                        <Message data={message} />
-                    </div>
-                );
-            })}
+        <div className={styles.container}>
+            <div className={styles.messageList}>
+                {messages.map((message) => {
+                    return (
+                        <div key={message.id}>
+                            <Message data={message} />
+                        </div>
+                    );
+                })}
+            </div>
+            <div className={styles.messageBox}>
+                <input
+                    className={styles.messageText}
+                    type="text"
+                    placeholder="Type your message here..."
+                />
+            </div>
         </div>
     ) : (
         <div className={styles.padded}>Loading...</div>

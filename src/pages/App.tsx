@@ -41,9 +41,7 @@ export default () => {
                 <HeaderBar showProfile={true}>
                     <Columns>
                         <Sidebar {...{ setSelected, selected }} />
-                        <div>
-                            <Content {...{ selected }} />
-                        </div>
+                        <Content {...{ selected }} />
                     </Columns>
                 </HeaderBar>
                 <Error />
