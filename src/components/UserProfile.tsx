@@ -3,24 +3,26 @@ import {
     useXIOUser,
     getGravatar,
     useError,
-    useLoading,
     getUserById,
     XIOUser,
     UserStatus,
 } from "../xio";
 import { auth } from "../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default () => {
-    const [user, setXIOData] = useXIOUser();
+    const [user, setXIOData, setActivationStatus] = useXIOUser();
     const [catchError] = useError("Sign In Error");
-    const [startLoading, stopLoading] = useLoading();
+    const [loading, setLoading] = useState(false);
 
     const updateUser = async (user: XIOUser | UserStatus) => {
-        if (typeof user == "string" || user.activated) return;
+        if (typeof user == "string" || user.activated != "unknown") return;
         const xioUser = await getUserById(user.googleUser.uid);
-        if (!xioUser) return;
+        if (!xioUser) {
+            setActivationStatus("unactivated");
+            return;
+        }
         setXIOData(xioUser.username, xioUser.gravatar);
     };
 
@@ -28,15 +30,15 @@ export default () => {
         updateUser(user);
     }, [user]);
 
-    return user == "unknown" ? (
-        "Loading"
+    return user == "unknown" || loading ? (
+        "Loading..."
     ) : user == "known" ? (
         <button
             className={styles.button}
             onClick={() => {
-                startLoading();
+                setLoading(true);
                 signInWithPopup(auth, new GoogleAuthProvider())
-                    .then(stopLoading)
+                    .then(() => setLoading(false))
                     .catch(catchError);
             }}
         >
@@ -55,8 +57,10 @@ export default () => {
             <button
                 className={styles.button}
                 onClick={() => {
-                    startLoading();
-                    auth.signOut().then(stopLoading).catch(catchError);
+                    setLoading(true);
+                    auth.signOut()
+                        .then(() => setLoading(false))
+                        .catch(catchError);
                 }}
             >
                 Sign Out

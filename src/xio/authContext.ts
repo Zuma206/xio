@@ -2,11 +2,11 @@ import { User } from "firebase/auth";
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
 
 export type UserStatus = "unknown" | "known";
+export type ActivationStatus = "unknown" | "activated" | "unactivated";
 
 export interface XIOUser {
     googleUser: User;
-    activated: boolean;
-    fetched: boolean;
+    activated: ActivationStatus;
     username: string | null;
     gravatar: string | null;
 }
@@ -25,7 +25,7 @@ export const useAuth = () => useContext(AuthContext)[0];
 export const useXIOUser = (): [
     XIOUser | UserStatus,
     (username: string, gravatar: string) => void,
-    () => void
+    (activated: ActivationStatus) => void
 ] => {
     const [auth, setAuth] = useContext(AuthContext);
     return [
@@ -37,17 +37,16 @@ export const useXIOUser = (): [
                         ...userData,
                         username,
                         gravatar,
-                        activated: true,
-                        fetched: true,
+                        activated: "activated",
                     };
                 }
                 return userData;
             });
         },
-        () => {
+        (activated: ActivationStatus) => {
             setAuth((userData: XIOUser | UserStatus): XIOUser | UserStatus => {
-                if (typeof userData === "string") return userData;
-                return { ...userData, fetched: true };
+                if (typeof userData == "string") return userData;
+                return { ...userData, activated: activated };
             });
         },
     ];

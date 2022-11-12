@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/AccountSetup.module.scss";
+import { createUser, getGravatar, useXIOUser } from "../xio";
 
 export default () => {
     const [username, setUsername] = useState("");
+    const [user, , setActivationStatus] = useXIOUser();
 
     return (
         <div className={styles.container}>
@@ -27,8 +29,14 @@ export default () => {
                 <Link to="agreement">user agreement</Link>
             </p>
             <button
-                onClick={() => {
-                    console.log(username);
+                onClick={async () => {
+                    if (typeof user == "string") return;
+                    await createUser(
+                        user.googleUser.uid,
+                        username,
+                        getGravatar(user.googleUser.email ?? "")
+                    );
+                    setActivationStatus("unknown");
                 }}
                 className={styles.button}
             >

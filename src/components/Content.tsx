@@ -10,13 +10,11 @@ export default () => {
             <h1>Welcome to XIO</h1>
             <p>To continue, please sign in</p>
         </>
-    ) : user.fetched ? (
-        user.activated ? (
-            <h1>Welcome, {user.username}</h1>
-        ) : (
-            <AccountSetup />
-        )
-    ) : (
+    ) : user.activated == "activated" ? (
+        <h1>Welcome, {user.username}</h1>
+    ) : user.activated == "unknown" ? (
         <div>Loading...</div>
+    ) : (
+        <AccountSetup />
     );
 };
