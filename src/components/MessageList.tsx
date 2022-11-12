@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/MessageList.module.scss";
 import {
-    Message as MessageType,
+    CreatedMessage as MessageType,
+    sendMessage,
     subscribeMessages,
     useXIOUser,
     XIOUser,
@@ -15,6 +16,7 @@ interface props {
 export default ({ channelId }: props) => {
     const [messages, setMessages] = useState<MessageType[] | null>(null);
     const [user] = useXIOUser();
+    const [typedMessage, setTypedMessage] = useState("");
 
     const fetchMessages = async () => {
         if (channelId == null) return;
@@ -45,11 +47,22 @@ export default ({ channelId }: props) => {
                 })}
             </div>
             <div className={styles.messageBox}>
-                <input
-                    className={styles.messageText}
-                    type="text"
-                    placeholder="Type your message here..."
-                />
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        if (!channelId || user == "known" || user == "unknown")
+                            return;
+                        sendMessage(channelId, typedMessage, user);
+                    }}
+                >
+                    <input
+                        className={styles.messageText}
+                        type="text"
+                        placeholder="Type your message here..."
+                        value={typedMessage}
+                        onChange={(e) => setTypedMessage(e.target.value)}
+                    />
+                </form>
             </div>
         </div>
     ) : (

@@ -1,16 +1,20 @@
 import {
+    addDoc,
     arrayUnion,
     collection,
     doc,
+    FieldValue,
     getDoc,
     getDocs,
     query,
+    serverTimestamp,
     setDoc,
     Timestamp,
     updateDoc,
     where,
 } from "firebase/firestore";
 import { firestore } from "../firebase";
+import { XIOUser } from "./authContext";
 
 const channelsRef = collection(firestore, "channels");
 
@@ -26,10 +30,13 @@ export interface CreatedChannel extends Channel {
 }
 
 export interface Message {
-    id: string;
     user: string;
     content: string;
-    timestamp: Timestamp;
+    timestamp: FieldValue;
+}
+
+export interface CreatedMessage extends Message {
+    id: string;
 }
 
 export const getUserChannels = async (uid: string) => {
@@ -73,12 +80,26 @@ export const subscribeMessages = async (channelId: string) => {
     const docRef = doc(channelsRef, channelId);
     const collectionRef = collection(docRef, "messages");
     const docsSnap = await getDocs(collectionRef);
-    const messages: Message[] = [];
+    const messages: CreatedMessage[] = [];
     docsSnap.forEach((docSnap) => {
         messages.push({
             id: docSnap.id,
             ...docSnap.data(),
-        } as Message);
+        } as CreatedMessage);
     });
     return messages;
+};
+
+export const sendMessage = async (
+    channelId: string,
+    messageContent: string,
+    user: XIOUser
+) => {
+    const collectionRef = collection(channelsRef, channelId, "messages");
+    const data: Message = {
+        user: user.googleUser.uid,
+        content: messageContent,
+        timestamp: serverTimestamp(),
+    };
+    return await addDoc(collectionRef, data);
 };

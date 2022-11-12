@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/Message.module.scss";
-import { getUserById, Message, XIOUser } from "../xio";
+import { getUserById, CreatedMessage, XIOUser } from "../xio";
 
 interface props {
-    data: Message;
+    data: CreatedMessage;
 }
 
 export default ({ data }: props) => {
