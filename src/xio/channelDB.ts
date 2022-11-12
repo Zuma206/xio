@@ -6,6 +6,7 @@ import {
     getDocs,
     query,
     setDoc,
+    Timestamp,
     updateDoc,
     where,
 } from "firebase/firestore";
@@ -20,12 +21,26 @@ export interface Channel {
     blacklist: string[];
 }
 
+export interface CreatedChannel extends Channel {
+    id: string;
+}
+
+export interface Message {
+    id: string;
+    user: string;
+    content: string;
+    timestamp: Timestamp;
+}
+
 export const getUserChannels = async (uid: string) => {
     const q = query(channelsRef, where("members", "array-contains", uid));
     const docSnaps = await getDocs(q);
-    const channels: Channel[] = [];
+    const channels: CreatedChannel[] = [];
     docSnaps.forEach((docSnap) => {
-        channels.push(docSnap.data() as Channel);
+        channels.push({
+            ...docSnap.data(),
+            id: docSnap.id,
+        } as CreatedChannel);
     });
     return channels;
 };
@@ -52,4 +67,18 @@ export const createChannel = async (name: string, userId: string) => {
         blacklist: [],
     };
     await setDoc(docRef, channel);
+};
+
+export const subscribeMessages = async (channelId: string) => {
+    const docRef = doc(channelsRef, channelId);
+    const collectionRef = collection(docRef, "messages");
+    const docsSnap = await getDocs(collectionRef);
+    const messages: Message[] = [];
+    docsSnap.forEach((docSnap) => {
+        messages.push({
+            id: docSnap.id,
+            ...docSnap.data(),
+        } as Message);
+    });
+    return messages;
 };

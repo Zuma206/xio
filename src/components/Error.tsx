@@ -2,7 +2,7 @@ import styles from "../styles/Error.module.scss";
 import { useError } from "../xio";
 
 export default () => {
-    const [, closeError, errorData] = useError();
+    const [, closeError, errorData] = useError("");
 
     return errorData ? (
         <div className={styles.container}>

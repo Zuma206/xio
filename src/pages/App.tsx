@@ -40,7 +40,7 @@ export default () => {
             <ErrorContext.Provider value={errorState}>
                 <HeaderBar showProfile={true}>
                     <Columns>
-                        <Sidebar {...{ setSelected }} />
+                        <Sidebar {...{ setSelected, selected }} />
                         <div>
                             <Content {...{ selected }} />
                         </div>

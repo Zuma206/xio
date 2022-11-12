@@ -31,7 +31,7 @@ export default () => {
     }, [user]);
 
     return user == "unknown" || loading ? (
-        "Loading..."
+        <div>Loading...</div>
     ) : user == "known" ? (
         <button
             className={styles.button}

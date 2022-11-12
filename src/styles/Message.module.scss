@@ -1,0 +1,23 @@
+@import "./Global.scss";
+
+.message {
+    display: flex;
+    align-items: center;
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+.picture {
+    height: 2.5em;
+    border-radius: 100%;
+    outline: $outline;
+    margin-right: 0.6em;
+}
+
+.username {
+    color: white;
+}
+
+.message:hover {
+    background-color: $bgHighlight;
+}

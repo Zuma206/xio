@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "../styles/Sidebar.module.scss";
 import {
     Channel,
+    CreatedChannel,
     createChannel,
     getUserChannels,
     joinChannel,
@@ -12,11 +13,12 @@ import {
 
 interface props {
     setSelected: Dispatch<SetStateAction<null | string>>;
+    selected: string | null;
 }
 
-export default ({ setSelected }: props) => {
+export default ({ setSelected, selected }: props) => {
     const [user] = useXIOUser();
-    const [channels, setChannels] = useState<Channel[] | null>(null);
+    const [channels, setChannels] = useState<CreatedChannel[] | null>(null);
     const [joinChannelId, setJoinChannelId] = useState("");
     const [createChannelName, setCreateChannelName] = useState("");
 
@@ -62,7 +64,18 @@ export default ({ setSelected }: props) => {
                 {channels ? (
                     channels.map((channel, index) => {
                         return (
-                            <div key={index} className={styles.channel}>
+                            <div
+                                key={index}
+                                className={
+                                    channel.id === selected
+                                        ? styles.channelCurrent
+                                        : styles.channel
+                                }
+                                id={channel.id}
+                                onClick={(e) => {
+                                    setSelected((e.target as HTMLElement).id);
+                                }}
+                            >
                                 {channel.name}
                             </div>
                         );
