@@ -1,8 +1,13 @@
 import { useXIOUser } from "../xio";
 import AccountSetup from "./AccountSetup";
 import styles from "../styles/Content.module.scss";
+import { useState } from "react";
 
-export default () => {
+interface props {
+    selected: string | null;
+}
+
+export default ({ selected }: props) => {
     const [user] = useXIOUser();
     const loading = <div className={styles.padded}>Loading...</div>;
 

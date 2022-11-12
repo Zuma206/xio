@@ -24,6 +24,9 @@ Left and right columns use 1:3 flex ratio, and feature start scroll snap
     flex: 1;
     background-color: $bgTop;
     scroll-snap-align: start;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .right {
@@ -37,7 +40,7 @@ On mobile/small screens, left and right take a full page width.
 They will be scrolled between using the scroll snap.
 */
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 900px) {
     .left,
     .right {
         flex: none;

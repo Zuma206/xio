@@ -1,0 +1,38 @@
+@import "./Global.scss";
+
+.sidebar {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    h1 {
+        margin: 0px;
+    }
+}
+
+.channels {
+    padding: 1em;
+    flex: 1;
+    overflow-y: scroll;
+}
+
+.channel {
+    background-color: $bgBottom;
+    list-style: none;
+    margin: 0.4em;
+    padding: 0.6em;
+    border-radius: 1em;
+    cursor: pointer;
+    outline: $outline;
+    text-align: center;
+}
+
+.channel:hover {
+    outline: $outlineActive;
+}
+
+.channelCurrent {
+    composes: channel;
+    font-weight: bold;
+}

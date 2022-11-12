@@ -11,11 +11,13 @@ import {
 import { auth } from "../firebase";
 import Error from "../components/Error";
 import Content from "../components/Content";
+import Sidebar from "../components/Sidebar";
 
 export default () => {
     // Create user auth state for auth context
     const authState = useState<XIOUser | UserStatus>("unknown");
     const errorState = useState<ExtendedError | null>(null);
+    const [selected, setSelected] = useState<null | string>(null);
 
     useEffect(() => {
         // Register listener to keep auth state up to date
@@ -38,9 +40,9 @@ export default () => {
             <ErrorContext.Provider value={errorState}>
                 <HeaderBar showProfile={true}>
                     <Columns>
-                        <div>Servers</div>
+                        <Sidebar {...{ setSelected }} />
                         <div>
-                            <Content />
+                            <Content {...{ selected }} />
                         </div>
                     </Columns>
                 </HeaderBar>

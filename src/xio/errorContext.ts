@@ -13,13 +13,17 @@ export type ErrorState = [
 export const ErrorContext = createContext<ErrorState>([null, () => {}]);
 
 export const useError = (
-    errorTitle: string | undefined = undefined
+    errorTitle: string,
+    loadingStateSetter: Dispatch<SetStateAction<boolean>> | null = null
 ): [(err: ExtendedError) => void, () => void, ExtendedError | null] => {
     const [errorData, setError] = useContext(ErrorContext);
     return [
         (err: ExtendedError) => {
-            err.title = errorTitle ?? "";
+            err.title = errorTitle;
             setError(err);
+            if (loadingStateSetter) {
+                loadingStateSetter(false);
+            }
         },
         () => {
             setError(null);

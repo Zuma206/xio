@@ -44,3 +44,22 @@ $error: #ff4646;
     display: flex;
     justify-content: center;
 }
+
+.text {
+    composes: button;
+    display: block;
+    cursor: auto;
+}
+
+.text:focus {
+    outline: $outlineActive;
+    color: $fontDark;
+}
+
+.padded {
+    padding: 1em;
+
+    h1 {
+        margin: 0px;
+    }
+}

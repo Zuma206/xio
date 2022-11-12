@@ -13,8 +13,8 @@ import { useEffect, useState } from "react";
 
 export default () => {
     const [user, setXIOData, setActivationStatus] = useXIOUser();
-    const [catchError] = useError("Sign In Error");
     const [loading, setLoading] = useState(false);
+    const [catchError] = useError("Sign In Error", setLoading);
 
     const updateUser = async (user: XIOUser | UserStatus) => {
         if (typeof user == "string" || user.activated != "unknown") return;

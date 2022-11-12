@@ -4,17 +4,6 @@
     padding: 2em;
 }
 
-.text {
-    composes: button;
-    display: block;
-    cursor: auto;
-}
-
-.text:focus {
-    outline: $outlineActive;
-    color: $fontDark;
-}
-
 .title {
     font-size: 2em;
     font-weight: bold;
