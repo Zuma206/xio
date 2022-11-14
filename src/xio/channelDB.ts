@@ -1,40 +1,35 @@
 import { XIOUser } from "./authContext";
 
-export interface Channel {
+export type XIOChannelResponse = {
     name: string;
     owners: string[];
-    members: string[];
     blacklist: string[];
-}
-
-export interface CreatedChannel extends Channel {
-    id: string;
-}
-
-export interface Message {
-    user: string;
-    content: string;
-    timestamp: number;
-}
-
-export interface CreatedMessage extends Message {
-    id: string;
-}
-
-export const getUserChannels = async (uid: string) => {
-    return [];
+    key: string;
 };
 
-export const validChannelId = async (id: string) => {
-    return true;
+export const getUserChannels = async (authToken: string) => {
+    const res = await fetch("api/channels", {
+        headers: { authorization: authToken },
+    });
+    const { result } = await res.json();
+    return result as XIOChannelResponse[];
 };
 
 export const joinChannel = async (id: string, userId: string) => {
     return;
 };
 
-export const createChannel = async (name: string, userId: string) => {
-    return;
+export const createChannel = async (name: string, authToken: string) => {
+    const res = await fetch("api/channels/create", {
+        headers: {
+            authorization: authToken,
+            "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ name }),
+    });
+    const { result } = await res.json();
+    return result;
 };
 
 export const subscribeMessages = async (channelId: string) => {
@@ -44,7 +39,7 @@ export const subscribeMessages = async (channelId: string) => {
 export const sendMessage = async (
     channelId: string,
     messageContent: string,
-    user: XIOUser
+    user: any
 ) => {
     return;
 };

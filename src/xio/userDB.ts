@@ -1,15 +1,25 @@
-export const getUserById = async (uid: string) => {
-    return {
-        username: "Zuma",
-        gravatar:
-            "https://en.gravatar.com/userimage/214161784/57910272dadd04d60dea97849acf04f5.png",
-    };
+export type XIOUserResponse = {
+    username: string;
+    gravatar: string;
+    channels: string[];
+    key: string;
 };
 
-export const createUser = async (
-    uid: string,
-    username: string,
-    gravatar: string
-) => {
-    return;
+export const getUserById = async (uid: string, authToken: string) => {
+    const res = await fetch("api/users/" + uid, {
+        headers: { authorization: authToken },
+    });
+    const { result } = await res.json();
+    return result as XIOUserResponse;
+};
+
+export const createUser = async (username: string, authToken: string) => {
+    await fetch("api/users/activate", {
+        headers: {
+            authorization: authToken,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+        method: "POST",
+    });
 };

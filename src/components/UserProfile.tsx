@@ -18,7 +18,10 @@ export default () => {
 
     const updateUser = async (user: XIOUser | UserStatus) => {
         if (typeof user == "string" || user.activated != "unknown") return;
-        const xioUser = await getUserById(user.googleUser.uid);
+        const xioUser = await getUserById(
+            user.googleUser.uid,
+            await user.googleUser.getIdToken()
+        );
         if (!xioUser) {
             setActivationStatus("unactivated");
             return;

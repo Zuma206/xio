@@ -32,9 +32,8 @@ export default () => {
                 onClick={async () => {
                     if (typeof user == "string") return;
                     await createUser(
-                        user.googleUser.uid,
                         username,
-                        getGravatar(user.googleUser.email ?? "")
+                        await user.googleUser.getIdToken()
                     );
                     setActivationStatus("unknown");
                 }}

@@ -1,13 +1,11 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "../styles/Sidebar.module.scss";
 import {
-    Channel,
-    CreatedChannel,
     createChannel,
     getUserChannels,
     joinChannel,
     useXIOUser,
-    validChannelId,
+    XIOChannelResponse,
     XIOUser,
 } from "../xio";
 
@@ -18,12 +16,15 @@ interface props {
 
 export default ({ setSelected, selected }: props) => {
     const [user] = useXIOUser();
-    const [channels, setChannels] = useState<CreatedChannel[] | null>(null);
+    const [channels, setChannels] = useState<XIOChannelResponse[] | null>(null);
     const [joinChannelId, setJoinChannelId] = useState("");
     const [createChannelName, setCreateChannelName] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const fetchChannels = async (userData: XIOUser) => {
-        const channelsData = await getUserChannels(userData.googleUser.uid);
+        const channelsData = await getUserChannels(
+            await userData.googleUser.getIdToken()
+        );
         setChannels(channelsData);
     };
 
@@ -51,27 +52,32 @@ export default ({ setSelected, selected }: props) => {
                 />
                 <button
                     className={styles.button}
-                    onClick={() => {
-                        createChannel(createChannelName, user.googleUser.uid);
+                    onClick={async () => {
                         setCreateChannelName("");
-                        fetchChannels(user);
+                        setLoading(true);
+                        await createChannel(
+                            createChannelName,
+                            await user.googleUser.getIdToken()
+                        );
+                        await fetchChannels(user);
+                        setLoading(false);
                     }}
                 >
                     + Create a channel
                 </button>
             </div>
             <div className={styles.channels}>
-                {channels ? (
+                {channels && !loading ? (
                     channels.map((channel, index) => {
                         return (
                             <div
                                 key={index}
                                 className={
-                                    channel.id === selected
+                                    channel.key === selected
                                         ? styles.channelCurrent
                                         : styles.channel
                                 }
-                                id={channel.id}
+                                id={channel.key}
                                 onClick={(e) => {
                                     setSelected((e.target as HTMLElement).id);
                                 }}
@@ -95,7 +101,6 @@ export default ({ setSelected, selected }: props) => {
                 <button
                     className={styles.button}
                     onClick={() => {
-                        if (!validChannelId(joinChannelId)) return;
                         joinChannel(joinChannelId, user.googleUser.uid);
                         fetchChannels(user);
                         setJoinChannelId("");
