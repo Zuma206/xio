@@ -1,7 +1,5 @@
-// Firebase boilerplate config
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
 
 const app = initializeApp({
     apiKey: "AIzaSyDpIbOWVn_TWFhNz8SswkSm0b2qczg7qAM",
@@ -13,5 +11,4 @@ const app = initializeApp({
 });
 
 export const auth = getAuth(app);
-export const firestore = getFirestore(app);
 export default app;

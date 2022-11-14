@@ -1,17 +1,9 @@
-import { firestore } from "../firebase";
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
-import { XIOUser } from "./authContext";
-
-const usersRef = collection(firestore, "users");
-
 export const getUserById = async (uid: string) => {
-    const docRef = doc(usersRef, uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        return docSnap.data() as XIOUser;
-    } else {
-        return null;
-    }
+    return {
+        username: "Zuma",
+        gravatar:
+            "https://en.gravatar.com/userimage/214161784/57910272dadd04d60dea97849acf04f5.png",
+    };
 };
 
 export const createUser = async (
@@ -19,6 +11,5 @@ export const createUser = async (
     username: string,
     gravatar: string
 ) => {
-    const docRef = doc(usersRef, uid);
-    await setDoc(docRef, { username, gravatar });
+    return;
 };

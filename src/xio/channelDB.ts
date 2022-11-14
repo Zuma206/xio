@@ -1,22 +1,4 @@
-import {
-    addDoc,
-    arrayUnion,
-    collection,
-    doc,
-    FieldValue,
-    getDoc,
-    getDocs,
-    query,
-    serverTimestamp,
-    setDoc,
-    Timestamp,
-    updateDoc,
-    where,
-} from "firebase/firestore";
-import { firestore } from "../firebase";
 import { XIOUser } from "./authContext";
-
-const channelsRef = collection(firestore, "channels");
 
 export interface Channel {
     name: string;
@@ -32,7 +14,7 @@ export interface CreatedChannel extends Channel {
 export interface Message {
     user: string;
     content: string;
-    timestamp: FieldValue;
+    timestamp: number;
 }
 
 export interface CreatedMessage extends Message {
@@ -40,54 +22,23 @@ export interface CreatedMessage extends Message {
 }
 
 export const getUserChannels = async (uid: string) => {
-    const q = query(channelsRef, where("members", "array-contains", uid));
-    const docSnaps = await getDocs(q);
-    const channels: CreatedChannel[] = [];
-    docSnaps.forEach((docSnap) => {
-        channels.push({
-            ...docSnap.data(),
-            id: docSnap.id,
-        } as CreatedChannel);
-    });
-    return channels;
+    return [];
 };
 
 export const validChannelId = async (id: string) => {
-    const docRef = doc(channelsRef, id);
-    const docSnap = await getDoc(docRef);
-    return docSnap.exists() ? true : false;
+    return true;
 };
 
 export const joinChannel = async (id: string, userId: string) => {
-    const docRef = doc(channelsRef, id);
-    return await updateDoc(docRef, {
-        members: arrayUnion(userId),
-    });
+    return;
 };
 
 export const createChannel = async (name: string, userId: string) => {
-    const docRef = doc(channelsRef);
-    const channel: Channel = {
-        name,
-        owners: [userId],
-        members: [userId],
-        blacklist: [],
-    };
-    await setDoc(docRef, channel);
+    return;
 };
 
 export const subscribeMessages = async (channelId: string) => {
-    const docRef = doc(channelsRef, channelId);
-    const collectionRef = collection(docRef, "messages");
-    const docsSnap = await getDocs(collectionRef);
-    const messages: CreatedMessage[] = [];
-    docsSnap.forEach((docSnap) => {
-        messages.push({
-            id: docSnap.id,
-            ...docSnap.data(),
-        } as CreatedMessage);
-    });
-    return messages;
+    return [];
 };
 
 export const sendMessage = async (
@@ -95,11 +46,5 @@ export const sendMessage = async (
     messageContent: string,
     user: XIOUser
 ) => {
-    const collectionRef = collection(channelsRef, channelId, "messages");
-    const data: Message = {
-        user: user.googleUser.uid,
-        content: messageContent,
-        timestamp: serverTimestamp(),
-    };
-    return await addDoc(collectionRef, data);
+    return;
 };
