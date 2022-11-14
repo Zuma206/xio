@@ -4,12 +4,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const app = initializeApp({
-    apiKey: "AIzaSyCZCMciPsZemPU3-uKnOtk5f_7XckIM9Wg",
-    authDomain: "xio-zuma.firebaseapp.com",
-    projectId: "xio-zuma",
-    storageBucket: "xio-zuma.appspot.com",
-    messagingSenderId: "676316923538",
-    appId: "1:676316923538:web:2a12ffbfe4b2213ea7084b",
+    apiKey: "AIzaSyDpIbOWVn_TWFhNz8SswkSm0b2qczg7qAM",
+    authDomain: "xiozuma.firebaseapp.com",
+    projectId: "xiozuma",
+    storageBucket: "xiozuma.appspot.com",
+    messagingSenderId: "370395880113",
+    appId: "1:370395880113:web:ba6d4bb6119c64b4a92090",
 });
 
 export const auth = getAuth(app);
