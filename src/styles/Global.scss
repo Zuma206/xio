@@ -11,6 +11,15 @@ $xBL: #d06a0bff;
 $xBR: #ffc001ff;
 $error: #ff4646;
 
+*::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .button {
     font-size: 1em;
     background-color: $bgBottom;

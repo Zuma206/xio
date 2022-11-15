@@ -1,5 +1,5 @@
 import styles from "../styles/Message.module.scss";
-import { CreatedMessage, XIOUserResponse, useXIOUser } from "../xio";
+import { CreatedMessage, XIOUserResponse } from "../xio";
 
 interface props {
     data: CreatedMessage;
@@ -7,8 +7,6 @@ interface props {
 }
 
 export default ({ data, userData }: props) => {
-    const [user] = useXIOUser();
-
     return userData ? (
         <div className={styles.message}>
             <img src={userData.gravatar} alt="" className={styles.picture} />
