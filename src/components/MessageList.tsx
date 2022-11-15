@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/MessageList.module.scss";
 import {
     CreatedMessage,
@@ -9,6 +9,7 @@ import {
     XIOUserResponse,
 } from "../xio";
 import Message from "./Message";
+import Pusher from "pusher-js";
 
 interface props {
     channelId: string | null;
@@ -21,24 +22,25 @@ export default ({ channelId }: props) => {
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState<{ [x: string]: XIOUserResponse }>({});
 
-    const fetchMessages = async () => {
+    const fetchMessages = async (users: { [x: string]: XIOUserResponse }) => {
         if (channelId == null || user == "known" || user == "unknown") return;
         const messages = (await subscribeMessages(
             channelId,
             await user.googleUser.getIdToken()
         )) as CreatedMessage[];
 
+        const doneIds: string[] = [];
         for (let message of messages) {
-            if (message.user in users) continue;
-            const userData = await getUserById(
+            if (message.user in doneIds || message.user in users) continue;
+            const fetchedUser = await getUserById(
                 message.user,
                 await user.googleUser.getIdToken()
             );
             setUsers((users) => {
-                const newUsers = { ...users };
-                newUsers[message.user] = userData;
-                return newUsers;
+                users[message.user] = fetchedUser;
+                return users;
             });
+            doneIds.push(message.user);
         }
 
         setMessages(messages);
@@ -49,11 +51,28 @@ export default ({ channelId }: props) => {
         if (
             user == "known" ||
             user == "unknown" ||
-            user.activated != "activated"
+            user.activated != "activated" ||
+            !channelId
         )
             return;
+        fetchMessages(users);
+    }, [channelId]);
 
-        fetchMessages();
+    useEffect(() => {
+        if (!channelId) return;
+
+        const pusher = new Pusher("d2eb302d2ea834126d7a", { cluster: "eu" });
+        pusher
+            .subscribe(channelId)
+            .bind("message", (message: CreatedMessage) => {
+                setMessages((messages) => {
+                    return messages ? [...messages, message] : messages;
+                });
+            });
+
+        return () => {
+            pusher.disconnect();
+        };
     }, [channelId]);
 
     return messages && !loading ? (

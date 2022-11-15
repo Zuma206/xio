@@ -7,7 +7,7 @@
 }
 
 .messageList {
-    flex: 1;
+    height: calc(100vh - 4em - 6em);
     overflow-y: scroll;
 }
 
@@ -15,16 +15,18 @@
     display: flex;
     box-sizing: border-box;
     border-top: 1px solid black;
-    padding: 2em;
+    flex: 1;
 }
 
 .messageBox > form {
     flex: 1;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0em 1em 0em 1em;
 }
 
 .messageText {
     composes: text;
-    flex: 1;
     background-color: $bgTop;
 }

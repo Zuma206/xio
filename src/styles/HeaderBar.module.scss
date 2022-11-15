@@ -21,13 +21,14 @@ div take the rest of the screen height.
 
 .headerBar {
     background-color: $bgTop;
-    padding: 0.5em 1em 0.5em 1em;
+    padding: 0em 1em 0em 1em;
     display: flex;
     align-items: center;
     color: $font;
     border-bottom: 0.5em solid;
     border-image: linear-gradient(to right, $xTL, $xTR, $xTL, $xTR, $xTL, $xTR)
         1;
+    height: 4em;
 }
 
 .headerBar > div {
@@ -45,5 +46,5 @@ div take the rest of the screen height.
 
 .logo {
     height: 2em;
-    margin: 0.5em 1em 0.5em 0em;
+    margin-left: 1em;
 }
