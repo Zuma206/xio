@@ -5,7 +5,6 @@ import {
     sendMessage,
     subscribeMessages,
     useXIOUser,
-    XIOUser,
 } from "../xio";
 import Message from "./Message";
 
@@ -19,8 +18,11 @@ export default ({ channelId }: props) => {
     const [typedMessage, setTypedMessage] = useState("");
 
     const fetchMessages = async () => {
-        if (channelId == null) return;
-        const messages = await subscribeMessages(channelId);
+        if (channelId == null || user == "known" || user == "unknown") return;
+        const messages = await subscribeMessages(
+            channelId,
+            await user.googleUser.getIdToken()
+        );
         setMessages(messages);
     };
 
@@ -40,7 +42,7 @@ export default ({ channelId }: props) => {
             <div className={styles.messageList}>
                 {messages.map((message) => {
                     return (
-                        <div key={message.id}>
+                        <div key={message.key}>
                             <Message data={message} />
                         </div>
                     );
@@ -48,11 +50,16 @@ export default ({ channelId }: props) => {
             </div>
             <div className={styles.messageBox}>
                 <form
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                         e.preventDefault();
                         if (!channelId || user == "known" || user == "unknown")
                             return;
-                        sendMessage(channelId, typedMessage, user);
+                        setTypedMessage("");
+                        await sendMessage(
+                            channelId,
+                            typedMessage,
+                            await user.googleUser.getIdToken()
+                        );
                     }}
                 >
                     <input

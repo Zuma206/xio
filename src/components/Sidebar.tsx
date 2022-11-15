@@ -100,10 +100,15 @@ export default ({ setSelected, selected }: props) => {
                 />
                 <button
                     className={styles.button}
-                    onClick={() => {
-                        joinChannel(joinChannelId, user.googleUser.uid);
-                        fetchChannels(user);
+                    onClick={async () => {
+                        setLoading(true);
                         setJoinChannelId("");
+                        await joinChannel(
+                            joinChannelId,
+                            await user.googleUser.getIdToken()
+                        );
+                        await fetchChannels(user);
+                        setLoading(false);
                     }}
                 >
                     + Join Channel

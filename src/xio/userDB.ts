@@ -7,7 +7,7 @@ export type XIOUserResponse = {
 
 export const getUserById = async (uid: string, authToken: string) => {
     const res = await fetch("api/users/" + uid, {
-        headers: { authorization: authToken },
+        headers: { "X-Token": authToken },
     });
     const { result } = await res.json();
     return result as XIOUserResponse;
@@ -16,7 +16,7 @@ export const getUserById = async (uid: string, authToken: string) => {
 export const createUser = async (username: string, authToken: string) => {
     await fetch("api/users/activate", {
         headers: {
-            authorization: authToken,
+            "X-Token": authToken,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ username }),
