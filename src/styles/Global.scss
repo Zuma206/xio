@@ -34,6 +34,17 @@ $error: #ff4646;
     color: $fontDark;
 }
 
+.button:disabled,
+.button:disabled {
+    cursor: default;
+    color: $fontDark;
+    outline: $outline;
+}
+
+.button:disabled:hover {
+    background-color: $bgTop;
+}
+
 .backdropContainer {
     width: 100vw;
     height: 100vh;

@@ -44,6 +44,7 @@ export default ({ setSelected, selected }: props) => {
         <div className={styles.sidebar}>
             <div>
                 <input
+                    disabled={loading}
                     type="text"
                     className={styles.text}
                     placeholder="Channel Name"
@@ -51,6 +52,7 @@ export default ({ setSelected, selected }: props) => {
                     onChange={(e) => setCreateChannelName(e.target.value)}
                 />
                 <button
+                    disabled={loading}
                     className={styles.button}
                     onClick={async () => {
                         setCreateChannelName("");
@@ -92,6 +94,7 @@ export default ({ setSelected, selected }: props) => {
             </div>
             <div>
                 <input
+                    disabled={loading}
                     type="text"
                     className={styles.text}
                     placeholder="Channel ID"
@@ -99,6 +102,7 @@ export default ({ setSelected, selected }: props) => {
                     onChange={(e) => setJoinChannelId(e.target.value)}
                 />
                 <button
+                    disabled={loading}
                     className={styles.button}
                     onClick={async () => {
                         setLoading(true);

@@ -1,33 +1,13 @@
-import { useEffect, useState } from "react";
 import styles from "../styles/Message.module.scss";
-import {
-    getUserById,
-    CreatedMessage,
-    XIOUserResponse,
-    useXIOUser,
-    XIOUser,
-} from "../xio";
+import { CreatedMessage, XIOUserResponse, useXIOUser } from "../xio";
 
 interface props {
     data: CreatedMessage;
+    userData: XIOUserResponse;
 }
 
-export default ({ data }: props) => {
+export default ({ data, userData }: props) => {
     const [user] = useXIOUser();
-    const [userData, setUserData] = useState<XIOUserResponse | null>(null);
-
-    const fetchUserData = async (user: XIOUser) => {
-        const serverUserData = await getUserById(
-            data.user,
-            await user.googleUser.getIdToken()
-        );
-        setUserData(serverUserData);
-    };
-
-    useEffect(() => {
-        if (user == "known" || user == "unknown") return;
-        fetchUserData(user);
-    }, []);
 
     return userData ? (
         <div className={styles.message}>
