@@ -1,16 +1,22 @@
 import { fetchAPI } from "./api";
-import { XIOUser } from "./authContext";
 
-export type XIOChannelResponse = {
+export type ChannelResult = {
     name: string;
     owners: string[];
     blacklist: string[];
     key: string;
 };
 
+export type MessageResult = {
+    key: string;
+    content: string;
+    user: string;
+    timestamp: number;
+};
+
 export const getUserChannels = async (authToken: string) => {
     const { result } = await fetchAPI("api/channels", authToken);
-    return result as XIOChannelResponse[];
+    return result as ChannelResult[];
 };
 
 export const joinChannel = async (channelId: string, userToken: string) => {
@@ -24,19 +30,12 @@ export const createChannel = async (name: string, authToken: string) => {
     return result;
 };
 
-export const subscribeMessages = async (
-    channelId: string,
-    authToken: string
-) => {
-    const { result } = await fetchAPI(`api/channels/${channelId}`, authToken);
+export const getMessages = async (channelId: string, authToken: string) => {
+    const { result }: { result: MessageResult[] } = await fetchAPI(
+        `api/channels/${channelId}`,
+        authToken
+    );
     return result;
-};
-
-export type CreatedMessage = {
-    key: string;
-    content: string;
-    user: string;
-    timestamp: number;
 };
 
 export const sendMessage = async (

@@ -1,4 +1,6 @@
-export type XIOUserResponse = {
+import { useEffect, useState } from "react";
+
+export type UserResult = {
     username: string;
     gravatar: string;
     channels: string[];
@@ -10,7 +12,7 @@ export const getUserById = async (uid: string, authToken: string) => {
         headers: { "X-Token": authToken },
     });
     const { result } = await res.json();
-    return result as XIOUserResponse;
+    return result as UserResult;
 };
 
 export const createUser = async (username: string, authToken: string) => {

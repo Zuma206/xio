@@ -5,7 +5,7 @@ import {
     getUserChannels,
     joinChannel,
     useXIOUser,
-    XIOChannelResponse,
+    ChannelResult,
     XIOUser,
 } from "../xio";
 
@@ -16,7 +16,7 @@ interface props {
 
 export default ({ setSelected, selected }: props) => {
     const [user] = useXIOUser();
-    const [channels, setChannels] = useState<XIOChannelResponse[] | null>(null);
+    const [channels, setChannels] = useState<ChannelResult[] | null>(null);
     const [joinChannelId, setJoinChannelId] = useState("");
     const [createChannelName, setCreateChannelName] = useState("");
     const [loading, setLoading] = useState(false);

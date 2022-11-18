@@ -1,9 +1,9 @@
 import styles from "../styles/Message.module.scss";
-import { CreatedMessage, XIOUserResponse } from "../xio";
+import { MessageResult, UserResult } from "../xio";
 
 interface props {
-    data: CreatedMessage;
-    userData: XIOUserResponse;
+    data: MessageResult;
+    userData: UserResult;
 }
 
 export default ({ data, userData }: props) => {
