@@ -14,6 +14,7 @@ export default ({ channelId }: props) => {
     const [user] = useXIOUser();
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState<{ [x: string]: UserResult }>({});
+    const [pusher, setPusher] = useState<Pusher | null>(null);
 
     useEffect(() => {
         if (!channelId || user == "known" || user == "unknown") return;
@@ -29,20 +30,40 @@ export default ({ channelId }: props) => {
 
     useEffect(() => {
         if (!channelId) return;
+        if (!pusher) {
+            setPusher(
+                new Pusher("d2eb302d2ea834126d7a", {
+                    cluster: "eu",
+                })
+            );
+            return;
+        }
 
-        const pusher = new Pusher("d2eb302d2ea834126d7a", { cluster: "eu" });
         pusher
             .subscribe(channelId)
-            .bind("message", (message: MessageResult) => {
+            .bind("message", (newMessage: MessageResult) => {
                 setMessages((messages) => {
-                    return messages ? [...messages, message] : messages;
+                    if (!messages) return messages;
+                    let messageAdded = false;
+                    messages = messages.map((currentMessage) => {
+                        if (newMessage.clientKey === currentMessage.clientKey) {
+                            currentMessage.clientSide = false;
+                            messageAdded = true;
+                        }
+                        return currentMessage;
+                    });
+                    if (!messageAdded) {
+                        messages.push(newMessage);
+                    }
+                    return messages;
                 });
             });
 
         return () => {
-            pusher.disconnect();
+            pusher.unbind_all();
+            pusher.unsubscribe(channelId);
         };
-    }, [channelId]);
+    }, [channelId, pusher]);
 
     return messages && !loading ? (
         <div className={styles.container}>
@@ -58,7 +79,7 @@ export default ({ channelId }: props) => {
                     );
                 })}
             </div>
-            <MessageBox channelId={channelId ?? ""} />
+            <MessageBox channelId={channelId ?? ""} setMessages={setMessages} />
         </div>
     ) : (
         <div className={styles.padded}>Loading...</div>

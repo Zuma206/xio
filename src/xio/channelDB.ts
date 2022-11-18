@@ -12,6 +12,8 @@ export type MessageResult = {
     content: string;
     user: string;
     timestamp: number;
+    clientKey?: string;
+    clientSide?: boolean;
 };
 
 export const getUserChannels = async (authToken: string) => {
@@ -41,12 +43,13 @@ export const getMessages = async (channelId: string, authToken: string) => {
 export const sendMessage = async (
     channel: string,
     content: string,
+    clientKey: string,
     authToken: string
 ) => {
     const { result } = await fetchAPI(
         `api/channels/${channel}/message`,
         authToken,
-        { content }
+        { content, clientKey }
     );
-    return result;
+    return result as MessageResult;
 };
