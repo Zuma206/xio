@@ -47,25 +47,25 @@ export default ({ setSelected, selected }: props) => {
                     disabled={loading}
                     type="text"
                     className={styles.text}
-                    placeholder="Channel Name"
-                    value={createChannelName}
-                    onChange={(e) => setCreateChannelName(e.target.value)}
+                    placeholder="Channel ID"
+                    value={joinChannelId}
+                    onChange={(e) => setJoinChannelId(e.target.value)}
                 />
                 <button
                     disabled={loading}
                     className={styles.button}
                     onClick={async () => {
-                        setCreateChannelName("");
                         setLoading(true);
-                        await createChannel(
-                            createChannelName,
+                        setJoinChannelId("");
+                        await joinChannel(
+                            joinChannelId,
                             await user.googleUser.getIdToken()
                         );
                         await fetchChannels(user);
                         setLoading(false);
                     }}
                 >
-                    + Create a channel
+                    + Join Channel
                 </button>
             </div>
             <div className={styles.channels}>
@@ -97,25 +97,25 @@ export default ({ setSelected, selected }: props) => {
                     disabled={loading}
                     type="text"
                     className={styles.text}
-                    placeholder="Channel ID"
-                    value={joinChannelId}
-                    onChange={(e) => setJoinChannelId(e.target.value)}
+                    placeholder="Channel Name"
+                    value={createChannelName}
+                    onChange={(e) => setCreateChannelName(e.target.value)}
                 />
                 <button
                     disabled={loading}
                     className={styles.button}
                     onClick={async () => {
+                        setCreateChannelName("");
                         setLoading(true);
-                        setJoinChannelId("");
-                        await joinChannel(
-                            joinChannelId,
+                        await createChannel(
+                            createChannelName,
                             await user.googleUser.getIdToken()
                         );
                         await fetchChannels(user);
                         setLoading(false);
                     }}
                 >
-                    + Join Channel
+                    + Create a channel
                 </button>
             </div>
         </div>
