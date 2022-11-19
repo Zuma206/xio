@@ -6,9 +6,10 @@ import { v4 as uuid } from "uuid";
 type props = {
     channelId: string;
     setMessages: Dispatch<SetStateAction<MessageResult[] | null>>;
+    setSettings: Dispatch<SetStateAction<boolean>>;
 };
 
-export default ({ channelId, setMessages }: props) => {
+export default ({ channelId, setMessages, setSettings }: props) => {
     const [user] = useXIOUser();
     const [message, setMessage] = useState("");
 
@@ -46,6 +47,15 @@ export default ({ channelId, setMessages }: props) => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                 />
+                <button
+                    className={styles.button}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setSettings(true);
+                    }}
+                >
+                    Settings
+                </button>
             </form>
         </div>
     );

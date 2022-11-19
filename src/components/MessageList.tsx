@@ -4,6 +4,7 @@ import { MessageResult, useXIOUser, UserResult, fetchMessages } from "../xio";
 import Message from "./Message";
 import Pusher from "pusher-js";
 import MessageBox from "./MessageBox";
+import ChannelSettings from "./ChannelSettings";
 
 interface props {
     channelId: string | null;
@@ -15,6 +16,7 @@ export default ({ channelId }: props) => {
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState<{ [x: string]: UserResult }>({});
     const [pusher, setPusher] = useState<Pusher | null>(null);
+    const [settings, setSettings] = useState(false);
 
     useEffect(() => {
         if (!channelId || user == "known" || user == "unknown") return;
@@ -67,19 +69,29 @@ export default ({ channelId }: props) => {
 
     return messages && !loading ? (
         <div className={styles.container}>
-            <div className={styles.messageList}>
-                {messages.map((message) => {
-                    return (
-                        <div key={message.key}>
-                            <Message
-                                data={message}
-                                userData={users[message.user]}
-                            />
-                        </div>
-                    );
-                })}
-            </div>
-            <MessageBox channelId={channelId ?? ""} setMessages={setMessages} />
+            {settings ? (
+                <ChannelSettings channelId={channelId ?? ""} />
+            ) : (
+                <>
+                    <div className={styles.messageList}>
+                        {messages.map((message) => {
+                            return (
+                                <div key={message.key}>
+                                    <Message
+                                        data={message}
+                                        userData={users[message.user]}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <MessageBox
+                        channelId={channelId ?? ""}
+                        setMessages={setMessages}
+                        setSettings={setSettings}
+                    />
+                </>
+            )}
         </div>
     ) : (
         <div className={styles.padded}>Loading...</div>

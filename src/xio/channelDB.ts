@@ -53,3 +53,11 @@ export const sendMessage = async (
     );
     return result as MessageResult;
 };
+
+export const deleteChannel = async (channelId: string, authToken: string) => {
+    const { result } = await fetchAPI(
+        `api/channels/${channelId}/delete`,
+        authToken
+    );
+    return result;
+};
