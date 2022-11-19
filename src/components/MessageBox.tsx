@@ -47,16 +47,16 @@ export default ({ channelId, setMessages, setSettings }: props) => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                 />
-                <button
-                    className={styles.button}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setSettings(true);
-                    }}
-                >
-                    Settings
-                </button>
             </form>
+            <button
+                className={styles.button}
+                onClick={(e) => {
+                    e.preventDefault();
+                    setSettings(true);
+                }}
+            >
+                Settings
+            </button>
         </div>
     );
 };

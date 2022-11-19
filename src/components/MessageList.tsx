@@ -13,7 +13,7 @@ interface props {
 export default ({ channelId }: props) => {
     const [messages, setMessages] = useState<MessageResult[] | null>(null);
     const [user] = useXIOUser();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<{ [x: string]: UserResult }>({});
     const [pusher, setPusher] = useState<Pusher | null>(null);
     const [settings, setSettings] = useState(false);
@@ -40,6 +40,17 @@ export default ({ channelId }: props) => {
             );
             return;
         }
+
+        pusher.connection.bind(
+            "state_change",
+            (states: { current: string; previous: string }) => {
+                console.log(
+                    "[PUSHER STATE CHANGE]",
+                    states.previous,
+                    states.current
+                );
+            }
+        );
 
         pusher
             .subscribe(channelId)
@@ -70,7 +81,10 @@ export default ({ channelId }: props) => {
     return messages && !loading ? (
         <div className={styles.container}>
             {settings ? (
-                <ChannelSettings channelId={channelId ?? ""} />
+                <ChannelSettings
+                    channelId={channelId ?? ""}
+                    setSettings={setSettings}
+                />
             ) : (
                 <>
                     <div className={styles.messageList}>
