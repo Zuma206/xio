@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/MessageList.module.scss";
-import { MessageResult, useXIOUser, UserResult, fetchMessages } from "../xio";
+import {
+    MessageResult,
+    useXIOUser,
+    UserResult,
+    fetchMessages,
+    fetchAndCacheUser,
+} from "../xio";
 import Message from "./Message";
 import Pusher from "pusher-js";
 import MessageBox from "./MessageBox";
@@ -70,6 +76,17 @@ export default ({ channelId }: props) => {
                     }
                     return messages;
                 });
+            })
+            .bind("clear", () => {
+                setMessages([]);
+            })
+            .bind("deleted", () => {
+                location.reload();
+            })
+            .bind("kicked", (userId: string) => {
+                if (user == "known" || user == "unknown") return;
+                if (userId != user.googleUser.uid) return;
+                location.reload();
             });
 
         return () => {
@@ -84,11 +101,28 @@ export default ({ channelId }: props) => {
                 <ChannelSettings
                     channelId={channelId ?? ""}
                     setSettings={setSettings}
+                    userCacheState={[users, setUsers]}
                 />
             ) : (
                 <>
                     <div className={styles.messageList}>
                         {messages.map((message) => {
+                            if (
+                                !(message.user in users) &&
+                                user != "known" &&
+                                user != "unknown"
+                            ) {
+                                user.googleUser
+                                    .getIdToken()
+                                    .then((authToken) => {
+                                        fetchAndCacheUser(
+                                            message.user,
+                                            setUsers,
+                                            authToken
+                                        );
+                                    });
+                            }
+
                             return (
                                 <div key={message.key}>
                                     <Message

@@ -4,6 +4,7 @@ export type ChannelResult = {
     name: string;
     owners: string[];
     blacklist: string[];
+    members: string[];
     key: string;
 };
 
@@ -58,6 +59,51 @@ export const deleteChannel = async (channelId: string, authToken: string) => {
     const { result } = await fetchAPI(
         `api/channels/${channelId}/delete`,
         authToken
+    );
+    return result;
+};
+
+export const clearChannel = async (channelId: string, authToken: string) => {
+    const { result } = await fetchAPI(
+        `api/channels/${channelId}/clear`,
+        authToken
+    );
+    return result;
+};
+
+export const getChannelMemberData = async (
+    channelId: string,
+    authToken: string
+) => {
+    const { result } = await fetchAPI(
+        `api/channels/${channelId}/members`,
+        authToken
+    );
+    return result;
+};
+
+export const blacklistUser = async (
+    targetUserId: string,
+    channelId: string,
+    authToken: string
+) => {
+    const { result } = await fetchAPI(
+        `api/channels/${channelId}/blacklist`,
+        authToken,
+        { user: targetUserId }
+    );
+    return result;
+};
+
+export const whitelistUser = async (
+    targetUserId: string,
+    channelId: string,
+    authToken: string
+) => {
+    const { result } = await fetchAPI(
+        `api/channels/${channelId}/whitelist`,
+        authToken,
+        { user: targetUserId }
     );
     return result;
 };

@@ -9,6 +9,18 @@ export type UserCache = {
 
 export type UserCacheState = [UserCache, Dispatch<SetStateAction<UserCache>>];
 
+export const fetchAndCacheUser = async (
+    uid: string,
+    setUserCache: Dispatch<SetStateAction<UserCache>>,
+    authToken: string
+) => {
+    const fetchedUser = await getUserById(uid, authToken);
+    setUserCache((userCache) => {
+        userCache[uid] = fetchedUser;
+        return userCache;
+    });
+};
+
 export const fetchMessages = async (
     setMessages: Dispatch<SetStateAction<MessageResult[] | null>>,
     channel: string,
@@ -26,14 +38,11 @@ export const fetchMessages = async (
     const doneIds: string[] = [];
     for (let message of messages) {
         if (message.user in doneIds || message.user in userCache) continue;
-        const fetchedUser = await getUserById(
+        await fetchAndCacheUser(
             message.user,
+            setUserCache,
             await user.googleUser.getIdToken()
         );
-        setUserCache((userCache) => {
-            userCache[message.user] = fetchedUser;
-            return userCache;
-        });
         doneIds.push(message.user);
     }
 
