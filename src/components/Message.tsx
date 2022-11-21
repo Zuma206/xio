@@ -31,7 +31,23 @@ export default ({ data, userData }: props) => {
                         {formatRelative(data.timestamp, Date.now())}
                     </span>
                 </div>
-                <div className={styles.content}>{data.content}</div>
+                <div>
+                    <div className={styles.content}>{data.content}</div>
+                    <div>
+                        {data.content
+                            .split(" ")
+                            .filter(
+                                (part) =>
+                                    part.startsWith("https://") ||
+                                    part.startsWith("http://")
+                            )
+                            .map((link) => {
+                                return (
+                                    <img src={link} style={{ height: "5em" }} />
+                                );
+                            })}
+                    </div>
+                </div>
             </div>
         </div>
     );
