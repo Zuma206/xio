@@ -32,3 +32,13 @@
     font-size: 0.7em;
     color: $fontDisabled;
 }
+
+.link {
+    color: rgb(0, 110, 255);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.link:hover {
+    color: rgb(0, 80, 185);
+}
