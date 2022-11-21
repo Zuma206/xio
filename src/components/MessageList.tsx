@@ -11,6 +11,7 @@ import Message from "./Message";
 import Pusher from "pusher-js";
 import MessageBox from "./MessageBox";
 import ChannelSettings from "./ChannelSettings";
+import { v4 as uuid } from "uuid";
 
 interface props {
     channelId: string | null;
@@ -65,6 +66,10 @@ export default ({ channelId }: props) => {
                     if (!messages) return messages;
                     let messageAdded = false;
                     messages = messages.map((currentMessage) => {
+                        console.log(
+                            newMessage.clientKey,
+                            currentMessage.clientKey
+                        );
                         if (newMessage.clientKey === currentMessage.clientKey) {
                             currentMessage.clientSide = false;
                             messageAdded = true;
@@ -124,7 +129,7 @@ export default ({ channelId }: props) => {
                             }
 
                             return (
-                                <div key={message.key}>
+                                <div key={uuid()}>
                                     <Message
                                         data={message}
                                         userData={users[message.user]}
