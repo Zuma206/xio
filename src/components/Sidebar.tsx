@@ -1,13 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "../styles/Sidebar.module.scss";
-import {
-    createChannel,
-    getUserChannels,
-    joinChannel,
-    useXIOUser,
-    ChannelResult,
-    XIOUser,
-} from "../xio";
+import { getUserChannels, useXIOUser, ChannelResult, XIOUser } from "../xio";
+import CreateChannel from "./CreateChannel";
+import JoinChannel from "./JoinChannel";
 
 interface props {
     setSelected: Dispatch<SetStateAction<null | string>>;
@@ -17,8 +12,6 @@ interface props {
 export default ({ setSelected, selected }: props) => {
     const [user] = useXIOUser();
     const [channels, setChannels] = useState<ChannelResult[] | null>(null);
-    const [joinChannelId, setJoinChannelId] = useState("");
-    const [createChannelName, setCreateChannelName] = useState("");
     const [loading, setLoading] = useState(false);
 
     const fetchChannels = async (userData: XIOUser) => {
@@ -42,33 +35,8 @@ export default ({ setSelected, selected }: props) => {
         <div className={styles.padded}>Loading...</div>
     ) : user == "known" ? null : user.activated == "activated" ? (
         <div className={styles.sidebar}>
-            <div>
-                <input
-                    disabled={loading}
-                    type="text"
-                    className={styles.text}
-                    placeholder="Channel ID"
-                    value={joinChannelId}
-                    onChange={(e) => setJoinChannelId(e.target.value)}
-                />
-                <button
-                    disabled={loading}
-                    className={styles.button}
-                    onClick={async () => {
-                        setLoading(true);
-                        setJoinChannelId("");
-                        await joinChannel(
-                            joinChannelId,
-                            await user.googleUser.getIdToken()
-                        );
-                        await fetchChannels(user);
-                        setLoading(false);
-                    }}
-                >
-                    + Join Channel
-                </button>
-            </div>
             <div className={styles.channels}>
+                <JoinChannel {...{ loading, setLoading, fetchChannels }} />
                 {channels && !loading ? (
                     channels.map((channel, index) => {
                         return (
@@ -92,32 +60,7 @@ export default ({ setSelected, selected }: props) => {
                     <div>Loading...</div>
                 )}
             </div>
-            <div>
-                <input
-                    disabled={loading}
-                    type="text"
-                    className={styles.text}
-                    placeholder="Channel Name"
-                    value={createChannelName}
-                    onChange={(e) => setCreateChannelName(e.target.value)}
-                />
-                <button
-                    disabled={loading}
-                    className={styles.button}
-                    onClick={async () => {
-                        setCreateChannelName("");
-                        setLoading(true);
-                        await createChannel(
-                            createChannelName,
-                            await user.googleUser.getIdToken()
-                        );
-                        await fetchChannels(user);
-                        setLoading(false);
-                    }}
-                >
-                    + Create a channel
-                </button>
-            </div>
+            <CreateChannel {...{ loading, setLoading, fetchChannels }} />
         </div>
     ) : null;
 };

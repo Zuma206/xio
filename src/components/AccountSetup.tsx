@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/AccountSetup.module.scss";
-import { createUser, getGravatar, useXIOUser } from "../xio";
+import { createUser, useXIOUser } from "../xio";
 
 export default () => {
     const [username, setUsername] = useState("");

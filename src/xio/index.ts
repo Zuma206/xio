@@ -5,6 +5,8 @@ export * from "./errorContext";
 export * from "./userDB";
 export * from "./channelDB";
 export * from "./fetchMessages";
+export * from "./api";
+export * from "./pusher";
 
 export const getGravatar = (email: string) => {
     const hash = md5(email);

@@ -1,8 +1,12 @@
 import { useState } from "react";
 import styles from "../styles/Embed.module.scss";
+import { useXIOUser } from "../xio";
+import { fetchAPI } from "../xio/api";
 
 export default ({ src }: { src: string }) => {
     const [display, setDisplay] = useState("none");
+    const [user] = useXIOUser();
+
     const youtube =
         src.startsWith("https://www.youtube.com/watch?v=") ||
         src.startsWith("http://www.youtube.com/watch?v=") ||
@@ -12,6 +16,10 @@ export default ({ src }: { src: string }) => {
         src.startsWith("http://youtube.com/watch?v=") ||
         src.startsWith("https://youtu.be/") ||
         src.startsWith("http://youtu.be/");
+
+    const safeSrc =
+        "https://external-content.duckduckgo.com/iu/?u=" +
+        encodeURIComponent(src);
     return (
         <div style={{ display }} className={styles.message}>
             {youtube ? (
@@ -29,12 +37,20 @@ export default ({ src }: { src: string }) => {
                 ></iframe>
             ) : (
                 <img
-                    src={
-                        "https://external-content.duckduckgo.com/iu/?u=" +
-                        encodeURIComponent(src)
-                    }
+                    src={safeSrc}
                     alt=""
-                    onLoad={() => setDisplay("block")}
+                    onLoad={async () => {
+                        if (user == "known" || user == "unknown") return;
+                        const authToken = await user.googleUser.getIdToken();
+                        const { result } = await fetchAPI(
+                            "api/image",
+                            authToken,
+                            { url: safeSrc }
+                        );
+                        if (result) {
+                            setDisplay("block");
+                        }
+                    }}
                     className={styles.image}
                 />
             )}

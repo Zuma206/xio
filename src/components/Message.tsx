@@ -1,8 +1,8 @@
 import styles from "../styles/Message.module.scss";
 import { MessageResult, UserResult } from "../xio";
 import formatRelative from "date-fns/formatRelative";
-import defaultPicture from "../assets/user.png";
 import Embed from "./Embed";
+import MessageContent from "./MessageContent";
 
 interface props {
     data: MessageResult;
@@ -20,7 +20,9 @@ export default ({ data, userData }: props) => {
                 }
             >
                 <img
-                    src={userData?.gravatar ?? defaultPicture}
+                    src={
+                        userData?.gravatar ?? "https://www.gravatar.com/avatar"
+                    }
                     alt=""
                     className={styles.picture}
                 />
@@ -38,28 +40,7 @@ export default ({ data, userData }: props) => {
                         </span>
                     </div>
                     <div>
-                        <div className={styles.content}>
-                            {data.content.split(" ").map((part, key) => {
-                                let returnPart;
-                                if (
-                                    !part.startsWith("https://") &&
-                                    !part.startsWith("http://")
-                                ) {
-                                    returnPart = part;
-                                } else {
-                                    returnPart = (
-                                        <a
-                                            href={part}
-                                            target="_blank"
-                                            className={styles.link}
-                                        >
-                                            {part}
-                                        </a>
-                                    );
-                                }
-                                return <span key={key}>{returnPart} </span>;
-                            })}
-                        </div>
+                        <MessageContent content={data.content} />
                     </div>
                 </div>
             </div>
