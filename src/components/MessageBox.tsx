@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useState } from "react";
 import styles from "../styles/MessageBox.module.scss";
 import { MessageResult, sendMessage, useXIOUser } from "../xio";
 import { v4 as uuid } from "uuid";
@@ -7,9 +7,10 @@ type props = {
     channelId: string;
     setMessages: Dispatch<SetStateAction<MessageResult[] | null>>;
     setSettings: Dispatch<SetStateAction<boolean>>;
+    setScroll: Dispatch<SetStateAction<boolean>>;
 };
 
-export default ({ channelId, setMessages, setSettings }: props) => {
+export default ({ channelId, setMessages, setSettings, setScroll }: props) => {
     const [user] = useXIOUser();
     const [message, setMessage] = useState("");
 
@@ -29,6 +30,7 @@ export default ({ channelId, setMessages, setSettings }: props) => {
                         timestamp: Date.now(),
                         clientSide: true,
                     };
+                    setScroll(true);
                     setMessages((messages: MessageResult[] | null) => {
                         return messages ? [...messages, newMessage] : messages;
                     });
@@ -48,15 +50,17 @@ export default ({ channelId, setMessages, setSettings }: props) => {
                     onChange={(e) => setMessage(e.target.value)}
                 />
             </form>
-            <button
-                className={styles.button}
-                onClick={(e) => {
-                    e.preventDefault();
-                    setSettings(true);
-                }}
-            >
-                Settings
-            </button>
+            <div className={styles.buttons}>
+                <button
+                    className={styles.button}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setSettings(true);
+                    }}
+                >
+                    Settings
+                </button>
+            </div>
         </div>
     );
 };

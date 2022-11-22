@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/MessageList.module.scss";
 import {
     MessageResult,
@@ -23,6 +23,13 @@ export default ({ channelId }: props) => {
     const [users, setUsers] = useState<{ [x: string]: UserResult }>({});
     const [pusher, setPusher] = useState<Pusher | null>(null);
     const [settings, setSettings] = useState(false);
+    const end = useRef<HTMLDivElement>(null);
+    const [scroll, setScroll] = useState(true);
+
+    useEffect(() => {
+        if (!end.current || !scroll) return;
+        end.current.scrollIntoView();
+    }, [messages]);
 
     useEffect(() => {
         if (!channelId || user == "known" || user == "unknown") return;
@@ -105,7 +112,19 @@ export default ({ channelId }: props) => {
                 />
             ) : (
                 <>
-                    <div className={styles.messageList}>
+                    <div
+                        className={styles.messageList}
+                        onScroll={({ currentTarget: list }) => {
+                            if (
+                                list.scrollTop ==
+                                list.scrollHeight - list.offsetHeight
+                            ) {
+                                setScroll(true);
+                            } else {
+                                setScroll(false);
+                            }
+                        }}
+                    >
                         {messages.map((message, key) => {
                             if (
                                 !(message.user in users) &&
@@ -132,11 +151,13 @@ export default ({ channelId }: props) => {
                                 </div>
                             );
                         })}
+                        <div ref={end} />
                     </div>
                     <MessageBox
                         channelId={channelId ?? ""}
                         setMessages={setMessages}
                         setSettings={setSettings}
+                        setScroll={setScroll}
                     />
                 </>
             )}
