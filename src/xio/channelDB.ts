@@ -107,3 +107,15 @@ export const whitelistUser = async (
     );
     return result;
 };
+
+export const getChunk = async (
+    channelId: string,
+    messageId: string,
+    authToken: string
+) => {
+    const { result } = await fetchAPI(
+        `api/channels/${channelId}/${messageId}`,
+        authToken
+    );
+    return result;
+};

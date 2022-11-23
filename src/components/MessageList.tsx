@@ -5,6 +5,7 @@ import {
     useXIOUser,
     fetchMessages,
     connectPusher,
+    getChunk,
 } from "../xio";
 import Message from "./Message";
 import Pusher from "pusher-js";
@@ -77,6 +78,28 @@ export default ({ channelId }: props) => {
                             }
                         }}
                     >
+                        <button
+                            className={styles.button}
+                            onClick={async () => {
+                                if (user == "known" || user == "unknown")
+                                    return;
+                                const token =
+                                    await user.googleUser.getIdToken();
+                                const newMessages = await getChunk(
+                                    channelId ?? "",
+                                    messages[0].key,
+                                    token
+                                );
+                                console.log(newMessages);
+                                setMessages((messages) => {
+                                    return messages
+                                        ? [...newMessages, ...messages]
+                                        : messages;
+                                });
+                            }}
+                        >
+                            Load More
+                        </button>
                         {messages.map((message, key) => {
                             return (
                                 <div key={key}>

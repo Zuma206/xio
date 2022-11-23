@@ -11,6 +11,6 @@ export const fetchAPI = async (
         method: body ? "POST" : "GET",
         body: body ? JSON.stringify(body) : undefined,
     });
-    const apiResponse = await res.json();
-    return apiResponse;
+    const data = await res.json();
+    return data;
 };
