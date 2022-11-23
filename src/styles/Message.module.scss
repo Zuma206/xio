@@ -9,10 +9,12 @@
 }
 
 .picture {
+    width: 2.5em;
     height: 2.5em;
     border-radius: 100%;
     outline: $outline;
     margin-right: 0.6em;
+    object-fit: cover;
 }
 
 .username {

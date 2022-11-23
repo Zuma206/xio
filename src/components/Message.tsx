@@ -3,13 +3,16 @@ import { MessageResult, UserResult } from "../xio";
 import formatRelative from "date-fns/formatRelative";
 import Embed from "./Embed";
 import MessageContent from "./MessageContent";
+import { CachedUserHook } from "../xio/userCache";
 
 interface props {
     data: MessageResult;
-    userData: UserResult | undefined;
+    useCachedUser: CachedUserHook;
 }
 
-export default ({ data, userData }: props) => {
+export default ({ data, useCachedUser }: props) => {
+    const userData = useCachedUser(data.user);
+
     return (
         <>
             <div
@@ -20,10 +23,8 @@ export default ({ data, userData }: props) => {
                 }
             >
                 <img
-                    src={
-                        userData?.gravatar ?? "https://www.gravatar.com/avatar"
-                    }
-                    alt=""
+                    src={userData?.gravatar ?? ""}
+                    alt=" "
                     className={styles.picture}
                 />
                 <div>
@@ -34,7 +35,7 @@ export default ({ data, userData }: props) => {
                                 : styles.username
                         }
                     >
-                        {userData?.username ?? "Loading User..."}{" "}
+                        {userData?.username ?? ""}{" "}
                         <span className={styles.date}>
                             {formatRelative(data.timestamp, Date.now())}
                         </span>
