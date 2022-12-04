@@ -8,13 +8,13 @@ export const fetchMessages = async (
     channel: string,
     user: XIOUser,
     setLoading: Dispatch<SetStateAction<boolean>>,
-    useCachedUser: CachedUserHook
+    setLastMessage: Dispatch<SetStateAction<string | null>>
 ) => {
-    const messages = await getMessages(
+    const { messages, last } = await getMessages(
         channel,
         await user.googleUser.getIdToken()
     );
-
+    setLastMessage(last);
     setMessages(messages);
     setLoading(false);
 };

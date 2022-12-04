@@ -17,6 +17,11 @@ export type MessageResult = {
     clientSide?: boolean;
 };
 
+export type ChannelMessagesResult = {
+    messages: MessageResult[];
+    last: string;
+};
+
 export const getUserChannels = async (authToken: string) => {
     const { result } = await fetchAPI("api/channels", authToken);
     return result as ChannelResult[];
@@ -34,7 +39,7 @@ export const createChannel = async (name: string, authToken: string) => {
 };
 
 export const getMessages = async (channelId: string, authToken: string) => {
-    const { result }: { result: MessageResult[] } = await fetchAPI(
+    const { result }: { result: ChannelMessagesResult } = await fetchAPI(
         `api/channels/${channelId}`,
         authToken
     );
@@ -113,7 +118,7 @@ export const getChunk = async (
     messageId: string,
     authToken: string
 ) => {
-    const { result } = await fetchAPI(
+    const { result }: { result: ChannelMessagesResult } = await fetchAPI(
         `api/channels/${channelId}/${messageId}`,
         authToken
     );

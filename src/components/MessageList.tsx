@@ -26,6 +26,7 @@ export default ({ channelId }: props) => {
     const end = useRef<HTMLDivElement>(null);
     const [scroll, setScroll] = useState(true);
     const useCachedUser = useUserCache();
+    const [lastMessage, setLastMessage] = useState<string | null>(null);
 
     useEffect(() => {
         if (!end.current || !scroll) return;
@@ -41,7 +42,7 @@ export default ({ channelId }: props) => {
         )
             return;
 
-        fetchMessages(setMessages, channelId, user, setLoading, useCachedUser);
+        fetchMessages(setMessages, channelId, user, setLoading, setLastMessage);
     }, [channelId]);
 
     useEffect(() => {
@@ -78,28 +79,34 @@ export default ({ channelId }: props) => {
                             }
                         }}
                     >
-                        <button
-                            className={styles.button}
-                            onClick={async () => {
-                                if (user == "known" || user == "unknown")
-                                    return;
-                                const token =
-                                    await user.googleUser.getIdToken();
-                                const newMessages = await getChunk(
-                                    channelId ?? "",
-                                    messages[0].key,
-                                    token
-                                );
-                                console.log(newMessages);
-                                setMessages((messages) => {
-                                    return messages
-                                        ? [...newMessages, ...messages]
-                                        : messages;
-                                });
-                            }}
-                        >
-                            Load More
-                        </button>
+                        {lastMessage ? (
+                            <button
+                                className={styles.button}
+                                onClick={async () => {
+                                    if (user == "known" || user == "unknown")
+                                        return;
+                                    const token =
+                                        await user.googleUser.getIdToken();
+                                    const { messages: newMessages, last } =
+                                        await getChunk(
+                                            channelId ?? "",
+                                            lastMessage,
+                                            token
+                                        );
+                                    setLastMessage(last);
+                                    setMessages((messages) => {
+                                        return messages
+                                            ? [
+                                                  ...newMessages,
+                                                  ...messages,
+                                              ].splice(0, 10)
+                                            : messages;
+                                    });
+                                }}
+                            >
+                                Load More
+                            </button>
+                        ) : null}
                         {messages.map((message, key) => {
                             return (
                                 <div key={key}>
