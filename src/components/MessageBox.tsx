@@ -1,6 +1,6 @@
-import { Dispatch, RefObject, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styles from "../styles/MessageBox.module.scss";
-import { MessageResult, sendMessage, useXIOUser } from "../xio";
+import { MessageResult, sendMessage, useError, useXIOUser } from "../xio";
 import { v4 as uuid } from "uuid";
 
 type props = {
@@ -20,6 +20,7 @@ export default ({
 }: props) => {
     const [user] = useXIOUser();
     const [message, setMessage] = useState("");
+    const [displayError] = useError("Uh Oh!");
 
     return (
         <div className={styles.messageBox}>
@@ -41,12 +42,19 @@ export default ({
                     setMessages((messages: MessageResult[] | null) => {
                         return messages ? [...messages, newMessage] : messages;
                     });
-                    await sendMessage(
+                    const res = await sendMessage(
                         channelId,
                         message,
                         clientKey,
                         await user.googleUser.getIdToken()
                     );
+                    if (res.error) {
+                        displayError({
+                            name: res.error.response,
+                            code: res.error.message,
+                            message: res.error.message,
+                        });
+                    }
                 }}
             >
                 <input

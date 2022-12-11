@@ -52,12 +52,11 @@ export const sendMessage = async (
     clientKey: string,
     authToken: string
 ) => {
-    const { result } = await fetchAPI(
-        `api/channels/${channel}/message`,
-        authToken,
-        { content, clientKey }
-    );
-    return result as MessageResult;
+    const res = await fetchAPI(`api/channels/${channel}/message`, authToken, {
+        content,
+        clientKey,
+    });
+    return res;
 };
 
 export const deleteChannel = async (channelId: string, authToken: string) => {
