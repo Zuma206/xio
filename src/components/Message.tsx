@@ -22,34 +22,36 @@ export default ({ data, useCachedUser }: props) => {
                         : styles.message
                 }
             >
-                <img
-                    src={userData?.gravatar ?? ""}
-                    alt=" "
-                    className={styles.picture}
-                />
-                <div>
-                    <div
-                        className={
-                            data.clientSide === true
-                                ? undefined
-                                : styles.username
-                        }
-                    >
-                        {userData?.username ?? ""}{" "}
-                        <span className={styles.date}>
-                            {formatRelative(data.timestamp, Date.now())}
-                        </span>
-                    </div>
+                <div className={styles.messageContent}>
+                    <img
+                        src={userData?.gravatar ?? ""}
+                        alt=" "
+                        className={styles.picture}
+                    />
                     <div>
-                        <MessageContent content={data.content} />
+                        <div
+                            className={
+                                data.clientSide === true
+                                    ? undefined
+                                    : styles.username
+                            }
+                        >
+                            {userData?.username ?? ""}{" "}
+                            <span className={styles.date}>
+                                {formatRelative(data.timestamp, Date.now())}
+                            </span>
+                        </div>
+                        <div>
+                            <MessageContent content={data.content} />
+                        </div>
                     </div>
                 </div>
+                {parseMessage(data.content)
+                    .filter(({ type }) => type == "link")
+                    .map(({ value }, index) => (
+                        <Embed src={value} key={index} />
+                    ))}
             </div>
-            {parseMessage(data.content)
-                .filter(({ type }) => type == "link")
-                .map(({ value }) => (
-                    <Embed src={value} />
-                ))}
         </>
     );
 };

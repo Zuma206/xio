@@ -1,11 +1,14 @@
 @import "./Global.scss";
 
 .message {
+    font-size: 1em;
+    padding: 0.5em;
+    color: $fontDark;
+}
+
+.messageContent {
     display: flex;
     align-items: center;
-    padding: 0.5em;
-    font-size: 1em;
-    color: $fontDark;
 }
 
 .picture {

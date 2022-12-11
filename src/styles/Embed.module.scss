@@ -1,18 +1,16 @@
 @import "./Global.scss";
 
-.message:hover {
-    background-color: $bgTop;
-}
-
-.image {
-    height: 15em;
+.embed {
+    padding: 0.5em;
 }
 
 .video {
     border: none;
+    width: 26.6666667em;
 }
 
 .video,
 .image {
-    margin-left: 3.6em;
+    margin-left: 2.6em;
+    height: 15em;
 }

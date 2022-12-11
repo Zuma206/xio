@@ -11,7 +11,12 @@ export default ({ content }: { content: string }) => {
                         return token;
                     case "link":
                         return (
-                            <a key={index} className={styles.link} href={token}>
+                            <a
+                                key={index}
+                                target="_blank"
+                                className={styles.link}
+                                href={token}
+                            >
                                 {token}
                             </a>
                         );
