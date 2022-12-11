@@ -6,6 +6,7 @@ export type UserResult = {
     gravatar: string;
     channels: string[];
     key: string;
+    dev: boolean;
 };
 
 export const getUserById = async (uid: string, authToken: string) => {
