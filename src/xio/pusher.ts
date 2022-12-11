@@ -10,6 +10,7 @@ type options = {
     setMessages: Dispatch<SetStateAction<MessageResult[] | null>>;
     user: XIOUser | "known" | "unknown";
     setScrollDirection: Dispatch<SetStateAction<"up" | "down">>;
+    isLive: boolean;
 };
 
 export const connectPusher = ({
@@ -19,7 +20,10 @@ export const connectPusher = ({
     setMessages,
     user,
     setScrollDirection,
+    isLive,
 }: options) => {
+    if (!isLive) return;
+
     if (!pusher) {
         setPusher(
             new Pusher("d2eb302d2ea834126d7a", {

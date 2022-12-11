@@ -8,9 +8,16 @@ type props = {
     setMessages: Dispatch<SetStateAction<MessageResult[] | null>>;
     setSettings: Dispatch<SetStateAction<boolean>>;
     setScroll: Dispatch<SetStateAction<boolean>>;
+    isLive: boolean;
 };
 
-export default ({ channelId, setMessages, setSettings, setScroll }: props) => {
+export default ({
+    channelId,
+    setMessages,
+    setSettings,
+    setScroll,
+    isLive,
+}: props) => {
     const [user] = useXIOUser();
     const [message, setMessage] = useState("");
 
@@ -48,6 +55,7 @@ export default ({ channelId, setMessages, setSettings, setScroll }: props) => {
                     placeholder="Type your message here..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
+                    disabled={!isLive}
                 />
             </form>
             <div className={styles.buttons}>

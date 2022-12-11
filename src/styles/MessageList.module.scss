@@ -10,3 +10,8 @@
     height: calc(100vh - 4em - 6em);
     overflow-y: scroll;
 }
+
+.warning {
+    composes: padded;
+    color: orange;
+}

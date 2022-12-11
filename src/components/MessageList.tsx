@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/MessageList.module.scss";
+import Message from "./Message";
+import Pusher from "pusher-js";
+import MessageBox from "./MessageBox";
+import ChannelSettings from "./ChannelSettings";
+import { useUserCache } from "../xio/userCache";
 import {
     MessageResult,
     useXIOUser,
@@ -7,11 +12,6 @@ import {
     connectPusher,
     getChunk,
 } from "../xio";
-import Message from "./Message";
-import Pusher from "pusher-js";
-import MessageBox from "./MessageBox";
-import ChannelSettings from "./ChannelSettings";
-import { useUserCache } from "../xio/userCache";
 
 interface props {
     channelId: string | null;
@@ -28,6 +28,8 @@ export default ({ channelId }: props) => {
     const [scroll, setScroll] = useState(true);
     const useCachedUser = useUserCache();
     const [lastMessage, setLastMessage] = useState<string | null>(null);
+    const [isLive, setIsLive] = useState(true);
+    const [loadingOldMessages, setLoadingOldMessages] = useState(false);
     const [scrollDirection, setScrollDirection] = useState<"up" | "down">(
         "down"
     );
@@ -61,8 +63,9 @@ export default ({ channelId }: props) => {
             user,
             setMessages,
             setScrollDirection,
+            isLive,
         });
-    }, [channelId, pusher]);
+    }, [channelId, pusher, isLive]);
 
     return messages && !loading && useCachedUser ? (
         <div className={styles.container}>
@@ -88,34 +91,44 @@ export default ({ channelId }: props) => {
                         }}
                     >
                         {lastMessage ? (
-                            <button
-                                className={styles.button}
-                                onClick={async () => {
-                                    console.log("clicked");
-                                    if (user == "known" || user == "unknown")
-                                        return;
-                                    const token =
-                                        await user.googleUser.getIdToken();
-                                    const { messages: newMessages, last } =
-                                        await getChunk(
-                                            channelId ?? "",
-                                            lastMessage,
-                                            token
-                                        );
-                                    console.log("chuck", messages, last);
-                                    setLastMessage(last);
-                                    setMessages((messages) => {
-                                        return messages
-                                            ? [
-                                                  ...newMessages,
-                                                  ...messages,
-                                              ].splice(0, 10)
-                                            : messages;
-                                    });
-                                }}
-                            >
-                                Load More
-                            </button>
+                            loadingOldMessages ? (
+                                <div className={styles.padded}>Loading...</div>
+                            ) : (
+                                <button
+                                    className={styles.button}
+                                    onClick={async () => {
+                                        setLoadingOldMessages(true);
+                                        setIsLive(false);
+                                        console.log("clicked");
+                                        if (
+                                            user == "known" ||
+                                            user == "unknown"
+                                        )
+                                            return;
+                                        const token =
+                                            await user.googleUser.getIdToken();
+                                        const { messages: newMessages, last } =
+                                            await getChunk(
+                                                channelId ?? "",
+                                                lastMessage,
+                                                token
+                                            );
+                                        console.log("chuck", messages, last);
+                                        setLastMessage(last);
+                                        setMessages((messages) => {
+                                            return messages
+                                                ? [
+                                                      ...newMessages,
+                                                      ...messages,
+                                                  ].splice(0, 10)
+                                                : messages;
+                                        });
+                                        setLoadingOldMessages(false);
+                                    }}
+                                >
+                                    Load Older Messages
+                                </button>
+                            )
                         ) : null}
                         {messages.map((message) => {
                             return (
@@ -134,6 +147,35 @@ export default ({ channelId }: props) => {
                                 </div>
                             );
                         })}
+                        {isLive ? null : (
+                            <div>
+                                <div className={styles.warning}>
+                                    You are viewing message history
+                                </div>
+                                <button
+                                    className={styles.button}
+                                    onClick={async () => {
+                                        if (
+                                            !channelId ||
+                                            user == "known" ||
+                                            user == "unknown"
+                                        )
+                                            return;
+                                        setLoading(true);
+                                        setIsLive(true);
+                                        await fetchMessages(
+                                            setMessages,
+                                            channelId,
+                                            user,
+                                            setLoading,
+                                            setLastMessage
+                                        );
+                                    }}
+                                >
+                                    Return to live view
+                                </button>
+                            </div>
+                        )}
                         <div ref={end} />
                     </div>
                     <MessageBox
@@ -141,6 +183,7 @@ export default ({ channelId }: props) => {
                         setMessages={setMessages}
                         setSettings={setSettings}
                         setScroll={setScroll}
+                        isLive={isLive}
                     />
                 </>
             )}
