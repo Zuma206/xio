@@ -22,6 +22,15 @@ export default ({
     const [message, setMessage] = useState("");
     const [displayError] = useError("Uh Oh!");
 
+    function deleteClientMessage(messageClientKey: string) {
+        setMessages((messages) => {
+            if (!messages) return messages;
+            return messages.filter((message) => {
+                return message.clientKey != messageClientKey;
+            });
+        });
+    }
+
     return (
         <div className={styles.messageBox}>
             <form
@@ -49,6 +58,7 @@ export default ({
                         await user.googleUser.getIdToken()
                     );
                     if (res.error) {
+                        deleteClientMessage(clientKey);
                         displayError({
                             name: res.error.response,
                             code: res.error.message,
@@ -64,6 +74,8 @@ export default ({
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     disabled={!isLive}
+                    minLength={1}
+                    maxLength={280}
                 />
             </form>
             <div className={styles.buttons}>

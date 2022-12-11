@@ -27,7 +27,7 @@ export default ({ loading, setLoading, fetchChannels }: props) => {
             displayError({
                 name: "There was an error joining that channel",
                 message: "",
-                code: "Channel doesn't exist",
+                code: "That channel doesn't exist, is full, or has you blacklisted",
             });
         }
         setLoading(false);

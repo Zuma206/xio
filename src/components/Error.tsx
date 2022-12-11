@@ -5,8 +5,8 @@ export default () => {
     const [, closeError, errorData] = useError("");
 
     return errorData ? (
-        <div className={styles.container}>
-            <div className={styles.error}>
+        <div className={styles.container} onClick={closeError}>
+            <div className={styles.error} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.message}>
                     <div className={styles.title}>{errorData.title}</div>
                     <div>
@@ -14,12 +14,7 @@ export default () => {
                     </div>
                 </div>
                 <div>
-                    <button
-                        className={styles.button}
-                        onClick={() => {
-                            closeError();
-                        }}
-                    >
+                    <button className={styles.button} onClick={closeError}>
                         Close
                     </button>
                 </div>
