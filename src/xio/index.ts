@@ -7,6 +7,7 @@ export * from "./channelDB";
 export * from "./fetchMessages";
 export * from "./api";
 export * from "./pusher";
+export * from "./messageParser";
 
 export const getGravatar = (email: string) => {
     const hash = md5(email);

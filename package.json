@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "date-fns": "^2.29.3",
+    "emoji-toolkit": "^7.0.0",
     "firebase": "^9.13.0",
     "md5": "^2.3.0",
+    "node-emoji": "^1.11.0",
     "pusher-js": "^7.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@types/md5": "^2.3.2",
+    "@types/node-emoji": "^1.8.2",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@types/uuid": "^8.3.4",

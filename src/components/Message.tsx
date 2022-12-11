@@ -1,5 +1,5 @@
 import styles from "../styles/Message.module.scss";
-import { MessageResult, UserResult } from "../xio";
+import { MessageResult, parseMessage } from "../xio";
 import formatRelative from "date-fns/formatRelative";
 import Embed from "./Embed";
 import MessageContent from "./MessageContent";
@@ -45,16 +45,11 @@ export default ({ data, useCachedUser }: props) => {
                     </div>
                 </div>
             </div>
-            {data.content
-                .split(" ")
-                .filter(
-                    (part) =>
-                        part.startsWith("https://") ||
-                        part.startsWith("http://")
-                )
-                .map((link, key) => {
-                    return <Embed key={key} src={link} />;
-                })}
+            {parseMessage(data.content)
+                .filter(({ type }) => type == "link")
+                .map(({ value }) => (
+                    <Embed src={value} />
+                ))}
         </>
     );
 };
