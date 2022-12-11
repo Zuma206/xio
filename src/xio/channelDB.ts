@@ -28,14 +28,17 @@ export const getUserChannels = async (authToken: string) => {
 };
 
 export const joinChannel = async (channelId: string, userToken: string) => {
-    await fetchAPI("api/channels/join", userToken, { channelId });
+    const { result } = await fetchAPI("api/channels/join", userToken, {
+        channelId,
+    });
+    return result;
 };
 
 export const createChannel = async (name: string, authToken: string) => {
-    const { result } = await fetchAPI("api/channels/create", authToken, {
+    const { error } = await fetchAPI("api/channels/create", authToken, {
         name,
     });
-    return result;
+    return error;
 };
 
 export const getMessages = async (channelId: string, authToken: string) => {
