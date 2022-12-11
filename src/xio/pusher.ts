@@ -13,7 +13,7 @@ type options = {
     isLive: boolean;
 };
 
-export const connectPusher = ({
+export const connectPusher = async ({
     pusher,
     setPusher,
     channelId,
@@ -22,19 +22,23 @@ export const connectPusher = ({
     setScrollDirection,
     isLive,
 }: options) => {
-    if (!isLive) return;
-
+    if (!isLive || user == "known" || user == "unknown") return;
     if (!pusher) {
         setPusher(
             new Pusher("d2eb302d2ea834126d7a", {
                 cluster: "eu",
+                authEndpoint: "/api/auth",
+                auth: {
+                    headers: {
+                        authorization: await user.googleUser.getIdToken(),
+                    },
+                },
             })
         );
         return;
     }
-
     pusher
-        .subscribe(channelId)
+        .subscribe(`private-${channelId}`)
         .bind("message", (newMessage: MessageResult) => {
             setScrollDirection("down");
             setMessages((messages) => {
@@ -60,13 +64,7 @@ export const connectPusher = ({
             location.reload();
         })
         .bind("kicked", (userId: string) => {
-            if (user == "known" || user == "unknown") return;
             if (userId != user.googleUser.uid) return;
             location.reload();
         });
-
-    return () => {
-        pusher.unbind_all();
-        pusher.unsubscribe(channelId);
-    };
 };

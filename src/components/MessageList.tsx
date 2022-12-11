@@ -56,7 +56,7 @@ export default ({ channelId }: props) => {
 
     useEffect(() => {
         if (!channelId) return;
-        return connectPusher({
+        connectPusher({
             channelId,
             pusher,
             setPusher,
@@ -65,6 +65,10 @@ export default ({ channelId }: props) => {
             setScrollDirection,
             isLive,
         });
+        return () => {
+            pusher?.unbind_all();
+            pusher?.unsubscribe(channelId);
+        };
     }, [channelId, pusher, isLive]);
 
     return messages && !loading && useCachedUser ? (
