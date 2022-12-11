@@ -113,7 +113,6 @@ export default ({ channelId }: props) => {
                                                 lastMessage,
                                                 token
                                             );
-                                        console.log("chuck", messages, last);
                                         setLastMessage(last);
                                         setMessages((messages) => {
                                             return messages
