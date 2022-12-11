@@ -17,10 +17,7 @@ export default () => {
                         Discrimination is prohibited (this includes saying
                         discriminatory words).
                     </li>
-                    <li>
-                        Attempting to bypass limitations, or attempting to
-                        exploit the database
-                    </li>
+                    <li>Attempting to bypass limitations</li>
                     <li>
                         Misusing features to attempt to break other user's
                         experience

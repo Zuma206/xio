@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchAPI } from "./api";
 
 export type UserResult = {
     username: string;
@@ -16,12 +17,8 @@ export const getUserById = async (uid: string, authToken: string) => {
 };
 
 export const createUser = async (username: string, authToken: string) => {
-    await fetch("api/users/activate", {
-        headers: {
-            "X-Token": authToken,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username }),
-        method: "POST",
+    const { error } = await fetchAPI("api/users/activate", authToken, {
+        username,
     });
+    return error;
 };
