@@ -1,5 +1,9 @@
 @import "./Global.scss";
 
+.wrap {
+    word-wrap: anywhere;
+}
+
 .message {
     font-size: 1em;
     padding: 0.5em;
@@ -8,7 +12,6 @@
 
 .messageContent {
     display: flex;
-    align-items: center;
 }
 
 .picture {

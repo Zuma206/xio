@@ -24,13 +24,20 @@ export default ({ channelId }: props) => {
     const [pusher, setPusher] = useState<Pusher | null>(null);
     const [settings, setSettings] = useState(false);
     const end = useRef<HTMLDivElement>(null);
+    const start = useRef<HTMLDivElement>(null);
     const [scroll, setScroll] = useState(true);
     const useCachedUser = useUserCache();
     const [lastMessage, setLastMessage] = useState<string | null>(null);
+    const [scrollDirection, setScrollDirection] = useState<"up" | "down">(
+        "down"
+    );
 
     useEffect(() => {
-        if (!end.current || !scroll) return;
-        end.current.scrollIntoView();
+        if (scrollDirection == "down" && end.current && scroll) {
+            end.current.scrollIntoView();
+        } else if (scrollDirection == "up" && start.current) {
+            start.current.scrollIntoView();
+        }
     }, [messages]);
 
     useEffect(() => {
@@ -53,6 +60,7 @@ export default ({ channelId }: props) => {
             setPusher,
             user,
             setMessages,
+            setScrollDirection,
         });
     }, [channelId, pusher]);
 
@@ -83,6 +91,7 @@ export default ({ channelId }: props) => {
                             <button
                                 className={styles.button}
                                 onClick={async () => {
+                                    console.log("clicked");
                                     if (user == "known" || user == "unknown")
                                         return;
                                     const token =
@@ -93,6 +102,7 @@ export default ({ channelId }: props) => {
                                             lastMessage,
                                             token
                                         );
+                                    console.log("chuck", messages, last);
                                     setLastMessage(last);
                                     setMessages((messages) => {
                                         return messages
@@ -107,9 +117,16 @@ export default ({ channelId }: props) => {
                                 Load More
                             </button>
                         ) : null}
-                        {messages.map((message, key) => {
+                        {messages.map((message) => {
                             return (
-                                <div key={key}>
+                                <div
+                                    key={message.key}
+                                    ref={
+                                        lastMessage == message.key
+                                            ? start
+                                            : undefined
+                                    }
+                                >
                                     <Message
                                         data={message}
                                         useCachedUser={useCachedUser}

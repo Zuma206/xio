@@ -9,6 +9,7 @@ type options = {
     channelId: string;
     setMessages: Dispatch<SetStateAction<MessageResult[] | null>>;
     user: XIOUser | "known" | "unknown";
+    setScrollDirection: Dispatch<SetStateAction<"up" | "down">>;
 };
 
 export const connectPusher = ({
@@ -17,6 +18,7 @@ export const connectPusher = ({
     channelId,
     setMessages,
     user,
+    setScrollDirection,
 }: options) => {
     if (!pusher) {
         setPusher(
@@ -30,6 +32,7 @@ export const connectPusher = ({
     pusher
         .subscribe(channelId)
         .bind("message", (newMessage: MessageResult) => {
+            setScrollDirection("down");
             setMessages((messages) => {
                 if (!messages) return messages;
                 let messageAdded = false;

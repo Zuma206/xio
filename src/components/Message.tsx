@@ -41,7 +41,7 @@ export default ({ data, useCachedUser }: props) => {
                                 {formatRelative(data.timestamp, Date.now())}
                             </span>
                         </div>
-                        <div>
+                        <div className={styles.wrap}>
                             <MessageContent content={data.content} />
                         </div>
                     </div>
