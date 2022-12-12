@@ -1,7 +1,7 @@
 import Pusher from "pusher-js";
 import { Dispatch, SetStateAction } from "react";
 import { XIOUser } from "./authContext";
-import { MessageResult } from "./channelDB";
+import { getPusher, MessageResult } from "./channelDB";
 
 type options = {
     pusher: Pusher | null;
@@ -13,16 +13,18 @@ type options = {
     isLive: boolean;
 };
 
-export const connectPusher = async ({
-    pusher,
-    setPusher,
-    channelId,
-    setMessages,
-    user,
-    setScrollDirection,
-    isLive,
-}: options) => {
+export const connectPusher = async (pusherOptions: options) => {
+    const {
+        pusher,
+        setPusher,
+        channelId,
+        setMessages,
+        user,
+        setScrollDirection,
+        isLive,
+    } = pusherOptions;
     if (!isLive || user == "known" || user == "unknown") return;
+    const authToken = await user.googleUser.getIdToken();
     if (!pusher) {
         setPusher(
             new Pusher("d2eb302d2ea834126d7a", {
@@ -30,15 +32,16 @@ export const connectPusher = async ({
                 authEndpoint: "/api/auth",
                 auth: {
                     headers: {
-                        authorization: await user.googleUser.getIdToken(),
+                        authorization: authToken,
                     },
                 },
             })
         );
         return;
     }
+    const pusherId = await getPusher(channelId, authToken);
     pusher
-        .subscribe(`private-${channelId}`)
+        .subscribe(`private-${channelId}-${pusherId}`)
         .bind("message", (newMessage: MessageResult) => {
             setScrollDirection("down");
             setMessages((messages) => {
@@ -64,7 +67,10 @@ export const connectPusher = async ({
             location.reload();
         })
         .bind("kicked", (userId: string) => {
-            if (userId != user.googleUser.uid) return;
-            location.reload();
+            if (userId != user.googleUser.uid) {
+                connectPusher(pusherOptions);
+            } else {
+                location.reload();
+            }
         });
 };

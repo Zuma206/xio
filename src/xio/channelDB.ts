@@ -62,6 +62,14 @@ export const sendMessage = async (
     return res;
 };
 
+export const getPusher = async (channelId: string, authToken: string) => {
+    const { result } = await fetchAPI(
+        `api/channels/${channelId}/pusher`,
+        authToken
+    );
+    return result;
+};
+
 export const deleteChannel = async (channelId: string, authToken: string) => {
     const { result } = await fetchAPI(
         `api/channels/${channelId}/delete`,
