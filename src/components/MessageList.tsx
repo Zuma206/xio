@@ -11,6 +11,8 @@ import {
     fetchMessages,
     connectPusher,
     getChunk,
+    getPusher,
+    useError,
 } from "../xio";
 
 interface props {
@@ -30,6 +32,7 @@ export default ({ channelId }: props) => {
     const [lastMessage, setLastMessage] = useState<string | null>(null);
     const [isLive, setIsLive] = useState(true);
     const [loadingOldMessages, setLoadingOldMessages] = useState(false);
+    const [displayError] = useError("Uh oh!");
     const [scrollDirection, setScrollDirection] = useState<"up" | "down">(
         "down"
     );
@@ -51,11 +54,27 @@ export default ({ channelId }: props) => {
         )
             return;
 
-        fetchMessages(setMessages, channelId, user, setLoading, setLastMessage);
+        const error = fetchMessages(
+            setMessages,
+            channelId,
+            user,
+            setLoading,
+            setLastMessage
+        );
+        (async () => {
+            const err = await error;
+            if (err) {
+                displayError({
+                    name: "Error fetching messages",
+                    message: "",
+                    code: err.response,
+                });
+            }
+        })();
     }, [channelId]);
 
     useEffect(() => {
-        if (!channelId) return;
+        if (!channelId || user == "known" || user == "unknown") return;
         connectPusher({
             channelId,
             pusher,
@@ -66,8 +85,12 @@ export default ({ channelId }: props) => {
             isLive,
         });
         return () => {
-            pusher?.unbind_all();
-            pusher?.unsubscribe(channelId);
+            (async () => {
+                const authToken = await user.googleUser.getIdToken();
+                const pusherId = await getPusher(channelId, authToken);
+                pusher?.unbind_all();
+                pusher?.unsubscribe(`private-${channelId}-${pusherId}`);
+            })();
         };
     }, [channelId, pusher, isLive]);
 
@@ -103,7 +126,6 @@ export default ({ channelId }: props) => {
                                     onClick={async () => {
                                         setLoadingOldMessages(true);
                                         setIsLive(false);
-                                        console.log("clicked");
                                         if (
                                             user == "known" ||
                                             user == "unknown"
@@ -166,13 +188,20 @@ export default ({ channelId }: props) => {
                                             return;
                                         setLoading(true);
                                         setIsLive(true);
-                                        await fetchMessages(
+                                        const err = await fetchMessages(
                                             setMessages,
                                             channelId,
                                             user,
                                             setLoading,
                                             setLastMessage
                                         );
+                                        if (err) {
+                                            displayError({
+                                                name: "Error fetching messages",
+                                                message: "",
+                                                code: err.response,
+                                            });
+                                        }
                                     }}
                                 >
                                     Return to live view

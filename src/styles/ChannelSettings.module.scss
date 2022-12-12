@@ -3,3 +3,12 @@
 .title {
     font-size: 2em;
 }
+
+.buttons {
+    display: flex;
+}
+
+.danger {
+    composes: button;
+    color: red;
+}

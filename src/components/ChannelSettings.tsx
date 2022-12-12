@@ -5,6 +5,8 @@ import {
     clearChannel,
     deleteChannel,
     getChannelMemberData,
+    leaveServer,
+    useError,
     UserResult,
     useXIOUser,
 } from "../xio";
@@ -24,6 +26,7 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
     const [loading, setLoading] = useState(false);
     const [dangerZone, setDangerZone] = useState(false);
     const [channelData, setChannelData] = useState<ChannelResult | null>(null);
+    const [displayError] = useError("Uh oh!");
 
     useEffect(() => {
         fetchChannelData();
@@ -31,24 +34,59 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
 
     const fetchChannelData = async () => {
         if (user == "known" || user == "unknown") return;
-        const memberData = await getChannelMemberData(
+        const { result: memberData, error } = await getChannelMemberData(
             channelId,
             await user.googleUser.getIdToken()
         );
-        setChannelData(memberData);
+        if (error) {
+            displayError({
+                name: "Error viewing members",
+                message: "",
+                code: error.response,
+            });
+        } else {
+            setChannelData(memberData);
+        }
     };
 
     return (
         <div className={styles.padded}>
             <div>
-                <button
-                    className={styles.button}
-                    onClick={() => {
-                        setSettings(false);
-                    }}
-                >
-                    &lt; Back
-                </button>
+                <div className={styles.buttons}>
+                    <button
+                        className={styles.button}
+                        onClick={() => {
+                            setSettings(false);
+                        }}
+                    >
+                        &lt; Back
+                    </button>
+                    {loading ? null : (
+                        <button
+                            className={styles.danger}
+                            onClick={async () => {
+                                if (user == "known" || user == "unknown")
+                                    return;
+                                setLoading(true);
+                                const token =
+                                    await user.googleUser.getIdToken();
+                                const err = await leaveServer(channelId, token);
+                                if (err) {
+                                    displayError({
+                                        name: "Error leaving channel",
+                                        message: "",
+                                        code: err.response,
+                                    });
+                                } else {
+                                    location.reload();
+                                }
+                                setLoading(false);
+                            }}
+                        >
+                            Leave
+                        </button>
+                    )}
+                </div>
                 <p>Channel ID: {channelId}</p>
                 {channelData && !loading ? (
                     <div>
@@ -80,7 +118,7 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                         ))}
                     </div>
                 ) : (
-                    <div>Loading...</div>
+                    <div className={styles.padded}>Loading...</div>
                 )}
                 <button
                     className={styles.button}
@@ -97,13 +135,23 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                             if (user == "unknown" || user == "known") return;
                             setDeleting("called");
                             setLoading(true);
-                            await deleteChannel(
+                            const err = await deleteChannel(
                                 channelId,
                                 await user.googleUser.getIdToken()
                             );
-                            location.reload();
+                            if (err) {
+                                displayError({
+                                    name: "Error deleting channel",
+                                    message: "",
+                                    code: err.response,
+                                });
+                                setDeleting("uncalled");
+                                setLoading(false);
+                            } else {
+                                location.reload();
+                            }
                         }}
-                        className={styles.button}
+                        className={styles.danger}
                     >
                         Delete Channel
                     </button>
@@ -116,13 +164,22 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                         onClick={async () => {
                             if (user == "unknown" || user == "known") return;
                             setClearing("called");
-                            await clearChannel(
+                            const err = await clearChannel(
                                 channelId,
                                 await user.googleUser.getIdToken()
                             );
-                            setClearing("finished");
+                            if (err) {
+                                displayError({
+                                    name: "Error clearing channel",
+                                    code: err.response,
+                                    message: "",
+                                });
+                                setClearing("uncalled");
+                            } else {
+                                setClearing("finished");
+                            }
                         }}
-                        className={styles.button}
+                        className={styles.danger}
                     >
                         Clear Messages
                     </button>

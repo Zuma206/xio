@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { XIOUser } from "./authContext";
 import { getMessages, MessageResult } from "./channelDB";
-import { CachedUserHook } from "./userCache";
 
 export const fetchMessages = async (
     setMessages: Dispatch<SetStateAction<MessageResult[] | null>>,
@@ -10,11 +9,11 @@ export const fetchMessages = async (
     setLoading: Dispatch<SetStateAction<boolean>>,
     setLastMessage: Dispatch<SetStateAction<string | null>>
 ) => {
-    const { messages, last } = await getMessages(
-        channel,
-        await user.googleUser.getIdToken()
-    );
-    setLastMessage(last);
-    setMessages(messages);
+    const res = await getMessages(channel, await user.googleUser.getIdToken());
+    if (!res.error) {
+        setLastMessage(res.last);
+        setMessages(res.messages);
+    }
     setLoading(false);
+    return res.error;
 };

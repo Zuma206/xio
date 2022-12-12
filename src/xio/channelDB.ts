@@ -42,11 +42,9 @@ export const createChannel = async (name: string, authToken: string) => {
 };
 
 export const getMessages = async (channelId: string, authToken: string) => {
-    const { result }: { result: ChannelMessagesResult } = await fetchAPI(
-        `api/channels/${channelId}`,
-        authToken
-    );
-    return result;
+    const { result, error }: { result: ChannelMessagesResult; error: any } =
+        await fetchAPI(`api/channels/${channelId}`, authToken);
+    return { ...result, error };
 };
 
 export const sendMessage = async (
@@ -71,30 +69,35 @@ export const getPusher = async (channelId: string, authToken: string) => {
 };
 
 export const deleteChannel = async (channelId: string, authToken: string) => {
-    const { result } = await fetchAPI(
+    const { error } = await fetchAPI(
         `api/channels/${channelId}/delete`,
         authToken
     );
-    return result;
+    return error;
 };
 
 export const clearChannel = async (channelId: string, authToken: string) => {
-    const { result } = await fetchAPI(
+    const { error } = await fetchAPI(
         `api/channels/${channelId}/clear`,
         authToken
     );
-    return result;
+    return error;
 };
 
 export const getChannelMemberData = async (
     channelId: string,
     authToken: string
 ) => {
-    const { result } = await fetchAPI(
-        `api/channels/${channelId}/members`,
+    const res = await fetchAPI(`api/channels/${channelId}/members`, authToken);
+    return res;
+};
+
+export const leaveServer = async (channelId: string, authToken: string) => {
+    const { error } = await fetchAPI(
+        `api/channels/${channelId}/leave`,
         authToken
     );
-    return result;
+    return error;
 };
 
 export const blacklistUser = async (
@@ -102,12 +105,12 @@ export const blacklistUser = async (
     channelId: string,
     authToken: string
 ) => {
-    const { result } = await fetchAPI(
+    const { error } = await fetchAPI(
         `api/channels/${channelId}/blacklist`,
         authToken,
         { user: targetUserId }
     );
-    return result;
+    return error;
 };
 
 export const whitelistUser = async (
@@ -115,12 +118,12 @@ export const whitelistUser = async (
     channelId: string,
     authToken: string
 ) => {
-    const { result } = await fetchAPI(
+    const { error } = await fetchAPI(
         `api/channels/${channelId}/whitelist`,
         authToken,
         { user: targetUserId }
     );
-    return result;
+    return error;
 };
 
 export const getChunk = async (

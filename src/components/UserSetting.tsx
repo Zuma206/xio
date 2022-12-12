@@ -1,4 +1,10 @@
-import { blacklistUser, UserResult, useXIOUser, whitelistUser } from "../xio";
+import {
+    blacklistUser,
+    useError,
+    UserResult,
+    useXIOUser,
+    whitelistUser,
+} from "../xio";
 import styles from "../styles/UserSetting.module.scss";
 import { Dispatch, SetStateAction } from "react";
 import { CachedUserHook } from "../xio/userCache";
@@ -22,6 +28,7 @@ export default ({
 }: props) => {
     const [user] = useXIOUser();
     const userData = useCachedUser(member);
+    const [displayError] = useError("Uh oh!");
 
     return (
         <div key={member}>
@@ -32,12 +39,20 @@ export default ({
                     if (user == "known" || user == "unknown") return;
                     setLoading(true);
                     const action = blacklisted ? whitelistUser : blacklistUser;
-                    await action(
+                    const err = await action(
                         member,
                         channelId,
                         await user.googleUser.getIdToken()
                     );
-                    await fetchChannelData();
+                    if (err) {
+                        displayError({
+                            name: "User admin error",
+                            code: err.response,
+                            message: "",
+                        });
+                    } else {
+                        await fetchChannelData();
+                    }
                     setLoading(false);
                 }}
             >
