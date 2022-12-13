@@ -21,7 +21,7 @@
     background-color: $bgBottom;
     list-style: none;
     margin: 0.4em;
-    padding: 0.6em;
+    padding: 0.8em;
     border-radius: 1em;
     cursor: pointer;
     outline: $outline;
@@ -32,7 +32,19 @@
     outline: $outlineActive;
 }
 
-.channelCurrent {
+.selectedOuter {
     composes: channel;
-    color: $xTR;
+    background: linear-gradient(to right, $xTL, $xTR);
+    padding: 2px;
+}
+
+.selectedInner {
+    composes: channel;
+    padding: calc(0.8em - 2px);
+    outline: none;
+    margin: 0px;
+}
+
+.selectedInner:hover {
+    outline: none;
 }

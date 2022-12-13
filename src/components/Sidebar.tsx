@@ -39,14 +39,23 @@ export default ({ setSelected, selected }: props) => {
                 <JoinChannel {...{ loading, setLoading, fetchChannels }} />
                 {channels && !loading ? (
                     channels.map((channel, index) => {
-                        return (
+                        return channel.key == selected ? (
                             <div
                                 key={index}
-                                className={
-                                    channel.key === selected
-                                        ? styles.channelCurrent
-                                        : styles.channel
-                                }
+                                className={styles.selectedOuter}
+                                id={channel.key}
+                                onClick={(e) => {
+                                    setSelected((e.target as HTMLElement).id);
+                                }}
+                            >
+                                <div className={styles.selectedInner}>
+                                    {channel.name}
+                                </div>
+                            </div>
+                        ) : (
+                            <div
+                                key={index}
+                                className={styles.channel}
                                 id={channel.key}
                                 onClick={(e) => {
                                     setSelected((e.target as HTMLElement).id);

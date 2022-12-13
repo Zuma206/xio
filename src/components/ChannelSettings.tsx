@@ -59,7 +59,7 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                             setSettings(false);
                         }}
                     >
-                        &lt; Back
+                        Back
                     </button>
                     {loading ? null : (
                         <button
