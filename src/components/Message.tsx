@@ -37,7 +37,7 @@ export default ({ data, useCachedUser }: props) => {
                             }
                         >
                             {userData?.username ?? ""}{" "}
-                            {userData?.dev ? "🧩 " : null}
+                            {userData?.dev ? "🛠️ " : null}
                             <span className={styles.date}>
                                 {formatRelative(data.timestamp, Date.now())}
                             </span>

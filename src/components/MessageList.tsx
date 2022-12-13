@@ -27,6 +27,7 @@ export default ({ channelId }: props) => {
     const [settings, setSettings] = useState(false);
     const end = useRef<HTMLDivElement>(null);
     const start = useRef<HTMLDivElement>(null);
+    const [startId, setStartId] = useState("");
     const [scroll, setScroll] = useState(true);
     const useCachedUser = useUserCache();
     const [lastMessage, setLastMessage] = useState<string | null>(null);
@@ -38,12 +39,11 @@ export default ({ channelId }: props) => {
     );
 
     useEffect(() => {
-        if (scrollDirection == "down" && end.current && scroll) {
-            end.current.scrollIntoView();
-        } else if (scrollDirection == "up" && start.current) {
-            start.current.scrollIntoView();
-        }
-    }, [messages]);
+        setLoading(true);
+        setScroll(true);
+        setSettings(false);
+        setIsLive(true);
+    }, [channelId]);
 
     useEffect(() => {
         if (
@@ -53,7 +53,6 @@ export default ({ channelId }: props) => {
             !useCachedUser
         )
             return;
-
         const error = fetchMessages(
             setMessages,
             channelId,
@@ -72,6 +71,14 @@ export default ({ channelId }: props) => {
             }
         })();
     }, [channelId]);
+
+    useEffect(() => {
+        if (scrollDirection == "down" && end.current && scroll) {
+            end.current.scrollIntoView();
+        } else if (scrollDirection == "up" && start.current) {
+            start.current.scrollIntoView();
+        }
+    }, [messages]);
 
     useEffect(() => {
         if (!channelId || user == "known" || user == "unknown") return;
@@ -139,13 +146,15 @@ export default ({ channelId }: props) => {
                                                 lastMessage,
                                                 token
                                             );
+                                        setStartId(lastMessage);
                                         setLastMessage(last);
+                                        setScrollDirection("up");
                                         setMessages((messages) => {
                                             return messages
                                                 ? [
                                                       ...newMessages,
                                                       ...messages,
-                                                  ].splice(0, 70)
+                                                  ].splice(0, 40)
                                                 : messages;
                                         });
                                         setLoadingOldMessages(false);
@@ -160,7 +169,7 @@ export default ({ channelId }: props) => {
                                 <div
                                     key={message.key}
                                     ref={
-                                        lastMessage == message.key
+                                        startId == message.key
                                             ? start
                                             : undefined
                                     }
@@ -188,6 +197,7 @@ export default ({ channelId }: props) => {
                                             return;
                                         setLoading(true);
                                         setIsLive(true);
+                                        setScrollDirection("down");
                                         const err = await fetchMessages(
                                             setMessages,
                                             channelId,
