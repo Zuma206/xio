@@ -145,7 +145,7 @@ export default ({ channelId }: props) => {
                                                 ? [
                                                       ...newMessages,
                                                       ...messages,
-                                                  ].splice(0, 10)
+                                                  ].splice(0, 70)
                                                 : messages;
                                         });
                                         setLoadingOldMessages(false);

@@ -1,11 +1,13 @@
 [build]
-    publish = "dist"
-    
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+	publish = "dist"
 
 [[redirects]]
   from = "/api/*"
-  to = "https://api.xio.zuma.eu.org/"
+  to = "https://api.xio.zuma.eu.org/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+	from = "/*"
+	to = "/index.html"
+	status = 200

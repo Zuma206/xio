@@ -49,7 +49,9 @@ export default ({
                     };
                     setScroll(true);
                     setMessages((messages: MessageResult[] | null) => {
-                        return messages ? [...messages, newMessage] : messages;
+                        return messages
+                            ? [...messages, newMessage].splice(0, 70)
+                            : messages;
                     });
                     const res = await sendMessage(
                         channelId,
