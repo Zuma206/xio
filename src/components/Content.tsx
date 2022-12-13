@@ -27,7 +27,7 @@ export default ({ selected }: props) => {
                 <h1>Welcome, {user.username}</h1>
                 <p>
                     You've been signed in successfully, and your account is
-                    fully setup
+                    fully setup.
                 </p>
             </div>
         )

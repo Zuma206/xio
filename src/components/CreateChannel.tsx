@@ -55,7 +55,7 @@ export default ({ loading, setLoading, fetchChannels }: props) => {
                 className={styles.button}
                 onClick={submitForm}
             >
-                + Create a channel
+                + Create Channel
             </button>
         </div>
     );
