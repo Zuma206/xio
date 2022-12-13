@@ -16,6 +16,8 @@ type props = {
     channelId: string;
     fetchChannelData: () => void;
     blacklisted: boolean;
+    showButton: boolean;
+    isOwner: boolean;
 };
 
 export default ({
@@ -25,25 +27,27 @@ export default ({
     channelId,
     fetchChannelData,
     blacklisted,
+    showButton,
+    isOwner,
 }: props) => {
     const [user] = useXIOUser();
     const userData = useCachedUser(member);
     const [displayError] = useError("Uh oh!");
 
     return (
-        <div className={styles.list} key={member}>
-            <div className={styles.user}>
-                <div className={styles.left}>
-                    {userData?.gravatar ? (
-                        <img
-                            className={styles.picture}
-                            src={userData.gravatar}
-                            alt={member}
-                        />
-                    ) : null}
-                    {userData?.username ?? "Loading..."}
-                </div>
-                <div className={styles.right}>
+        <div className={styles.user} key={member}>
+            <div className={styles.left}>
+                {userData?.gravatar ? (
+                    <img
+                        className={styles.picture}
+                        src={userData.gravatar}
+                        alt={member}
+                    />
+                ) : null}
+                {userData?.username ?? "Loading..."} {isOwner ? "👑" : null}
+            </div>
+            <div className={styles.right}>
+                {showButton ? (
                     <button
                         className={styles.button}
                         onClick={async () => {
@@ -71,7 +75,7 @@ export default ({
                     >
                         {blacklisted ? "Whitelist" : "Blacklist"}
                     </button>
-                </div>
+                ) : null}
             </div>
         </div>
     );

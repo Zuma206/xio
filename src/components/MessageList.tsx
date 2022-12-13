@@ -46,6 +46,11 @@ export default ({ channelId }: props) => {
     }, [channelId]);
 
     useEffect(() => {
+        if (settings || !end.current) return;
+        end.current.scrollIntoView();
+    }, [settings]);
+
+    useEffect(() => {
         if (
             !channelId ||
             user == "known" ||

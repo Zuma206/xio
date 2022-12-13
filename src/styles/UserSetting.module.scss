@@ -1,17 +1,14 @@
 @import "./Global.scss";
 
-.list {
-    list-style: none;
-}
-
 .user {
     display: flex;
     align-items: center;
     border-radius: 2em;
     background-color: $bgTop;
-    padding: 0.2em 0.2em 0.2em 1em;
-    margin: 0.2em;
+    padding: 0em 0.2em 0em 0.2em;
+    margin: 0.4em;
     border: 1px solid black;
+    height: 3em;
 }
 
 .left {
