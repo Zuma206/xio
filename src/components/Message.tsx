@@ -4,13 +4,23 @@ import formatRelative from "date-fns/formatRelative";
 import Embed from "./Embed";
 import MessageContent from "./MessageContent";
 import { CachedUserHook } from "../xio/userCache";
+import { RefObject } from "react";
 
 interface props {
     data: MessageResult;
     useCachedUser: CachedUserHook;
+    scroll: boolean;
+    scrollDirection: "up" | "down";
+    end: RefObject<HTMLDivElement>;
 }
 
-export default ({ data, useCachedUser }: props) => {
+export default ({
+    data,
+    useCachedUser,
+    scroll,
+    scrollDirection,
+    end,
+}: props) => {
     const userData = useCachedUser(data.user);
 
     return (
@@ -50,7 +60,13 @@ export default ({ data, useCachedUser }: props) => {
                 {parseMessage(data.content)
                     .filter(({ type }) => type == "link")
                     .map(({ value }, index) => (
-                        <Embed src={value} key={index} />
+                        <Embed
+                            src={value}
+                            key={index}
+                            scroll={scroll}
+                            scrollDirection={scrollDirection}
+                            end={end}
+                        />
                     ))}
             </div>
         </>

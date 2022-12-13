@@ -182,6 +182,9 @@ export default ({ channelId }: props) => {
                                     <Message
                                         data={message}
                                         useCachedUser={useCachedUser}
+                                        scroll={scroll}
+                                        scrollDirection={scrollDirection}
+                                        end={end}
                                     />
                                 </div>
                             );

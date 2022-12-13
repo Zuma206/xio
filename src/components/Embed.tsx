@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import styles from "../styles/Embed.module.scss";
 import { useXIOUser, XIOUser } from "../xio";
 import { fetchAPI } from "../xio/api";
 import YoutubePlayer from "./YoutubePlayer";
 
-export default ({ src }: { src: string }) => {
+interface props {
+    src: string;
+    scroll: boolean;
+    scrollDirection: "up" | "down";
+    end: RefObject<HTMLDivElement>;
+}
+
+export default ({ src, scroll, scrollDirection, end }: props) => {
     const [validLink, setValidLink] = useState(false);
     const [hasLoaded, setHasLoaded] = useState(false);
     const [user] = useXIOUser();
@@ -33,12 +40,28 @@ export default ({ src }: { src: string }) => {
             style={{ display: hasLoaded ? "block" : "none" }}
         >
             {isYoutube ? (
-                <YoutubePlayer {...{ src, setHasLoaded }} />
+                <YoutubePlayer
+                    src={src}
+                    scroll={scroll}
+                    setHasLoaded={setHasLoaded}
+                    scrollDirection={scrollDirection}
+                    end={end}
+                />
             ) : (
                 <img
                     className={styles.image}
                     src={src}
-                    onLoad={() => setHasLoaded(true)}
+                    onLoad={() => {
+                        setHasLoaded(true);
+                        if (
+                            !scroll ||
+                            scrollDirection != "down" ||
+                            !end.current
+                        )
+                            return;
+                        const endDiv = end.current;
+                        setTimeout(() => endDiv.scrollIntoView(), 0);
+                    }}
                 />
             )}
         </div>
