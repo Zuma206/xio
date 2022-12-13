@@ -31,7 +31,9 @@ export default () => {
             />
             <p>
                 By activating your account you agree to the{" "}
-                <Link to="agreement">user agreement</Link>
+                <Link to="agreement" className={styles.link}>
+                    user agreement
+                </Link>
             </p>
             <button
                 onClick={async () => {

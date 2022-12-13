@@ -29,7 +29,7 @@ export const connectPusher = async (pusherOptions: options) => {
         setPusher(
             new Pusher("d2eb302d2ea834126d7a", {
                 cluster: "eu",
-                authEndpoint: "/api/auth",
+                authEndpoint: location.origin + "/api/auth",
                 auth: {
                     headers: {
                         authorization: authToken,

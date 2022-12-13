@@ -1,1 +1,26 @@
 @import "./Global.scss";
+
+.list {
+    list-style: none;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    border-radius: 2em;
+    background-color: $bgTop;
+    padding: 0.2em 0.2em 0.2em 1em;
+    margin: 0.2em;
+    border: 1px solid black;
+}
+
+.left {
+    flex: 1;
+    align-items: center;
+    display: flex;
+}
+
+.right {
+    composes: left;
+    justify-content: right;
+}

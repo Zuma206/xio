@@ -31,33 +31,48 @@ export default ({
     const [displayError] = useError("Uh oh!");
 
     return (
-        <div key={member}>
-            {member} - {userData?.username ?? "Loading..."} -{" "}
-            <button
-                className={styles.button}
-                onClick={async () => {
-                    if (user == "known" || user == "unknown") return;
-                    setLoading(true);
-                    const action = blacklisted ? whitelistUser : blacklistUser;
-                    const err = await action(
-                        member,
-                        channelId,
-                        await user.googleUser.getIdToken()
-                    );
-                    if (err) {
-                        displayError({
-                            name: "User admin error",
-                            code: err.response,
-                            message: "",
-                        });
-                    } else {
-                        await fetchChannelData();
-                    }
-                    setLoading(false);
-                }}
-            >
-                {blacklisted ? "Whitelist" : "Blacklist"}
-            </button>
+        <div className={styles.list} key={member}>
+            <div className={styles.user}>
+                <div className={styles.left}>
+                    {userData?.gravatar ? (
+                        <img
+                            className={styles.picture}
+                            src={userData.gravatar}
+                            alt={member}
+                        />
+                    ) : null}
+                    {userData?.username ?? "Loading..."}
+                </div>
+                <div className={styles.right}>
+                    <button
+                        className={styles.button}
+                        onClick={async () => {
+                            if (user == "known" || user == "unknown") return;
+                            setLoading(true);
+                            const action = blacklisted
+                                ? whitelistUser
+                                : blacklistUser;
+                            const err = await action(
+                                member,
+                                channelId,
+                                await user.googleUser.getIdToken()
+                            );
+                            if (err) {
+                                displayError({
+                                    name: "User admin error",
+                                    code: err.response,
+                                    message: "",
+                                });
+                            } else {
+                                await fetchChannelData();
+                            }
+                            setLoading(false);
+                        }}
+                    >
+                        {blacklisted ? "Whitelist" : "Blacklist"}
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

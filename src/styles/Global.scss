@@ -11,6 +11,16 @@ $xTR: #ff7f00ff;
 $xBL: #d06a0bff;
 $xBR: #ffc001ff;
 $error: #ff4646;
+$heightAfterNavbar: calc(100vh - 4em - 2.5em);
+
+.picture {
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 100%;
+    outline: $outline;
+    margin-right: 0.6em;
+    object-fit: cover;
+}
 
 *::-webkit-scrollbar {
     display: none;
@@ -19,6 +29,10 @@ $error: #ff4646;
 * {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.link {
+    color: #0066cc;
 }
 
 .button {

@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "../styles/ChannelSettings.module.scss";
 import {
     ChannelResult,
@@ -50,7 +51,7 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
     };
 
     return (
-        <div className={styles.padded}>
+        <div className={styles.container}>
             <div>
                 <div className={styles.buttons}>
                     <button
@@ -87,7 +88,87 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                         </button>
                     )}
                 </div>
-                <p>Channel ID: {channelId}</p>
+                <p>
+                    <b>Invite Link:</b>{" "}
+                    <Link to={`/join/${channelId}`} className={styles.link}>
+                        {location.origin}/join/{channelId}
+                    </Link>
+                </p>
+                <p>
+                    <b>Channel ID:</b> {channelId}
+                </p>
+                <hr />
+                <button
+                    className={styles.button}
+                    onClick={() => {
+                        setDangerZone((d) => !d);
+                    }}
+                >
+                    I {dangerZone ? "don't want" : "want"} to delete content
+                </button>
+                <div>
+                    {deleting == "uncalled" ? (
+                        <button
+                            disabled={!dangerZone}
+                            onClick={async () => {
+                                if (user == "unknown" || user == "known")
+                                    return;
+                                setDeleting("called");
+                                setLoading(true);
+                                const err = await deleteChannel(
+                                    channelId,
+                                    await user.googleUser.getIdToken()
+                                );
+                                if (err) {
+                                    displayError({
+                                        name: "Error deleting channel",
+                                        message: "",
+                                        code: err.response,
+                                    });
+                                    setDeleting("uncalled");
+                                    setLoading(false);
+                                } else {
+                                    location.reload();
+                                }
+                            }}
+                            className={styles.danger}
+                        >
+                            Delete Channel
+                        </button>
+                    ) : deleting == "called" ? (
+                        <div>Deleting...</div>
+                    ) : null}
+                    {clearing == "uncalled" && deleting == "uncalled" ? (
+                        <button
+                            disabled={!dangerZone}
+                            onClick={async () => {
+                                if (user == "unknown" || user == "known")
+                                    return;
+                                setClearing("called");
+                                const err = await clearChannel(
+                                    channelId,
+                                    await user.googleUser.getIdToken()
+                                );
+                                if (err) {
+                                    displayError({
+                                        name: "Error clearing channel",
+                                        code: err.response,
+                                        message: "",
+                                    });
+                                    setClearing("uncalled");
+                                } else {
+                                    setClearing("finished");
+                                }
+                            }}
+                            className={styles.danger}
+                        >
+                            Delete Messages
+                        </button>
+                    ) : clearing == "called" ? (
+                        <div>Clearing...</div>
+                    ) : null}
+                </div>
+                <hr />
                 {channelData && !loading ? (
                     <div>
                         {channelData.members.map((member) => (
@@ -120,72 +201,6 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                 ) : (
                     <div className={styles.padded}>Loading...</div>
                 )}
-                <button
-                    className={styles.button}
-                    onClick={() => {
-                        setDangerZone((d) => !d);
-                    }}
-                >
-                    Toggle Danger Buttons
-                </button>
-                {deleting == "uncalled" ? (
-                    <button
-                        disabled={!dangerZone}
-                        onClick={async () => {
-                            if (user == "unknown" || user == "known") return;
-                            setDeleting("called");
-                            setLoading(true);
-                            const err = await deleteChannel(
-                                channelId,
-                                await user.googleUser.getIdToken()
-                            );
-                            if (err) {
-                                displayError({
-                                    name: "Error deleting channel",
-                                    message: "",
-                                    code: err.response,
-                                });
-                                setDeleting("uncalled");
-                                setLoading(false);
-                            } else {
-                                location.reload();
-                            }
-                        }}
-                        className={styles.danger}
-                    >
-                        Delete Channel
-                    </button>
-                ) : deleting == "called" ? (
-                    <div>Deleting...</div>
-                ) : null}
-                {clearing == "uncalled" && deleting == "uncalled" ? (
-                    <button
-                        disabled={!dangerZone}
-                        onClick={async () => {
-                            if (user == "unknown" || user == "known") return;
-                            setClearing("called");
-                            const err = await clearChannel(
-                                channelId,
-                                await user.googleUser.getIdToken()
-                            );
-                            if (err) {
-                                displayError({
-                                    name: "Error clearing channel",
-                                    code: err.response,
-                                    message: "",
-                                });
-                                setClearing("uncalled");
-                            } else {
-                                setClearing("finished");
-                            }
-                        }}
-                        className={styles.danger}
-                    >
-                        Clear Messages
-                    </button>
-                ) : clearing == "called" ? (
-                    <div>Clearing...</div>
-                ) : null}
             </div>
         </div>
     );

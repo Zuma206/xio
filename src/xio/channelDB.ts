@@ -23,27 +23,41 @@ export type ChannelMessagesResult = {
 };
 
 export const getUserChannels = async (authToken: string) => {
-    const { result } = await fetchAPI("api/channels", authToken);
+    const { result } = await fetchAPI(
+        location.origin + "/api/channels",
+        authToken
+    );
     return result as ChannelResult[];
 };
 
 export const joinChannel = async (channelId: string, userToken: string) => {
-    const { result } = await fetchAPI("api/channels/join", userToken, {
-        channelId,
-    });
+    const { result } = await fetchAPI(
+        location.origin + "/api/channels/join",
+        userToken,
+        {
+            channelId,
+        }
+    );
     return result;
 };
 
 export const createChannel = async (name: string, authToken: string) => {
-    const { error } = await fetchAPI("api/channels/create", authToken, {
-        name,
-    });
+    const { error } = await fetchAPI(
+        location.origin + "/api/channels/create",
+        authToken,
+        {
+            name,
+        }
+    );
     return error;
 };
 
 export const getMessages = async (channelId: string, authToken: string) => {
     const { result, error }: { result: ChannelMessagesResult; error: any } =
-        await fetchAPI(`api/channels/${channelId}`, authToken);
+        await fetchAPI(
+            location.origin + `/api/channels/${channelId}`,
+            authToken
+        );
     return { ...result, error };
 };
 
@@ -53,16 +67,20 @@ export const sendMessage = async (
     clientKey: string,
     authToken: string
 ) => {
-    const res = await fetchAPI(`api/channels/${channel}/message`, authToken, {
-        content,
-        clientKey,
-    });
+    const res = await fetchAPI(
+        location.origin + `/api/channels/${channel}/message`,
+        authToken,
+        {
+            content,
+            clientKey,
+        }
+    );
     return res;
 };
 
 export const getPusher = async (channelId: string, authToken: string) => {
     const { result } = await fetchAPI(
-        `api/channels/${channelId}/pusher`,
+        location.origin + `/api/channels/${channelId}/pusher`,
         authToken
     );
     return result;
@@ -70,15 +88,29 @@ export const getPusher = async (channelId: string, authToken: string) => {
 
 export const deleteChannel = async (channelId: string, authToken: string) => {
     const { error } = await fetchAPI(
-        `api/channels/${channelId}/delete`,
+        location.origin + `/api/channels/${channelId}/delete`,
         authToken
     );
     return error;
 };
 
+export const getChannelDetails = async (
+    channelId: string,
+    authToken: string
+) => {
+    const { result } = await fetchAPI(
+        location.origin + `/api/channels/${channelId}/data`,
+        authToken
+    );
+    if (result) {
+        return result as ChannelResult;
+    }
+    return result;
+};
+
 export const clearChannel = async (channelId: string, authToken: string) => {
     const { error } = await fetchAPI(
-        `api/channels/${channelId}/clear`,
+        location.origin + `/api/channels/${channelId}/clear`,
         authToken
     );
     return error;
@@ -94,7 +126,7 @@ export const getChannelMemberData = async (
 
 export const leaveServer = async (channelId: string, authToken: string) => {
     const { error } = await fetchAPI(
-        `api/channels/${channelId}/leave`,
+        location.origin + `/api/channels/${channelId}/leave`,
         authToken
     );
     return error;
@@ -106,7 +138,7 @@ export const blacklistUser = async (
     authToken: string
 ) => {
     const { error } = await fetchAPI(
-        `api/channels/${channelId}/blacklist`,
+        location.origin + `/api/channels/${channelId}/blacklist`,
         authToken,
         { user: targetUserId }
     );
@@ -119,7 +151,7 @@ export const whitelistUser = async (
     authToken: string
 ) => {
     const { error } = await fetchAPI(
-        `api/channels/${channelId}/whitelist`,
+        location.origin + `/api/channels/${channelId}/whitelist`,
         authToken,
         { user: targetUserId }
     );
@@ -132,7 +164,7 @@ export const getChunk = async (
     authToken: string
 ) => {
     const { result }: { result: ChannelMessagesResult } = await fetchAPI(
-        `api/channels/${channelId}/${messageId}`,
+        location.origin + `/api/channels/${channelId}/${messageId}`,
         authToken
     );
     return result;

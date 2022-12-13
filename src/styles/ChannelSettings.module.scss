@@ -12,3 +12,9 @@
     composes: button;
     color: red;
 }
+
+.container {
+    composes: padded;
+    height: $heightAfterNavbar;
+    overflow-y: scroll;
+}
