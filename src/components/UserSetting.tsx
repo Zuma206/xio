@@ -44,7 +44,12 @@ export default ({
                         alt={member}
                     />
                 ) : null}
-                {userData?.username ?? "Loading..."} {isOwner ? "👑" : null}
+                {blacklisted ? (
+                    <s>{userData?.username ?? "Loading..."}</s>
+                ) : (
+                    userData?.username ?? "Loading..."
+                )}{" "}
+                {isOwner ? "👑" : null}
             </div>
             <div className={styles.right}>
                 {showButton ? (
