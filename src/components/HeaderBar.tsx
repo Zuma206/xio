@@ -1,5 +1,5 @@
 import styles from "../styles/HeaderBar.module.scss";
-import logo from "../assets/xlogo.svg";
+import logo from "../assets/new.svg";
 import UserProfile from "./UserProfile";
 
 interface props extends React.PropsWithChildren {
