@@ -30,7 +30,9 @@ export default ({
             <div
                 className={
                     data.clientSide
-                        ? styles.clientMessage
+                        ? subMessage
+                            ? styles.clientSubMessage
+                            : styles.clientMessage
                         : subMessage
                         ? styles.subMessage
                         : styles.message
