@@ -4,15 +4,19 @@
     padding: 1em;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    height: $heightAfterNavbar;
 
     h1 {
         margin: 0px;
     }
 }
 
+.divider {
+    width: 90%;
+    margin: 1em;
+}
+
 .channels {
-    padding: 1em;
     flex: 1;
     overflow-y: scroll;
 }

@@ -3,6 +3,7 @@ import styles from "../styles/Sidebar.module.scss";
 import { getUserChannels, useXIOUser, ChannelResult, XIOUser } from "../xio";
 import CreateChannel from "./CreateChannel";
 import JoinChannel from "./JoinChannel";
+import sortByProperty, { SortDirections } from "property-sort";
 
 interface props {
     setSelected: Dispatch<SetStateAction<null | string>>;
@@ -18,7 +19,12 @@ export default ({ setSelected, selected }: props) => {
         const channelsData = await getUserChannels(
             await userData.googleUser.getIdToken()
         );
-        setChannels(channelsData);
+        setChannels(
+            sortByProperty(channelsData, {
+                sortKey: ["name"],
+                direction: SortDirections.Ascending,
+            })
+        );
     };
 
     useEffect(() => {
@@ -35,8 +41,10 @@ export default ({ setSelected, selected }: props) => {
         <div className={styles.padded}>Loading...</div>
     ) : user == "known" ? null : user.activated == "activated" ? (
         <div className={styles.sidebar}>
+            <JoinChannel {...{ loading, setLoading, fetchChannels }} />
+            <CreateChannel {...{ loading, setLoading, fetchChannels }} />
+            <hr className={styles.divider} />
             <div className={styles.channels}>
-                <JoinChannel {...{ loading, setLoading, fetchChannels }} />
                 {channels && !loading ? (
                     channels.map((channel, index) => {
                         return channel.key == selected ? (
@@ -69,7 +77,6 @@ export default ({ setSelected, selected }: props) => {
                     <div>Loading...</div>
                 )}
             </div>
-            <CreateChannel {...{ loading, setLoading, fetchChannels }} />
         </div>
     ) : null;
 };

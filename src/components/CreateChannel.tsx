@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { createChannel, useError, useXIOUser, XIOUser } from "../xio";
-import styles from "../styles/CreateChannel.module.scss";
+import styles from "../styles/JoinChannel.module.scss";
 
 type props = {
     loading: boolean;
@@ -40,23 +40,21 @@ export default ({ loading, setLoading, fetchChannels }: props) => {
                     submitForm();
                 }}
             >
-                <input
-                    disabled={loading}
-                    type="text"
-                    className={styles.text}
-                    placeholder="Channel Name"
-                    value={channelName}
-                    onChange={(e) => setChannelName(e.target.value)}
-                    maxLength={16}
-                />
+                <div className={styles.container}>
+                    <input
+                        disabled={loading}
+                        type="text"
+                        className={styles.input}
+                        placeholder="Channel Name"
+                        value={channelName}
+                        onChange={(e) => setChannelName(e.target.value)}
+                        maxLength={16}
+                    />
+                    <button disabled={loading} className={styles.button}>
+                        Create
+                    </button>
+                </div>
             </form>
-            <button
-                disabled={loading}
-                className={styles.button}
-                onClick={submitForm}
-            >
-                + Create Channel
-            </button>
         </div>
     );
 };

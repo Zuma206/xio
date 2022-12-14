@@ -41,23 +41,21 @@ export default ({ loading, setLoading, fetchChannels }: props) => {
                     submitForm();
                 }}
             >
-                <input
-                    disabled={loading}
-                    type="text"
-                    className={styles.text}
-                    placeholder="Channel ID"
-                    value={channelId}
-                    onChange={(e) => setChannelId(e.target.value)}
-                    maxLength={16}
-                />
+                <div className={styles.container}>
+                    <input
+                        disabled={loading}
+                        type="text"
+                        className={styles.input}
+                        placeholder="Channel ID"
+                        value={channelId}
+                        onChange={(e) => setChannelId(e.target.value)}
+                        maxLength={16}
+                    />
+                    <button disabled={loading} className={styles.button}>
+                        Join
+                    </button>
+                </div>
             </form>
-            <button
-                disabled={loading}
-                className={styles.button}
-                onClick={submitForm}
-            >
-                + Join Channel
-            </button>
         </div>
     );
 };
