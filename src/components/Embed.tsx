@@ -50,7 +50,9 @@ export default ({ src, scroll, scrollDirection, end }: props) => {
             ) : (
                 <img
                     className={styles.image}
-                    src={src}
+                    src={`https://external-content.duckduckgo.com/iu/?u=${encodeURIComponent(
+                        src
+                    )}`}
                     onLoad={() => {
                         setHasLoaded(true);
                         if (
