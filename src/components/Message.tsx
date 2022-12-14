@@ -27,9 +27,7 @@ export default ({
         <>
             <div
                 className={
-                    data.clientSide === true
-                        ? styles.clientMessage
-                        : styles.message
+                    data.clientSide ? styles.clientMessage : styles.message
                 }
             >
                 <div className={styles.messageContent}>

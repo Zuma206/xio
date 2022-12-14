@@ -58,10 +58,10 @@ export default ({ setSelected, selected }: props) => {
         <div className={styles.sidebar}>
             <div>
                 <button
-                    className={styles.button}
+                    className={styles.arrow}
                     onClick={() => setShowConfig((s) => !s)}
                 >
-                    {showConfig ? "▲" : "▼"}
+                    {showConfig ? "▶" : "▼"}
                 </button>
             </div>
 
