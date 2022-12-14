@@ -57,7 +57,7 @@ export const connectPusher = async (pusherOptions: options) => {
                 if (!messageAdded) {
                     messages.push(newMessage);
                 }
-                return messages.splice(0, 70);
+                return messages.slice(messages.length - 70);
             });
         })
         .bind("clear", () => {

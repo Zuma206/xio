@@ -44,9 +44,9 @@ export default ({
                     setLastMessage(last);
                     setDirection("up");
                     setMessages((messages) => {
-                        return messages
-                            ? [...newMessages, ...messages].splice(0, 40)
-                            : messages;
+                        if (!messages) return messages;
+                        const newMessageSet = [...newMessages, ...messages];
+                        return newMessageSet.splice(0, 70);
                     });
                     setLoading(false);
                 }}
