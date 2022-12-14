@@ -8,6 +8,7 @@ export * from "./fetchMessages";
 export * from "./api";
 export * from "./pusher";
 export * from "./messageParser";
+export * from "./useAutoScroll";
 
 export const getGravatar = (email: string) => {
     const hash = md5(email);

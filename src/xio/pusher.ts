@@ -9,7 +9,7 @@ type options = {
     channelId: string;
     setMessages: Dispatch<SetStateAction<MessageResult[] | null>>;
     user: XIOUser | "known" | "unknown";
-    setScrollDirection: Dispatch<SetStateAction<"up" | "down">>;
+    setDirection: Dispatch<SetStateAction<"up" | "down">>;
     isLive: boolean;
 };
 
@@ -20,7 +20,7 @@ export const connectPusher = async (pusherOptions: options) => {
         channelId,
         setMessages,
         user,
-        setScrollDirection,
+        setDirection: setScrollDirection,
         isLive,
     } = pusherOptions;
     if (!isLive || user == "known" || user == "unknown") return;

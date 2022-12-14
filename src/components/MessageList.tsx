@@ -13,7 +13,9 @@ import {
     getChunk,
     getPusher,
     useError,
+    useAutoScroll,
 } from "../xio";
+import LoadOldMessages from "./LoadOldMessages";
 
 interface props {
     channelId: string | null;
@@ -25,30 +27,23 @@ export default ({ channelId }: props) => {
     const [loading, setLoading] = useState(false);
     const [pusher, setPusher] = useState<Pusher | null>(null);
     const [settings, setSettings] = useState(false);
-    const end = useRef<HTMLDivElement>(null);
-    const start = useRef<HTMLDivElement>(null);
     const [startId, setStartId] = useState("");
-    const [scroll, setScroll] = useState(true);
     const useCachedUser = useUserCache();
     const [lastMessage, setLastMessage] = useState<string | null>(null);
     const [isLive, setIsLive] = useState(true);
-    const [loadingOldMessages, setLoadingOldMessages] = useState(false);
     const [displayError] = useError("Uh oh!");
-    const [scrollDirection, setScrollDirection] = useState<"up" | "down">(
-        "down"
-    );
+    const { setDirection, setScroll, scroll, start, end, direction } =
+        useAutoScroll({
+            channelId,
+            settings,
+            messages,
+        });
 
     useEffect(() => {
         setLoading(true);
-        setScroll(true);
         setSettings(false);
         setIsLive(true);
     }, [channelId]);
-
-    useEffect(() => {
-        if (settings || !end.current) return;
-        end.current.scrollIntoView();
-    }, [settings]);
 
     useEffect(() => {
         if (
@@ -78,14 +73,6 @@ export default ({ channelId }: props) => {
     }, [channelId]);
 
     useEffect(() => {
-        if (scrollDirection == "down" && end.current && scroll) {
-            end.current.scrollIntoView();
-        } else if (scrollDirection == "up" && start.current) {
-            start.current.scrollIntoView();
-        }
-    }, [messages]);
-
-    useEffect(() => {
         if (!channelId || user == "known" || user == "unknown") return;
         connectPusher({
             channelId,
@@ -93,7 +80,7 @@ export default ({ channelId }: props) => {
             setPusher,
             user,
             setMessages,
-            setScrollDirection,
+            setDirection,
             isLive,
         });
         return () => {
@@ -129,46 +116,15 @@ export default ({ channelId }: props) => {
                             }
                         }}
                     >
-                        {lastMessage ? (
-                            loadingOldMessages ? (
-                                <div className={styles.padded}>Loading...</div>
-                            ) : (
-                                <button
-                                    className={styles.button}
-                                    onClick={async () => {
-                                        setLoadingOldMessages(true);
-                                        setIsLive(false);
-                                        if (
-                                            user == "known" ||
-                                            user == "unknown"
-                                        )
-                                            return;
-                                        const token =
-                                            await user.googleUser.getIdToken();
-                                        const { messages: newMessages, last } =
-                                            await getChunk(
-                                                channelId ?? "",
-                                                lastMessage,
-                                                token
-                                            );
-                                        setStartId(lastMessage);
-                                        setLastMessage(last);
-                                        setScrollDirection("up");
-                                        setMessages((messages) => {
-                                            return messages
-                                                ? [
-                                                      ...newMessages,
-                                                      ...messages,
-                                                  ].splice(0, 40)
-                                                : messages;
-                                        });
-                                        setLoadingOldMessages(false);
-                                    }}
-                                >
-                                    Load Older Messages
-                                </button>
-                            )
-                        ) : null}
+                        <LoadOldMessages
+                            lastMessage={lastMessage}
+                            setIsLive={setIsLive}
+                            channelId={channelId}
+                            setStartId={setStartId}
+                            setDirection={setDirection}
+                            setLastMessage={setLastMessage}
+                            setMessages={setMessages}
+                        />
                         {messages.map((message) => {
                             return (
                                 <div
@@ -183,7 +139,7 @@ export default ({ channelId }: props) => {
                                         data={message}
                                         useCachedUser={useCachedUser}
                                         scroll={scroll}
-                                        scrollDirection={scrollDirection}
+                                        scrollDirection={direction}
                                         end={end}
                                     />
                                 </div>
@@ -205,7 +161,7 @@ export default ({ channelId }: props) => {
                                             return;
                                         setLoading(true);
                                         setIsLive(true);
-                                        setScrollDirection("down");
+                                        setDirection("down");
                                         const err = await fetchMessages(
                                             setMessages,
                                             channelId,
