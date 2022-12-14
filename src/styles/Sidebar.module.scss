@@ -11,9 +11,12 @@
     }
 }
 
-.divider {
-    width: 90%;
-    margin: 1em;
+.box {
+    background-color: $bgBottom;
+    margin-bottom: 1em;
+    padding: 1em;
+    border-radius: 1em;
+    border: 1px solid black;
 }
 
 .channels {

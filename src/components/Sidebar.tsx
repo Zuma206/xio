@@ -15,6 +15,10 @@ export default ({ setSelected, selected }: props) => {
     const [user] = useXIOUser();
     const [channels, setChannels] = useState<ChannelResult[] | null>(null);
     const [loading, setLoading] = useState(false);
+    const storedShowConfig = JSON.parse(
+        localStorage.getItem("showConfig") ?? "true"
+    );
+    const [showConfig, setShowConfig] = useState<boolean>(storedShowConfig);
 
     const fetchChannels = async (userData: XIOUser) => {
         const channelsData = await getUserChannels(
@@ -26,6 +30,7 @@ export default ({ setSelected, selected }: props) => {
                 direction: SortDirections.Ascending,
             })
         );
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -35,8 +40,13 @@ export default ({ setSelected, selected }: props) => {
             user.activated != "activated"
         )
             return;
+        setLoading(true);
         fetchChannels(user);
     }, [user]);
+
+    useEffect(() => {
+        localStorage.setItem("showConfig", JSON.stringify(showConfig));
+    }, [showConfig]);
 
     return user == "unknown" ? (
         <div className={styles.padded}>Loading...</div>
@@ -46,9 +56,30 @@ export default ({ setSelected, selected }: props) => {
         </div>
     ) : user.activated == "activated" ? (
         <div className={styles.sidebar}>
-            <JoinChannel {...{ loading, setLoading, fetchChannels }} />
-            <CreateChannel {...{ loading, setLoading, fetchChannels }} />
-            <hr className={styles.divider} />
+            <div>
+                <button
+                    className={styles.button}
+                    onClick={() => setShowConfig((s) => !s)}
+                >
+                    {showConfig ? "▲" : "▼"}
+                </button>
+            </div>
+
+            {showConfig ? (
+                <div className={styles.box}>
+                    <JoinChannel
+                        loading={loading}
+                        setLoading={setLoading}
+                        fetchChannels={fetchChannels}
+                    />
+                    <CreateChannel
+                        loading={loading}
+                        setLoading={setLoading}
+                        fetchChannels={fetchChannels}
+                    />
+                </div>
+            ) : null}
+
             <div className={styles.channels}>
                 {channels && !loading ? (
                     channels.map((channel, index) => {
