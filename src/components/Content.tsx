@@ -1,8 +1,8 @@
 import { useXIOUser } from "../xio";
 import AccountSetup from "./AccountSetup";
 import styles from "../styles/Content.module.scss";
-import { useState } from "react";
 import MessageList from "./MessageList";
+import Credits from "./Credits";
 
 interface props {
     selected: string | null;
@@ -15,9 +15,11 @@ export default ({ selected }: props) => {
     return user == "unknown" ? (
         loading
     ) : user == "known" ? (
-        <div className={styles.padded}>
+        <div className={styles.container}>
             <h1>Welcome to XIO</h1>
-            <p>To continue, please sign in</p>
+            <p>Easy to setup, easy to use group chats for all.</p>
+            <p>To get started, sign in with google using the button up top.</p>
+            <Credits />
         </div>
     ) : user.activated == "activated" ? (
         selected ? (
@@ -27,7 +29,7 @@ export default ({ selected }: props) => {
                 <h1>Welcome, {user.username}</h1>
                 <p>
                     You've been signed in successfully, and your account is
-                    fully setup.
+                    fully setup. Start chatting!
                 </p>
             </div>
         )

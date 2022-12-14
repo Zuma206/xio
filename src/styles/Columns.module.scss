@@ -47,9 +47,5 @@ They will be scrolled between using the scroll snap.
     .right {
         flex: none;
         width: 100vw;
-        transform: rotateY(180deg);
-    }
-    .container {
-        transform: rotateY(180deg);
     }
 }

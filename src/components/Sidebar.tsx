@@ -4,6 +4,7 @@ import { getUserChannels, useXIOUser, ChannelResult, XIOUser } from "../xio";
 import CreateChannel from "./CreateChannel";
 import JoinChannel from "./JoinChannel";
 import sortByProperty, { SortDirections } from "property-sort";
+import Credits from "./Credits";
 
 interface props {
     setSelected: Dispatch<SetStateAction<null | string>>;
@@ -39,7 +40,11 @@ export default ({ setSelected, selected }: props) => {
 
     return user == "unknown" ? (
         <div className={styles.padded}>Loading...</div>
-    ) : user == "known" ? null : user.activated == "activated" ? (
+    ) : user == "known" ? (
+        <div className={styles.padded}>
+            Nothing to see here yet, try signing in.
+        </div>
+    ) : user.activated == "activated" ? (
         <div className={styles.sidebar}>
             <JoinChannel {...{ loading, setLoading, fetchChannels }} />
             <CreateChannel {...{ loading, setLoading, fetchChannels }} />
