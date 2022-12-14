@@ -118,7 +118,7 @@ export default ({ channelId }: props) => {
                 <>
                     <div
                         className={styles.messageList}
-                        onScroll={({ currentTarget: list }) => {
+                        onWheel={({ currentTarget: list }) => {
                             if (
                                 list.scrollTop ==
                                 list.scrollHeight - list.offsetHeight
