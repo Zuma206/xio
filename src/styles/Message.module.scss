@@ -6,8 +6,15 @@
 
 .message {
     font-size: 1em;
-    padding: 0.5em;
+    padding: 0.2em 0.2em 0.2em 1em;
     color: $fontDark;
+    margin-top: 0.6em;
+}
+
+.subMessage {
+    composes: message;
+    margin: 0em;
+    padding: 0.2em 0.2em 0.2em 4.1em;
 }
 
 .messageContent {

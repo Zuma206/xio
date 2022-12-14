@@ -12,6 +12,7 @@ interface props {
     scroll: boolean;
     scrollDirection: "up" | "down";
     end: RefObject<HTMLDivElement>;
+    subMessage: boolean;
 }
 
 export default ({
@@ -20,6 +21,7 @@ export default ({
     scroll,
     scrollDirection,
     end,
+    subMessage,
 }: props) => {
     const userData = useCachedUser(data.user);
 
@@ -27,29 +29,37 @@ export default ({
         <>
             <div
                 className={
-                    data.clientSide ? styles.clientMessage : styles.message
+                    data.clientSide
+                        ? styles.clientMessage
+                        : subMessage
+                        ? styles.subMessage
+                        : styles.message
                 }
             >
                 <div className={styles.messageContent}>
-                    <img
-                        src={userData?.gravatar ?? ""}
-                        alt=" "
-                        className={styles.picture}
-                    />
+                    {!subMessage ? (
+                        <img
+                            src={userData?.gravatar ?? ""}
+                            alt=" "
+                            className={styles.picture}
+                        />
+                    ) : null}
                     <div>
-                        <div
-                            className={
-                                data.clientSide === true
-                                    ? undefined
-                                    : styles.username
-                            }
-                        >
-                            {userData?.username ?? ""}{" "}
-                            {userData?.dev ? "🛠️ " : null}
-                            <span className={styles.date}>
-                                {formatRelative(data.timestamp, Date.now())}
-                            </span>
-                        </div>
+                        {!subMessage ? (
+                            <div
+                                className={
+                                    data.clientSide === true
+                                        ? undefined
+                                        : styles.username
+                                }
+                            >
+                                {userData?.username ?? ""}{" "}
+                                {userData?.dev ? "🛠️ " : null}
+                                <span className={styles.date}>
+                                    {formatRelative(data.timestamp, Date.now())}
+                                </span>
+                            </div>
+                        ) : null}
                         <div className={styles.wrap}>
                             <MessageContent content={data.content} />
                         </div>

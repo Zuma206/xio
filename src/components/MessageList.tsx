@@ -125,7 +125,16 @@ export default ({ channelId }: props) => {
                             setLastMessage={setLastMessage}
                             setMessages={setMessages}
                         />
-                        {messages.map((message) => {
+                        {messages.map((message, index) => {
+                            let subMessage = false;
+                            if (index > 0) {
+                                const prev = messages[index - 1];
+                                const userReq = prev.user == message.user;
+                                const timeReq =
+                                    message.timestamp - prev.timestamp <
+                                    10 * 60000;
+                                subMessage = userReq && timeReq;
+                            }
                             return (
                                 <div
                                     key={message.key}
@@ -141,6 +150,7 @@ export default ({ channelId }: props) => {
                                         scroll={scroll}
                                         scrollDirection={direction}
                                         end={end}
+                                        subMessage={subMessage}
                                     />
                                 </div>
                             );
@@ -182,7 +192,7 @@ export default ({ channelId }: props) => {
                                 </button>
                             </div>
                         )}
-                        <div ref={end} />
+                        <div className={styles.end} ref={end} />
                     </div>
                     <MessageBox
                         channelId={channelId ?? ""}
