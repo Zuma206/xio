@@ -11,6 +11,7 @@ type options = {
     user: XIOUser | "known" | "unknown";
     setDirection: Dispatch<SetStateAction<"up" | "down">>;
     isLive: boolean;
+    setIsConnected: Dispatch<SetStateAction<boolean>>;
 };
 
 export const connectPusher = async (pusherOptions: options) => {
@@ -22,6 +23,7 @@ export const connectPusher = async (pusherOptions: options) => {
         user,
         setDirection: setScrollDirection,
         isLive,
+        setIsConnected,
     } = pusherOptions;
     if (!isLive || user == "known" || user == "unknown") return;
     const authToken = await user.googleUser.getIdToken();
@@ -39,6 +41,8 @@ export const connectPusher = async (pusherOptions: options) => {
         );
         return;
     }
+    pusher.connection.bind("connected", () => setIsConnected(true));
+    pusher.connection.bind("error", () => setIsConnected(false));
     const pusherId = await getPusher(channelId, authToken);
     pusher
         .subscribe(`private-${channelId}-${pusherId}`)

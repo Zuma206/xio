@@ -32,6 +32,7 @@ export default ({ channelId }: props) => {
     const [lastMessage, setLastMessage] = useState<string | null>(null);
     const [isLive, setIsLive] = useState(true);
     const [displayError] = useError("Uh oh!");
+    const [isConnected, setIsConnected] = useState(false);
     const { setDirection, setScroll, scroll, start, end, direction } =
         useAutoScroll({
             channelId,
@@ -82,6 +83,7 @@ export default ({ channelId }: props) => {
             setMessages,
             setDirection,
             isLive,
+            setIsConnected,
         });
         return () => {
             (async () => {
@@ -200,6 +202,7 @@ export default ({ channelId }: props) => {
                         setSettings={setSettings}
                         setScroll={setScroll}
                         isLive={isLive}
+                        isConnected={isConnected}
                     />
                 </>
             )}

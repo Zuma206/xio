@@ -9,6 +9,7 @@ type props = {
     setSettings: Dispatch<SetStateAction<boolean>>;
     setScroll: Dispatch<SetStateAction<boolean>>;
     isLive: boolean;
+    isConnected: boolean;
 };
 
 export default ({
@@ -17,6 +18,7 @@ export default ({
     setSettings,
     setScroll,
     isLive,
+    isConnected,
 }: props) => {
     const [user] = useXIOUser();
     const [message, setMessage] = useState("");
@@ -69,13 +71,18 @@ export default ({
                     }
                 }}
             >
+                <div
+                    className={
+                        isConnected ? styles.connected : styles.disconnected
+                    }
+                ></div>
                 <input
                     className={styles.messageText}
                     type="text"
                     placeholder="Type your message here..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    disabled={!isLive}
+                    disabled={!isLive || !isConnected}
                     minLength={1}
                     maxLength={280}
                 />

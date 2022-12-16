@@ -174,7 +174,7 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                             </div>
                         ) : null}
                         <hr />
-                        <h4>{channelData.members.length}/10 Members</h4>
+                        <h4>{channelData.members.length}/20 Members</h4>
                         {channelData && !loading ? (
                             <div>
                                 {channelData.members.map((member) => (
