@@ -9,9 +9,10 @@ interface props {
     scroll: boolean;
     scrollDirection: "up" | "down";
     end: RefObject<HTMLDivElement>;
+    subMessage: boolean;
 }
 
-export default ({ src, scroll, scrollDirection, end }: props) => {
+export default ({ src, scroll, scrollDirection, end, subMessage }: props) => {
     const [validLink, setValidLink] = useState(false);
     const [hasLoaded, setHasLoaded] = useState(false);
     const [user] = useXIOUser();
@@ -46,10 +47,11 @@ export default ({ src, scroll, scrollDirection, end }: props) => {
                     setHasLoaded={setHasLoaded}
                     scrollDirection={scrollDirection}
                     end={end}
+                    subMessage={subMessage}
                 />
             ) : (
                 <img
-                    className={styles.image}
+                    className={subMessage ? styles.subImage : styles.image}
                     src={`https://external-content.duckduckgo.com/iu/?u=${encodeURIComponent(
                         src
                     )}`}

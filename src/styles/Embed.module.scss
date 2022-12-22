@@ -4,13 +4,21 @@
     padding: 0.5em;
 }
 
-.video {
+.video,
+.subVideo {
     border: none;
     width: 26.6666667em;
 }
 
+.subVideo,
+.subImage,
 .video,
 .image {
     margin-left: 2.6em;
     height: 15em;
+}
+
+.subVideo,
+.subImage {
+    margin-left: 0em;
 }

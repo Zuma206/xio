@@ -76,6 +76,7 @@ export default ({
                     .filter(({ type }) => type == "link")
                     .map(({ value }, index) => (
                         <Embed
+                            subMessage={subMessage}
                             src={value}
                             key={index}
                             scroll={scroll}

@@ -7,6 +7,7 @@ interface props {
     scroll: boolean;
     scrollDirection: "up" | "down";
     end: RefObject<HTMLDivElement>;
+    subMessage: boolean;
 }
 
 const YoutubePlayer = ({
@@ -15,6 +16,7 @@ const YoutubePlayer = ({
     scroll,
     scrollDirection,
     end,
+    subMessage,
 }: props) => {
     const link = `https://youtube.com/embed/${src.substring(
         src.length - 11,
@@ -23,7 +25,7 @@ const YoutubePlayer = ({
 
     return (
         <iframe
-            className={styles.video}
+            className={subMessage ? styles.subVideo : styles.video}
             src={link}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
