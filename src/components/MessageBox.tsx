@@ -83,6 +83,16 @@ export default ({
                     minLength={1}
                     maxLength={280}
                 />
+                <span
+                    style={{
+                        color: `rgb(255, ${255 * (1 - message.length / 350)}, ${
+                            255 * (1 - message.length / 350)
+                        })`,
+                        width: "2em",
+                    }}
+                >
+                    {280 - message.length}
+                </span>
             </form>
             <div className={styles.buttons}>
                 <button
