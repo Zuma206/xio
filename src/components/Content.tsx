@@ -1,11 +1,11 @@
-import { useXIOUser } from "../xio";
+import { ChannelResult, useXIOUser } from "../xio";
 import AccountSetup from "./AccountSetup";
 import styles from "../styles/Content.module.scss";
 import MessageList from "./MessageList";
 import Credits from "./Credits";
 
 interface props {
-    selected: string | null;
+    selected: ChannelResult | null;
 }
 
 export default ({ selected }: props) => {
@@ -23,7 +23,7 @@ export default ({ selected }: props) => {
         </div>
     ) : user.activated == "activated" ? (
         selected ? (
-            <MessageList channelId={selected} />
+            <MessageList channelId={selected.key} />
         ) : (
             <div className={styles.padded}>
                 <h1>Welcome, {user.username}</h1>

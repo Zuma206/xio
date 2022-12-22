@@ -7,6 +7,7 @@ import {
     ExtendedError,
     XIOUser,
     UserStatus,
+    ChannelResult,
 } from "../xio";
 import { auth } from "../firebase";
 import Error from "../components/Error";
@@ -17,7 +18,7 @@ export default () => {
     // Create user auth state for auth context
     const authState = useState<XIOUser | UserStatus>("unknown");
     const errorState = useState<ExtendedError | null>(null);
-    const [selected, setSelected] = useState<null | string>(null);
+    const [selected, setSelected] = useState<ChannelResult | null>(null);
 
     useEffect(() => {
         // Register listener to keep auth state up to date

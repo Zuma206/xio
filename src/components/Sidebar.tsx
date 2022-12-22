@@ -4,11 +4,10 @@ import { getUserChannels, useXIOUser, ChannelResult, XIOUser } from "../xio";
 import CreateChannel from "./CreateChannel";
 import JoinChannel from "./JoinChannel";
 import sortByProperty, { SortDirections } from "property-sort";
-import Credits from "./Credits";
 
 interface props {
-    setSelected: Dispatch<SetStateAction<null | string>>;
-    selected: string | null;
+    setSelected: Dispatch<SetStateAction<ChannelResult | null>>;
+    selected: ChannelResult | null;
 }
 
 export default ({ setSelected, selected }: props) => {
@@ -48,6 +47,14 @@ export default ({ setSelected, selected }: props) => {
         localStorage.setItem("showConfig", JSON.stringify(showConfig));
     }, [showConfig]);
 
+    useEffect(() => {
+        if (selected) {
+            document.title = `XIO: ${selected.name}`;
+        } else {
+            document.title = "XIO";
+        }
+    }, [selected]);
+
     return user == "unknown" ? (
         <div className={styles.padded}>Loading...</div>
     ) : user == "known" ? (
@@ -83,29 +90,28 @@ export default ({ setSelected, selected }: props) => {
             <div className={styles.channels}>
                 {channels && !loading ? (
                     channels.map((channel, index) => {
-                        return channel.key == selected ? (
+                        const isSelected = channel.key == selected?.key;
+                        return (
                             <div
                                 key={index}
-                                className={styles.selectedOuter}
-                                id={channel.key}
+                                className={
+                                    isSelected
+                                        ? styles.selectedOuter
+                                        : styles.channel
+                                }
                                 onClick={(e) => {
-                                    setSelected((e.target as HTMLElement).id);
+                                    setSelected(isSelected ? null : channel);
                                 }}
                             >
-                                <div className={styles.selectedInner}>
+                                <div
+                                    className={
+                                        isSelected
+                                            ? styles.selectedInner
+                                            : undefined
+                                    }
+                                >
                                     {channel.name}
                                 </div>
-                            </div>
-                        ) : (
-                            <div
-                                key={index}
-                                className={styles.channel}
-                                id={channel.key}
-                                onClick={(e) => {
-                                    setSelected((e.target as HTMLElement).id);
-                                }}
-                            >
-                                {channel.name}
                             </div>
                         );
                     })
