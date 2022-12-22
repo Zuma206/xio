@@ -71,7 +71,7 @@ export default ({
                     }
                 }}
             >
-                {isConnected ? "🌐" : "Connecting..."}
+                {isConnected ? null : "Connecting..."}
                 <input
                     className={styles.messageText}
                     type="text"
