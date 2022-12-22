@@ -9,3 +9,17 @@
 .link:hover {
     color: rgb(0, 80, 185);
 }
+
+.twemoji {
+    height: 1.5em;
+}
+
+.bigTwemoji {
+    height: 3em;
+}
+
+.container > div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}

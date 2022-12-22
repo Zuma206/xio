@@ -63,7 +63,12 @@ export default ({
                             </div>
                         ) : null}
                         <div className={styles.wrap}>
-                            <MessageContent content={data.content} />
+                            <MessageContent
+                                content={data.content}
+                                scroll={scroll}
+                                scrollDirection={scrollDirection}
+                                end={end}
+                            />
                         </div>
                     </div>
                 </div>
