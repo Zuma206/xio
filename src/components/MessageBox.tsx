@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import styles from "../styles/MessageBox.module.scss";
 import { MessageResult, sendMessage, useError, useXIOUser } from "../xio";
 import { v4 as uuid } from "uuid";
+import Spinner from "./Spinner";
 
 type props = {
     channelId: string;
@@ -71,7 +72,7 @@ export default ({
                     }
                 }}
             >
-                {isConnected ? null : "Connecting..."}
+                {isConnected ? null : <Spinner />}
                 <input
                     className={styles.messageText}
                     type="text"

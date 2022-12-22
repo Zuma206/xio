@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/AccountSetup.module.scss";
 import { createUser, useError, useXIOUser } from "../xio";
+import Spinner from "./Spinner";
 
 export default () => {
     const [username, setUsername] = useState("");
@@ -10,7 +11,7 @@ export default () => {
     const [loading, setLoading] = useState(false);
 
     return loading ? (
-        <div className={styles.padded}>Loading...</div>
+        <Spinner />
     ) : (
         <div className={styles.container}>
             <div className={styles.title}>Pick a username!</div>

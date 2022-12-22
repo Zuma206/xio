@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import styles from "../styles/MessageList.module.scss";
 import { getChunk, MessageResult, useXIOUser } from "../xio";
+import Spinner from "./Spinner";
 
 interface Props {
     lastMessage: string | null;
@@ -26,7 +27,7 @@ export default ({
 
     return lastMessage ? (
         loading ? (
-            <div className={styles.padded}>Loading...</div>
+            <Spinner />
         ) : (
             <button
                 className={styles.button}

@@ -11,6 +11,7 @@ import {
     useXIOUser,
 } from "../xio";
 import { CachedUserHook } from "../xio/userCache";
+import Spinner from "./Spinner";
 import UserSetting from "./UserSetting";
 
 type props = {
@@ -61,7 +62,9 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                     >
                         Back
                     </button>
-                    {loading ? null : (
+                    {loading ? (
+                        <Spinner />
+                    ) : (
                         <button
                             className={styles.danger}
                             onClick={async () => {
@@ -97,7 +100,7 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                     <b>Channel ID:</b> {channelId}
                 </p>
                 {!channelData || user == "known" || user == "unknown" ? (
-                    <div className={styles.padded}>Loading...</div>
+                    <Spinner />
                 ) : (
                     <div>
                         {channelData.owners.includes(user.googleUser.uid) ? (
@@ -217,7 +220,7 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                                 ))}
                             </div>
                         ) : (
-                            <div className={styles.padded}>Loading...</div>
+                            <Spinner />
                         )}
                     </div>
                 )}

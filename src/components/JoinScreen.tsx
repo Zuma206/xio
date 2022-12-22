@@ -9,6 +9,7 @@ import {
 } from "../xio";
 import { useNavigate, useParams } from "react-router-dom";
 import { PropsWithChildren, useEffect, useState } from "react";
+import Spinner from "./Spinner";
 
 export default () => {
     const [user] = useXIOUser();
@@ -44,11 +45,11 @@ export default () => {
     return (
         <div className={styles.container}>
             {loading || user == "unknown" ? (
-                <div>Loading...</div>
+                <Spinner />
             ) : user == "known" ? (
                 <ReturnHome>Please sign-in to view</ReturnHome>
             ) : !channelData ? (
-                <div>Loading...</div>
+                <Spinner />
             ) : channelData == "known" ? (
                 <ReturnHome>Invalid invite</ReturnHome>
             ) : channelData.members.includes(user.googleUser.uid) ? (

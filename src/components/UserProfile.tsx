@@ -10,6 +10,7 @@ import {
 import { auth } from "../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useEffect, useState } from "react";
+import Spinner from "./Spinner";
 
 export default () => {
     const [user, setXIOData, setActivationStatus] = useXIOUser();
@@ -34,7 +35,7 @@ export default () => {
     }, [user]);
 
     return user == "unknown" || loading ? (
-        <div>Loading...</div>
+        <Spinner />
     ) : user == "known" ? (
         <button
             className={styles.button}

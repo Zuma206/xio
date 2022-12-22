@@ -8,6 +8,7 @@ import {
 import styles from "../styles/UserSetting.module.scss";
 import { Dispatch, SetStateAction } from "react";
 import { CachedUserHook } from "../xio/userCache";
+import Spinner from "./Spinner";
 
 type props = {
     member: string;
@@ -45,9 +46,9 @@ export default ({
                     />
                 ) : null}
                 {blacklisted ? (
-                    <s>{userData?.username ?? "Loading..."}</s>
+                    <s>{userData?.username ?? <Spinner />}</s>
                 ) : (
-                    userData?.username ?? "Loading..."
+                    userData?.username ?? <Spinner />
                 )}{" "}
                 {isOwner ? "👑" : null}
             </div>

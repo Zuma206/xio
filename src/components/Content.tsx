@@ -3,6 +3,7 @@ import AccountSetup from "./AccountSetup";
 import styles from "../styles/Content.module.scss";
 import MessageList from "./MessageList";
 import Credits from "./Credits";
+import Spinner from "./Spinner";
 
 interface props {
     selected: ChannelResult | null;
@@ -10,10 +11,9 @@ interface props {
 
 export default ({ selected }: props) => {
     const [user] = useXIOUser();
-    const loading = <div className={styles.padded}>Loading...</div>;
 
     return user == "unknown" ? (
-        loading
+        <Spinner />
     ) : user == "known" ? (
         <div className={styles.container}>
             <h1>Welcome to XIO</h1>
@@ -34,7 +34,7 @@ export default ({ selected }: props) => {
             </div>
         )
     ) : user.activated == "unknown" ? (
-        loading
+        <Spinner />
     ) : (
         <AccountSetup />
     );

@@ -1,0 +1,20 @@
+@import "./Global.scss";
+
+.spinner {
+    width: 2em;
+    height: 2em;
+    border-radius: 100%;
+    border: 0.3em solid white;
+    box-sizing: border-box;
+    clip-path: polygon(0% 0%, 50% 0%, 50% 50%, 100% 50%, 100% 100%, 0% 100%);
+    animation: 1.5s linear infinite spin;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

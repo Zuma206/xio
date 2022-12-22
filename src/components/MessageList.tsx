@@ -16,6 +16,7 @@ import {
     useAutoScroll,
 } from "../xio";
 import LoadOldMessages from "./LoadOldMessages";
+import Spinner from "./Spinner";
 
 interface props {
     channelId: string | null;
@@ -209,6 +210,6 @@ export default ({ channelId }: props) => {
             )}
         </div>
     ) : (
-        <div className={styles.padded}>Loading...</div>
+        <Spinner />
     );
 };
