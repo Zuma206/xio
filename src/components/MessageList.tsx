@@ -84,6 +84,7 @@ export default ({ channelId }: props) => {
             setDirection,
             isLive,
             setIsConnected,
+            displayError,
         });
         return () => {
             (async () => {

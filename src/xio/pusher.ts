@@ -2,6 +2,7 @@ import Pusher from "pusher-js";
 import { Dispatch, SetStateAction } from "react";
 import { XIOUser } from "./authContext";
 import { getPusher, MessageResult } from "./channelDB";
+import { ExtendedError } from "./errorContext";
 
 type options = {
     pusher: Pusher | null;
@@ -12,6 +13,7 @@ type options = {
     setDirection: Dispatch<SetStateAction<"up" | "down">>;
     isLive: boolean;
     setIsConnected: Dispatch<SetStateAction<boolean>>;
+    displayError: (err: ExtendedError) => void;
 };
 
 export const connectPusher = async (pusherOptions: options) => {
@@ -24,6 +26,7 @@ export const connectPusher = async (pusherOptions: options) => {
         setDirection: setScrollDirection,
         isLive,
         setIsConnected,
+        displayError,
     } = pusherOptions;
     if (!isLive || user == "known" || user == "unknown") return;
     const authToken = await user.googleUser.getIdToken();
@@ -42,7 +45,16 @@ export const connectPusher = async (pusherOptions: options) => {
         return;
     }
     pusher.connection.bind("connected", () => setIsConnected(true));
-    pusher.connection.bind("error", () => setIsConnected(false));
+    pusher.connection.bind("error", () => {
+        displayError({
+            name: "Connection Error",
+            message:
+                "Connection was lost, if connecting takes too long, try refreshing",
+            code: "Connection was lost, if connecting takes too long, try refreshing",
+        });
+        setIsConnected(false);
+        connectPusher(pusherOptions);
+    });
     const pusherId = await getPusher(channelId, authToken);
     pusher
         .subscribe(`private-${channelId}-${pusherId}`)
