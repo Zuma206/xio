@@ -15,19 +15,27 @@ import Spinner from "./Spinner";
 export default () => {
     const [user, setXIOData, setActivationStatus] = useXIOUser();
     const [loading, setLoading] = useState(false);
-    const [catchError] = useError("Sign In Error", setLoading);
+    const [displayError] = useError("Sign In Error", setLoading);
 
     const updateUser = async (user: XIOUser | UserStatus) => {
-        if (typeof user == "string" || user.activated != "unknown") return;
-        const xioUser = await getUserById(
-            user.googleUser.uid,
-            await user.googleUser.getIdToken()
-        );
-        if (!xioUser) {
-            setActivationStatus("unactivated");
-            return;
+        try {
+            if (typeof user == "string" || user.activated != "unknown") return;
+            const xioUser = await getUserById(
+                user.googleUser.uid,
+                await user.googleUser.getIdToken()
+            );
+            if (!xioUser) {
+                setActivationStatus("unactivated");
+                return;
+            }
+            setXIOData(xioUser.username, xioUser.gravatar);
+        } catch (e) {
+            displayError({
+                name: "Error authenticating on server",
+                code: "Failed",
+                message: "Failed",
+            });
         }
-        setXIOData(xioUser.username, xioUser.gravatar);
     };
 
     useEffect(() => {
@@ -43,7 +51,7 @@ export default () => {
                 setLoading(true);
                 signInWithPopup(auth, new GoogleAuthProvider())
                     .then(() => setLoading(false))
-                    .catch(catchError);
+                    .catch(displayError);
             }}
         >
             Sign In
@@ -64,7 +72,7 @@ export default () => {
                     setLoading(true);
                     auth.signOut()
                         .then(() => setLoading(false))
-                        .catch(catchError);
+                        .catch(displayError);
                 }}
             >
                 Sign Out
