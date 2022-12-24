@@ -11,7 +11,6 @@
     flex: 1;
     display: flex;
     align-items: center;
-    padding-left: 0.6em;
 }
 
 .messageText {
@@ -23,17 +22,4 @@
 .buttons {
     display: flex;
     align-items: center;
-}
-
-.connected {
-    background-color: lime;
-    width: 1.8em;
-    height: 1.8em;
-    border-radius: 100%;
-    outline: black solid 1px;
-}
-
-.disconnected {
-    composes: connected;
-    background-color: red;
 }

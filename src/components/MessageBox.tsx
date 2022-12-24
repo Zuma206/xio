@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import styles from "../styles/MessageBox.module.scss";
 import { MessageResult, sendMessage, useError, useXIOUser } from "../xio";
 import { v4 as uuid } from "uuid";
 import Spinner from "./Spinner";
+import Autocomplete from "./Autocomplete";
 
 type props = {
     channelId: string;
@@ -24,6 +25,7 @@ export default ({
     const [user] = useXIOUser();
     const [message, setMessage] = useState("");
     const [displayError] = useError("Uh Oh!");
+    const inputRef = useRef<HTMLInputElement>(null);
 
     function deleteClientMessage(messageClientKey: string) {
         setMessages((messages) => {
@@ -73,6 +75,11 @@ export default ({
                 }}
             >
                 {isConnected ? null : <Spinner />}
+                <Autocomplete
+                    input={inputRef.current}
+                    message={message}
+                    setMessage={setMessage}
+                />
                 <input
                     className={styles.messageText}
                     type="text"
@@ -82,6 +89,7 @@ export default ({
                     disabled={!isLive || !isConnected}
                     minLength={1}
                     maxLength={280}
+                    ref={inputRef}
                 />
                 <span
                     style={{

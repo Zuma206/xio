@@ -1,0 +1,43 @@
+@import "./Global.scss";
+
+.autocomplete {
+    background-color: $bgTop;
+    position: fixed;
+    height: 25vh;
+    overflow-y: scroll;
+    font-size: 1.2em;
+    outline: black solid 1px;
+    margin-bottom: calc(25vh + 3em);
+    padding: 1em;
+    box-sizing: border-box;
+    margin-left: 0.4em;
+    border-radius: 1em;
+    box-sizing: border-box;
+    width: min(100vw, 20em);
+}
+
+.emoji {
+    height: 1.2em;
+}
+
+.listing {
+    box-sizing: border-box;
+    padding: 0.5em;
+    margin-bottom: 0.2em;
+    background-color: $bgBottom;
+    border-radius: 1em;
+    outline: black solid 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectedListing {
+    composes: listing;
+}
+
+.selectedListing,
+.listing:hover {
+    outline: white solid 1px;
+    cursor: pointer;
+}
