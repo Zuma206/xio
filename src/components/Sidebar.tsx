@@ -5,121 +5,110 @@ import CreateChannel from "./CreateChannel";
 import JoinChannel from "./JoinChannel";
 import sortByProperty, { SortDirections } from "property-sort";
 import Spinner from "./Spinner";
-
+import UserProfile from "./UserProfile";
 interface props {
-    setSelected: Dispatch<SetStateAction<ChannelResult | null>>;
-    selected: ChannelResult | null;
+  setSelected: Dispatch<SetStateAction<ChannelResult | null>>;
+  selected: ChannelResult | null;
 }
 
 export default ({ setSelected, selected }: props) => {
-    const [user] = useXIOUser();
-    const [channels, setChannels] = useState<ChannelResult[] | null>(null);
-    const [loading, setLoading] = useState(false);
-    const storedShowConfig = JSON.parse(
-        localStorage.getItem("showConfig") ?? "true"
+  const [user] = useXIOUser();
+  const [channels, setChannels] = useState<ChannelResult[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const storedShowConfig = JSON.parse(
+    localStorage.getItem("showConfig") ?? "true"
+  );
+  const [showConfig, setShowConfig] = useState<boolean>(storedShowConfig);
+
+  const fetchChannels = async (userData: XIOUser) => {
+    const channelsData = await getUserChannels(
+      await userData.googleUser.getIdToken()
     );
-    const [showConfig, setShowConfig] = useState<boolean>(storedShowConfig);
+    setChannels(
+      sortByProperty(channelsData, {
+        sortKey: ["name"],
+        direction: SortDirections.Ascending,
+      })
+    );
+    setLoading(false);
+  };
 
-    const fetchChannels = async (userData: XIOUser) => {
-        const channelsData = await getUserChannels(
-            await userData.googleUser.getIdToken()
-        );
-        setChannels(
-            sortByProperty(channelsData, {
-                sortKey: ["name"],
-                direction: SortDirections.Ascending,
-            })
-        );
-        setLoading(false);
-    };
+  useEffect(() => {
+    if (user == "known" || user == "unknown" || user.activated != "activated")
+      return;
+    setLoading(true);
+    fetchChannels(user);
+  }, [user]);
 
-    useEffect(() => {
-        if (
-            user == "known" ||
-            user == "unknown" ||
-            user.activated != "activated"
-        )
-            return;
-        setLoading(true);
-        fetchChannels(user);
-    }, [user]);
+  useEffect(() => {
+    localStorage.setItem("showConfig", JSON.stringify(showConfig));
+  }, [showConfig]);
 
-    useEffect(() => {
-        localStorage.setItem("showConfig", JSON.stringify(showConfig));
-    }, [showConfig]);
+  useEffect(() => {
+    if (selected) {
+      document.title = `XIO: ${selected.name}`;
+    } else {
+      document.title = "XIO";
+    }
+  }, [selected]);
 
-    useEffect(() => {
-        if (selected) {
-            document.title = `XIO: ${selected.name}`;
-        } else {
-            document.title = "XIO";
-        }
-    }, [selected]);
+  return user == "unknown" ? (
+    <Spinner />
+  ) : user == "known" ? (
+    <div className={styles.notAuthSidebar}>
+      <div>
+        <h1>Please Sign In</h1>
+        <UserProfile />
+      </div>
+    </div>
+  ) : user.activated == "activated" ? (
+    <div className={styles.sidebar}>
+      <div>
+        <button
+          className={styles.arrow}
+          onClick={() => setShowConfig((s) => !s)}
+        >
+          {showConfig ? "▼" : "▶"}
+        </button>
+      </div>
 
-    return user == "unknown" ? (
-        <Spinner />
-    ) : user == "known" ? (
-        <div className={styles.padded}>
-            Nothing to see here yet, try signing in.
+      {showConfig ? (
+        <div className={styles.box}>
+          <JoinChannel
+            loading={loading}
+            setLoading={setLoading}
+            fetchChannels={fetchChannels}
+          />
+          <CreateChannel
+            loading={loading}
+            setLoading={setLoading}
+            fetchChannels={fetchChannels}
+          />
         </div>
-    ) : user.activated == "activated" ? (
-        <div className={styles.sidebar}>
-            <div>
-                <button
-                    className={styles.arrow}
-                    onClick={() => setShowConfig((s) => !s)}
-                >
-                    {showConfig ? "▼" : "▶"}
-                </button>
-            </div>
+      ) : null}
 
-            {showConfig ? (
-                <div className={styles.box}>
-                    <JoinChannel
-                        loading={loading}
-                        setLoading={setLoading}
-                        fetchChannels={fetchChannels}
-                    />
-                    <CreateChannel
-                        loading={loading}
-                        setLoading={setLoading}
-                        fetchChannels={fetchChannels}
-                    />
+      <div className={styles.channels}>
+        {channels && !loading ? (
+          channels.map((channel, index) => {
+            const isSelected = channel.key == selected?.key;
+            return (
+              <div
+                key={index}
+                className={isSelected ? styles.selectedOuter : styles.channel}
+                onClick={(e) => {
+                  setSelected(isSelected ? null : channel);
+                }}
+              >
+                <div className={isSelected ? styles.selectedInner : undefined}>
+                  {channel.name}
                 </div>
-            ) : null}
-
-            <div className={styles.channels}>
-                {channels && !loading ? (
-                    channels.map((channel, index) => {
-                        const isSelected = channel.key == selected?.key;
-                        return (
-                            <div
-                                key={index}
-                                className={
-                                    isSelected
-                                        ? styles.selectedOuter
-                                        : styles.channel
-                                }
-                                onClick={(e) => {
-                                    setSelected(isSelected ? null : channel);
-                                }}
-                            >
-                                <div
-                                    className={
-                                        isSelected
-                                            ? styles.selectedInner
-                                            : undefined
-                                    }
-                                >
-                                    {channel.name}
-                                </div>
-                            </div>
-                        );
-                    })
-                ) : (
-                    <Spinner />
-                )}
-            </div>
-        </div>
-    ) : null;
+              </div>
+            );
+          })
+        ) : (
+          <Spinner />
+        )}
+      </div>
+    </div>
+  ) : null;
 };
