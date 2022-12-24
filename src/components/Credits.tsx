@@ -5,7 +5,7 @@ export default () => {
     <div className={styles.padded}>
       <h3>Made by:</h3>
       <ul>
-        <li>Developers: Zuma, Manu</li>
+        <li>Developers: Zuma, Manu 💀</li>
         <li>Designers: Monkey, Zuma</li>
         <li>Quality Assurance: Neon, Fly, Monkey</li>
       </ul>
