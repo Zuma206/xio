@@ -41,3 +41,9 @@
     outline: white solid 1px;
     cursor: pointer;
 }
+
+.messageText {
+    composes: text;
+    background-color: $bgTop;
+    flex: 1;
+}

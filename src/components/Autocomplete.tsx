@@ -4,62 +4,97 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { emoji } from "node-emoji";
 
 interface Props {
-    input: HTMLInputElement | null;
     message: string;
     setMessage: Dispatch<SetStateAction<string>>;
+    disabled: boolean;
 }
 
-export default ({ input, message, setMessage }: Props) => {
+const emojiRegex = /:([A-z]|[0-9]){2,}$/;
+
+export default ({ message, setMessage, disabled }: Props) => {
     const [selected, setSelected] = useState(0);
-
-    const match = /:([A-z]|[0-9]){2,}$/
-        .exec(message ?? "")
-        ?.at(0)
-        ?.slice(1);
-
-    function triggerAutocomplete(result: string) {
-        setMessage((message) => message + result.slice(match?.length) + ": ");
-        input?.focus();
-    }
+    const [match, setMatch] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        const listener = (e: KeyboardEvent) => {
-            console.log(e.key);
-            if (e.key != "Tab") return;
-            e.preventDefault();
-            triggerAutocomplete(
-                Object.entries(emoji).filter(([name]) =>
-                    name.includes(match ?? "")
-                )[selected][0]
-            );
-        };
-        input?.addEventListener("keyup", listener);
-        return () => {
-            input?.removeEventListener("keyup", listener);
-        };
-    }, []);
+        setMatch(emojiRegex.exec(message)?.at(0)?.slice(1));
+    }, [message]);
 
-    return match ? (
-        <div className={styles.autocomplete}>
-            <Twemoji options={{ className: styles.emoji }}>
-                {Object.entries(emoji)
-                    .filter(([name]) => name.includes(match))
-                    .map(([name, symbol], index) => {
-                        return (
-                            <div
-                                className={
-                                    index != selected
-                                        ? styles.listing
-                                        : styles.selectedListing
-                                }
-                                key={name}
-                                onClick={() => triggerAutocomplete(name)}
-                            >
-                                {symbol}&nbsp;{name}
-                            </div>
-                        );
-                    })}
-            </Twemoji>
-        </div>
-    ) : null;
+    useEffect(() => {
+        setSelected(0);
+    }, [match]);
+
+    const emojis = Object.entries(emoji).filter(([name]) =>
+        name.includes(match ?? "")
+    );
+
+    function triggerAutocomplete(result: string) {
+        if (!match) return;
+        setMessage(
+            (message) =>
+                message.slice(0, message.length - match.length) + result + ": "
+        );
+    }
+
+    return (
+        <>
+            {match && emojis.length > 0 ? (
+                <div className={styles.autocomplete}>
+                    <Twemoji options={{ className: styles.emoji }}>
+                        {emojis.map(([name, symbol], index) => {
+                            return (
+                                <div
+                                    className={
+                                        index != selected
+                                            ? styles.listing
+                                            : styles.selectedListing
+                                    }
+                                    key={name}
+                                    onClick={() => triggerAutocomplete(name)}
+                                    ref={(target) => {
+                                        if (selected != index) return;
+                                        target?.scrollIntoView();
+                                    }}
+                                >
+                                    {symbol}&nbsp;{name}
+                                </div>
+                            );
+                        })}
+                    </Twemoji>
+                </div>
+            ) : null}
+            <input
+                className={styles.messageText}
+                type="text"
+                placeholder="Type your message here..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                disabled={disabled}
+                minLength={1}
+                maxLength={280}
+                onKeyDown={(e) => {
+                    if (!match) return;
+                    if (
+                        e.key != "Tab" &&
+                        e.key != "ArrowUp" &&
+                        e.key != "ArrowDown"
+                    )
+                        return;
+                    e.preventDefault();
+                    switch (e.key) {
+                        case "Tab":
+                            triggerAutocomplete(emojis[selected][0]);
+                            break;
+                        case "ArrowUp":
+                            setSelected((s) => (s > 0 ? s - 1 : s));
+                            break;
+                        case "ArrowDown":
+                            setSelected((s) =>
+                                s < emojis.length - 1 ? s + 1 : s
+                            );
+                            break;
+                    }
+                }}
+            />
+        </>
+    );
 };

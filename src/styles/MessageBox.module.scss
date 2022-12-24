@@ -13,12 +13,6 @@
     align-items: center;
 }
 
-.messageText {
-    composes: text;
-    background-color: $bgTop;
-    flex: 1;
-}
-
 .buttons {
     display: flex;
     align-items: center;
