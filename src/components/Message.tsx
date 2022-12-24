@@ -64,7 +64,7 @@ export default ({
                         ) : null}
                         <div className={styles.wrap}>
                             <MessageContent
-                                content={data.content}
+                                content={data.content.trimEnd()}
                                 scroll={scroll}
                                 scrollDirection={scrollDirection}
                                 end={end}
