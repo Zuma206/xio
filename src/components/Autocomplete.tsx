@@ -76,12 +76,14 @@ export default ({ message, setMessage, disabled }: Props) => {
                     if (
                         e.key != "Tab" &&
                         e.key != "ArrowUp" &&
-                        e.key != "ArrowDown"
+                        e.key != "ArrowDown" &&
+                        e.key != "Enter"
                     )
                         return;
                     e.preventDefault();
                     switch (e.key) {
                         case "Tab":
+                        case "Enter":
                             triggerAutocomplete(emojis[selected][0]);
                             break;
                         case "ArrowUp":
