@@ -63,15 +63,6 @@ export default ({ setSelected, selected }: props) => {
     </div>
   ) : user.activated == "activated" ? (
     <div className={styles.sidebar}>
-      <div>
-        <button
-          className={styles.arrow}
-          onClick={() => setShowConfig((s) => !s)}
-        >
-          {showConfig ? "▼" : "▶"}
-        </button>
-      </div>
-
       {showConfig ? (
         <div className={styles.box}>
           <JoinChannel
