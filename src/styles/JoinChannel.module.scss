@@ -1,10 +1,27 @@
 @import "./Global.scss";
 
 .container {
-    display: flex;
+  display: flex;
 }
 
 .input {
-    composes: text;
-    flex: 1;
+  outline: none;
+  border: none;
+  padding: none;
+  border-radius: 2em 0 0 2em;
+  padding: 0.75em 2em 0.75em 2em;
+  margin-top: 0.4rem;
+  background-color: #141312;
+  border: solid 0.2em #644cd2;
+  color: #644cd2;
+  font-weight: bold;
+}
+
+.channelButton {
+  composes: button-con;
+  border-radius: 0 2em 2em 0;
+  padding: 0.75em 2em 0.75em 2em;
+  margin-top: 0.4rem;
+  padding: none;
+  width: 7.5rem;
 }

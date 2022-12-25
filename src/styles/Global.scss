@@ -1,5 +1,5 @@
-$bgTop: #1a1a1a;
-$bgBottom: #212121;
+$bgTop: #141213;
+$bgBottom: #141618;
 $font: rgb(220, 220, 220);
 $fontDark: rgb(200, 200, 200);
 $fontDisabled: rgb(106, 106, 106);
@@ -12,89 +12,96 @@ $xBL: #d06a0bff;
 $xBR: #ffc001ff;
 $error: #ff4646;
 $heightAfterNavbar: calc(100vh - 4em - 2.5em);
+$bgDark: #141618;
 
 .picture {
-    width: 2.5em;
-    height: 2.5em;
-    border-radius: 100%;
-    outline: $outline;
-    margin-right: 0.6em;
-    object-fit: cover;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 100%;
+  outline: $outline;
+  margin-right: 0.6em;
+  object-fit: cover;
 }
 
 *::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 * {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .link {
-    color: #0066cc;
+  color: #0066cc;
+}
+
+.button-con {
+  font-size: 1em;
+  background-color: #644cd2;
+  color: white;
+  font-family: "Inter", sans-serif;
+  border: none;
+  cursor: pointer;
+
+  white-space: nowrap;
+  font-weight: bold;
+  transition: ease 200ms;
+  border: solid 0.2em #644cd2;
+}
+
+.button-con:hover {
+  background-color: inherit;
+  border: solid 0.2em #644cd2;
+  color: #644cd2;
+}
+
+.button-con:disabled,
+.button:disabled {
+  cursor: default;
+}
+
+.button-con:disabled:hover {
+  background-color: $bgTop;
 }
 
 .button {
-    font-size: 1em;
-    background-color: $bgBottom;
-    color: white;
-    font-family: "Inter", sans-serif;
-    border: none;
-    cursor: pointer;
-    padding: 0.5em 1em 0.5em 1em;
-    border-radius: 1em;
-    margin: 0.4em;
-    outline: $outline;
-    white-space: nowrap;
-}
-
-.button:hover {
-    outline: $outlineInverted;
-}
-
-.button:active {
-    outline: $outlineActive;
-    color: $fontDark;
-}
-
-.button:disabled,
-.button:disabled {
-    cursor: default;
-    color: $fontDark;
-    outline: $outline;
-}
-
-.button:disabled:hover {
-    background-color: $bgTop;
+  composes: button-con;
+  border-radius: 2em;
+  padding: 0.75em 2em 0.75em 2em;
+  margin-left: 20px;
 }
 
 .backdropContainer {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba($color: black, $alpha: 0.3);
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    display: flex;
-    justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba($color: black, $alpha: 0.3);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  justify-content: center;
 }
 
 .text {
-    composes: button;
-    display: block;
-    cursor: auto;
+  display: block;
+  cursor: auto;
 }
 
 .text:focus {
-    outline: $outlineActive;
-    color: $fontDark;
+  outline: $outlineActive;
+  color: $fontDark;
 }
 
 .padded {
-    padding: 1em;
+  padding: 1em;
 
-    h1 {
-        margin: 0px;
-    }
+  h1 {
+    margin: 0px;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0 !important;
 }
