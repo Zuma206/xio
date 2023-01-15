@@ -17,4 +17,5 @@
     composes: padded;
     height: $heightAfterNavbar;
     overflow-y: scroll;
+    box-sizing: border-box;
 }
