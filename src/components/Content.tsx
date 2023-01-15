@@ -13,14 +13,19 @@ export default ({ selected }: props) => {
   const [user] = useXIOUser();
 
   return user == "unknown" ? (
-    <Spinner />
+    <div className={styles.container}>
+      <Spinner />
+    </div>
   ) : user == "known" ? (
     <div className={styles.container}>
       <h1 className={styles.title}>
         Welcome to <span className={styles.logoText}>XIO</span>
       </h1>
-      <p>Easy to setup, easy to use group chats for all.</p>
-      <p>To get started, sign in with google using the button up top.</p>
+      <p>
+        Easy to setup, easy to use group chats for all.
+        <br />
+        To get started, sign in with google using the button up top.
+      </p>
       <Credits />
     </div>
   ) : user.activated == "activated" ? (
