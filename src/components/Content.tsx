@@ -47,8 +47,14 @@ export default ({ selected }: props) => {
       </div>
     )
   ) : user.activated == "unknown" ? (
-    <Spinner />
+    <div className={styles.container}>
+      <Spinner />
+    </div>
   ) : (
-    <AccountSetup />
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <AccountSetup />
+      </div>
+    </div>
   );
 };

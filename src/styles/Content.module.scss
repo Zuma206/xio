@@ -15,18 +15,17 @@
   background-repeat: no-repeat;
   background-image: url("background.svg");
   background-color: $bgBottom;
-
-  h1 {
-    font-size: 3em;
-    font-weight: 900;
-    margin-top: 0;
-  }
 }
 
 .content {
   background-color: rgba($color: black, $alpha: 0.5);
   padding: 4em;
   border-radius: 2em;
+  h1 {
+    font-size: 3em;
+    font-weight: 900;
+    margin-top: 0;
+  }
 }
 
 @media screen and (max-width: 500px) {

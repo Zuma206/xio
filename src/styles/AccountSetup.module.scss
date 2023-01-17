@@ -1,10 +1,15 @@
 @import "./Global.scss";
 
 .container {
-    padding: 2em;
+  padding: 2em;
 }
 
 .title {
-    font-size: 2em;
-    font-weight: bold;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
 }
