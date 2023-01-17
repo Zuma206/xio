@@ -1,39 +1,38 @@
 {
-  "name": "xio",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite --host",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "draft": "npm run build && netlify deploy",
-    "deploy": "netlify deploy --prod"
-  },
-  "dependencies": {
-    "date-fns": "^2.29.3",
-    "emoji-toolkit": "^7.0.0",
-    "firebase": "^9.13.0",
-    "md5": "^2.3.0",
-    "node-emoji": "^1.11.0",
-    "property-sort": "^2.1.0",
-    "pusher-js": "^7.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.3",
-    "react-twemoji": "^0.5.0",
-    "sass": "^1.56.1",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "@types/md5": "^2.3.2",
-    "@types/node-emoji": "^1.8.2",
-    "@types/react": "^18.0.24",
-    "@types/react-dom": "^18.0.8",
-    "@types/react-twemoji": "^0.4.0",
-    "@types/uuid": "^8.3.4",
-    "@vitejs/plugin-react": "^2.2.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.2.3"
-  }
+	"name": "xio",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite --host",
+		"build": "tsc && vite build",
+		"draft": "npm run build && netlify deploy",
+		"deploy": "netlify deploy --prod"
+	},
+	"dependencies": {
+		"date-fns": "^2.29.3",
+		"emoji-toolkit": "^7.0.0",
+		"firebase": "^9.13.0",
+		"md5": "^2.3.0",
+		"node-emoji": "^1.11.0",
+		"property-sort": "^2.1.0",
+		"pusher-js": "^7.5.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-router-dom": "^6.4.3",
+		"react-twemoji": "^0.5.0",
+		"sass": "^1.56.1",
+		"uuid": "^9.0.0"
+	},
+	"devDependencies": {
+		"@types/md5": "^2.3.2",
+		"@types/node-emoji": "^1.8.2",
+		"@types/react": "^18.0.24",
+		"@types/react-dom": "^18.0.8",
+		"@types/react-twemoji": "^0.4.0",
+		"@types/uuid": "^8.3.4",
+		"@vitejs/plugin-react": "^2.2.0",
+		"typescript": "^4.6.4",
+		"vite": "^3.2.3"
+	}
 }
