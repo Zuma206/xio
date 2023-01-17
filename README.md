@@ -34,7 +34,7 @@ A production instance can be found [here](https://xio.zuma.eu.org/).
 
 2.  Execute some scripts from the table below!
 
-####Scripts `npm run [script]`:
+#### Scripts `npm run [script]`:
 
 | Script | Function                                                         |
 | ------ | ---------------------------------------------------------------- |
