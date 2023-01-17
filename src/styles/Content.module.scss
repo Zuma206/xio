@@ -1,24 +1,38 @@
 @import "./Global.scss";
 
 .container {
-  composes: padded;
   height: $heightAfterNavbar;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5em;
   box-sizing: border-box;
   text-align: center;
+  padding-top: 3em;
+
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
-  background-image: url("gradient.svg");
-  background-color: #352200;
+  background-image: url("background.svg");
+  background-color: $bgBottom;
 
   h1 {
     font-size: 3em;
     font-weight: 900;
+    margin-top: 0;
+  }
+}
+
+.content {
+  background-color: rgba($color: black, $alpha: 0.5);
+  padding: 4em;
+  border-radius: 2em;
+}
+
+@media screen and (max-width: 500px) {
+  .container {
+    margin-top: 0;
+    justify-content: center;
   }
 }
 
