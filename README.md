@@ -14,12 +14,12 @@ The backend server can be found [here](https://github.com/Zuma206/XIO-Server),
 A production instance can be found [here](https://xio.zuma.eu.org/).
 </b>
 
-####Prerequisites
+#### Prerequisites
 
 - Netlify is used for hosting in production, so some scripts/configs are designed around it
 - Firebase must be used for authentication
 
-####Getting up and running:
+#### Getting up and running:
 
 ##### With a local backend:
 
