@@ -1,49 +1,42 @@
 @import "./Global.scss";
 
 .autocomplete {
-    background-color: $bgTop;
-    position: fixed;
-    height: 25vh;
-    overflow-y: scroll;
-    font-size: 1.2em;
-    outline: black solid 1px;
-    margin-bottom: calc(25vh + 3em);
-    padding: 1em;
-    box-sizing: border-box;
-    margin-left: 0.4em;
-    border-radius: 1em;
-    box-sizing: border-box;
-    width: min(100vw, 20em);
+  background-color: $bgTop;
+  position: fixed;
+  height: 25vh;
+  overflow-y: scroll;
+  font-size: 1.2em;
+  box-shadow: $shadow;
+  margin-bottom: calc(25vh + 3em);
+  padding: 1em;
+  box-sizing: border-box;
+  margin-left: 0.4em;
+  border-radius: 1em;
+  box-sizing: border-box;
+  width: min(100vw, 20em);
 }
 
 .emoji {
-    height: 1.2em;
+  height: 1.2em;
 }
 
 .listing {
-    box-sizing: border-box;
-    padding: 0.5em;
-    margin-bottom: 0.2em;
-    background-color: $bgBottom;
-    border-radius: 1em;
-    outline: black solid 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  box-sizing: border-box;
+  padding: 0.5em;
+  margin-bottom: 0.2em;
+  border-radius: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $bgBottom;
 }
 
 .selectedListing {
-    composes: listing;
+  composes: listing;
 }
 
 .selectedListing,
 .listing:hover {
-    outline: white solid 1px;
-    cursor: pointer;
-}
-
-.messageText {
-    composes: text;
-    background-color: $bgTop;
-    flex: 1;
+  background-color: $bgHighlight;
+  cursor: pointer;
 }

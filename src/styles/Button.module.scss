@@ -1,0 +1,36 @@
+@import "./Global.scss";
+
+.button {
+  font-size: 1em;
+  background-color: $bgBottom;
+  color: white;
+  font-family: "Inter", sans-serif;
+  border-radius: 1em;
+  padding: 0.5em 1em 0.5em 1em;
+  margin: 0.5em;
+  cursor: pointer;
+  border: none;
+  box-shadow: $shadow;
+  transition: 0.1s;
+  font-weight: 600;
+  min-width: fit-content;
+}
+
+.button:hover:not(:disabled) {
+  background-color: $bgHighlight;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.95);
+  box-shadow: 0 0 0.6em 0.3em rgba(15, 15, 15, 0.5);
+}
+
+.button:disabled {
+  cursor: default;
+  box-shadow: none;
+}
+
+.danger {
+  composes: button;
+  color: red;
+}

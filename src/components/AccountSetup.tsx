@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/AccountSetup.module.scss";
 import { createUser, useError, useXIOUser } from "../xio";
+import Button from "./Button";
 import Spinner from "./Spinner";
+import TextBox from "./TextBox";
 
 export default () => {
   const [username, setUsername] = useState("");
@@ -16,14 +18,12 @@ export default () => {
     <div className={styles.container}>
       <div className={styles.title}>Pick a username!</div>
       <p>Please choose a unique username that:</p>
-      <ul>
-        <li>Is 3-16 characters</li>
-        <li>Contains only letters and numbers</li>
-      </ul>
+      <div>Is 3-16 characters</div>
+      <div>Contains only letters and numbers</div>
+      <div className={styles.padded} />
       <div className={styles.center}>
-        <input
+        <TextBox
           placeholder="Username"
-          className={styles.text}
           maxLength={16}
           minLength={3}
           value={username}
@@ -38,7 +38,7 @@ export default () => {
           user agreement
         </Link>
       </p>
-      <button
+      <Button
         onClick={async () => {
           if (typeof user == "string") return;
           setLoading(true);
@@ -57,10 +57,9 @@ export default () => {
           }
           setActivationStatus("unknown");
         }}
-        className={styles.button}
       >
         Activate Account
-      </button>
+      </Button>
     </div>
   );
 };

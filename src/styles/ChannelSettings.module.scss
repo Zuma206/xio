@@ -1,21 +1,16 @@
 @import "./Global.scss";
 
 .title {
-    font-size: 2em;
+  font-size: 2em;
 }
 
 .buttons {
-    display: flex;
-}
-
-.danger {
-    composes: button;
-    color: red;
+  display: flex;
 }
 
 .container {
-    composes: padded;
-    height: $heightAfterNavbar;
-    overflow-y: scroll;
-    box-sizing: border-box;
+  composes: padded;
+  height: $heightAfterNavbar;
+  overflow-y: scroll;
+  box-sizing: border-box;
 }

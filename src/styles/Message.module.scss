@@ -1,45 +1,47 @@
 @import "./Global.scss";
 
 .wrap {
-    word-wrap: anywhere;
+  word-wrap: anywhere;
 }
 
 .message {
-    font-size: 1em;
-    padding: 0.2em 0.2em 0.2em 1em;
-    color: $fontDark;
-    margin-top: 0.6em;
+  font-size: 1em;
+  padding: 0.2em 0.2em 0.2em 1em;
+  color: $fontDark;
+  margin-top: 0.6em;
+  transition: 0.1s;
 }
 
 .subMessage {
-    composes: message;
-    margin: 0em;
-    padding: 0.2em 0.2em 0.2em 4.1em;
+  composes: message;
+  margin: 0em;
+  padding: 0.2em 0.2em 0.2em 4.1em;
 }
 
 .messageContent {
-    display: flex;
+  display: flex;
 }
 
 .username {
-    color: $font;
+  color: $font;
 }
 
 .message:hover {
-    background-color: $bgTop;
+  //   background-color: $bgTop;
+  box-shadow: $shadow;
 }
 
 .clientMessage {
-    composes: message;
-    color: $fontDisabled;
+  composes: message;
+  color: $fontDisabled;
 }
 
 .clientSubMessage {
-    composes: subMessage;
-    color: $fontDisabled;
+  composes: subMessage;
+  color: $fontDisabled;
 }
 
 .date {
-    font-size: 0.7em;
-    color: $fontDisabled;
+  font-size: 0.7em;
+  color: $fontDisabled;
 }

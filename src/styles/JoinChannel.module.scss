@@ -1,10 +1,6 @@
 @import "./Global.scss";
 
 .container {
-    display: flex;
-}
-
-.input {
-    composes: text;
-    flex: 1;
+  display: flex;
+  align-items: center;
 }

@@ -2,6 +2,7 @@ import styles from "../styles/Autocomplete.module.scss";
 import Twemoji from "react-twemoji";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { emoji } from "node-emoji";
+import TextBox from "./TextBox";
 
 interface Props {
   message: string;
@@ -65,8 +66,7 @@ export default ({ message, setMessage, disabled }: Props) => {
           </Twemoji>
         </div>
       ) : null}
-      <input
-        className={styles.messageText}
+      <TextBox
         type="text"
         placeholder="Type your message here..."
         value={message}

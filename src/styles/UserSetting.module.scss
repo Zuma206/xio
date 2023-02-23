@@ -1,23 +1,28 @@
 @import "./Global.scss";
 
 .user {
-    display: flex;
-    align-items: center;
-    border-radius: 2em;
-    background-color: $bgTop;
-    padding: 0em 0.2em 0em 0.2em;
-    margin: 0.4em;
-    border: 1px solid black;
-    height: 3em;
+  display: flex;
+  align-items: center;
+  border-radius: 2em;
+  background-color: $bgHighlight;
+  padding: 0em 0.2em 0em 0.2em;
+  margin: 1em;
+  box-shadow: $shadow;
+  height: 3em;
+  transition: 0.25s;
+}
+
+.user:hover {
+  box-shadow: $shadowPressed;
 }
 
 .left {
-    flex: 1;
-    align-items: center;
-    display: flex;
+  flex: 1;
+  align-items: center;
+  display: flex;
 }
 
 .right {
-    composes: left;
-    justify-content: right;
+  composes: left;
+  justify-content: right;
 }

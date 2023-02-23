@@ -1,4 +1,5 @@
 $bgTop: #1a1a1a;
+$bgHighlight: #282828;
 $bgBottom: #212121;
 $font: rgb(220, 220, 220);
 $fontDark: rgb(200, 200, 200);
@@ -12,12 +13,14 @@ $xBL: #d06a0bff;
 $xBR: #ffc001ff;
 $error: #ff4646;
 $heightAfterNavbar: calc(100vh - 4.5em);
+$shadow: 0 0 0.2em 0.1em rgba(15, 15, 15, 0.8);
+$shadowPressed: 0 0 0.6em 0.3em rgba(15, 15, 15, 0.5);
 
 .picture {
   width: 2.5em;
   height: 2.5em;
   border-radius: 100%;
-  outline: $outline;
+  box-shadow: $shadow;
   margin-right: 0.6em;
   object-fit: cover;
 }
@@ -35,40 +38,6 @@ $heightAfterNavbar: calc(100vh - 4.5em);
   color: #0066cc;
 }
 
-.button {
-  font-size: 1em;
-  background-color: $bgBottom;
-  color: white;
-  font-family: "Inter", sans-serif;
-  border: none;
-  cursor: pointer;
-  padding: 0.5em 1em 0.5em 1em;
-  border-radius: 1em;
-  margin: 0.4em;
-  outline: $outline;
-  white-space: nowrap;
-}
-
-.button:hover {
-  outline: $outlineInverted;
-}
-
-.button:active {
-  outline: $outlineActive;
-  color: $fontDark;
-}
-
-.button:disabled,
-.button:disabled {
-  cursor: default;
-  color: $fontDark;
-  outline: $outline;
-}
-
-.button:disabled:hover {
-  background-color: $bgTop;
-}
-
 .backdropContainer {
   width: 100vw;
   height: 100vh;
@@ -78,17 +47,6 @@ $heightAfterNavbar: calc(100vh - 4.5em);
   left: 0px;
   display: flex;
   justify-content: center;
-}
-
-.text {
-  composes: button;
-  display: block;
-  cursor: auto;
-}
-
-.text:focus {
-  outline: $outlineActive;
-  color: $fontDark;
 }
 
 .padded {

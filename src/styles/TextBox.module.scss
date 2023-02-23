@@ -1,0 +1,30 @@
+@import "./Global.scss";
+
+.text {
+  display: block;
+  cursor: auto;
+  flex: 1;
+  background-color: $bgBottom;
+  color: $font;
+  font-family: "Inter var";
+  border: none;
+  font-size: 1em;
+  box-shadow: $shadow;
+  border-radius: 1.5em;
+  padding: 0.8em 1em;
+  margin: 0.5em;
+  transition: 0.2s;
+}
+
+.text:focus {
+  color: $fontDark;
+  outline: none;
+  transform: scale(0.99);
+  box-shadow: $shadowPressed;
+  background-color: $bgHighlight;
+}
+
+.text:disabled {
+  background-color: $bgTop;
+  cursor: default;
+}

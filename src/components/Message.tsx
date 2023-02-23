@@ -7,84 +7,81 @@ import { CachedUserHook } from "../xio/userCache";
 import { RefObject } from "react";
 
 interface props {
-    data: MessageResult;
-    useCachedUser: CachedUserHook;
-    scroll: boolean;
-    scrollDirection: "up" | "down";
-    end: RefObject<HTMLDivElement>;
-    subMessage: boolean;
+  data: MessageResult;
+  useCachedUser: CachedUserHook;
+  scroll: boolean;
+  scrollDirection: "up" | "down";
+  end: RefObject<HTMLDivElement>;
+  subMessage: boolean;
 }
 
 export default ({
-    data,
-    useCachedUser,
-    scroll,
-    scrollDirection,
-    end,
-    subMessage,
+  data,
+  useCachedUser,
+  scroll,
+  scrollDirection,
+  end,
+  subMessage,
 }: props) => {
-    const userData = useCachedUser(data.user);
+  const userData = useCachedUser(data.user);
 
-    return (
-        <>
-            <div
+  return (
+    <>
+      <div
+        className={
+          data.clientSide
+            ? subMessage
+              ? styles.clientSubMessage
+              : styles.clientMessage
+            : subMessage
+            ? styles.subMessage
+            : styles.message
+        }
+      >
+        <div className={styles.messageContent}>
+          {!subMessage ? (
+            <img
+              src={userData?.gravatar ?? ""}
+              alt=" "
+              className={styles.picture}
+            />
+          ) : null}
+          <div>
+            {!subMessage ? (
+              <div
                 className={
-                    data.clientSide
-                        ? subMessage
-                            ? styles.clientSubMessage
-                            : styles.clientMessage
-                        : subMessage
-                        ? styles.subMessage
-                        : styles.message
+                  data.clientSide === true ? undefined : styles.username
                 }
-            >
-                <div className={styles.messageContent}>
-                    {!subMessage ? (
-                        <img
-                            src={userData?.gravatar ?? ""}
-                            alt=" "
-                            className={styles.picture}
-                        />
-                    ) : null}
-                    <div>
-                        {!subMessage ? (
-                            <div
-                                className={
-                                    data.clientSide === true
-                                        ? undefined
-                                        : styles.username
-                                }
-                            >
-                                {userData?.username ?? ""}{" "}
-                                {userData?.dev ? "🛠️ " : null}
-                                <span className={styles.date}>
-                                    {formatRelative(data.timestamp, Date.now())}
-                                </span>
-                            </div>
-                        ) : null}
-                        <div className={styles.wrap}>
-                            <MessageContent
-                                content={data.content.trimEnd()}
-                                scroll={scroll}
-                                scrollDirection={scrollDirection}
-                                end={end}
-                            />
-                        </div>
-                    </div>
-                </div>
-                {parseMessage(data.content)
-                    .filter(({ type }) => type == "link")
-                    .map(({ value }, index) => (
-                        <Embed
-                            subMessage={subMessage}
-                            src={value}
-                            key={index}
-                            scroll={scroll}
-                            scrollDirection={scrollDirection}
-                            end={end}
-                        />
-                    ))}
+              >
+                {userData?.username ?? ""} {userData?.dev ? "🛠️ " : null}
+                <span className={styles.date}>
+                  {formatRelative(data.timestamp, Date.now())}
+                </span>
+              </div>
+            ) : null}
+            <div className={styles.wrap}>
+              <MessageContent
+                content={data.content.trimEnd()}
+                scroll={scroll}
+                scrollDirection={scrollDirection}
+                end={end}
+              />
             </div>
-        </>
-    );
+          </div>
+        </div>
+        {parseMessage(data.content)
+          .filter(({ type }) => type == "link")
+          .map(({ value }, index) => (
+            <Embed
+              subMessage={subMessage}
+              src={value}
+              key={index}
+              scroll={scroll}
+              scrollDirection={scrollDirection}
+              end={end}
+            />
+          ))}
+      </div>
+    </>
+  );
 };

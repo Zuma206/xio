@@ -19,7 +19,6 @@ export default ({ content }: Props) => {
         options={{
           className:
             parsedMessage.length > 1 ? styles.twemoji : styles.bigTwemoji,
-          base: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/",
         }}
       >
         {parsedMessage.map(({ type, value: token }, index) => {

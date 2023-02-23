@@ -1,0 +1,29 @@
+@import "./Global.scss";
+
+.badge {
+  padding: 1em 2em;
+  display: block;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 1em;
+  margin: 1em 1.5em;
+  box-shadow: $shadow;
+  transition: 0.1s;
+}
+
+.badge:hover {
+  background-color: $bgHighlight;
+}
+
+.badgeSelected {
+  composes: badge;
+  box-shadow: $shadowPressed;
+  color: transparent;
+}
+
+.text {
+  background: linear-gradient(to bottom left, $xTL, $xBR);
+  background-clip: text;
+}
