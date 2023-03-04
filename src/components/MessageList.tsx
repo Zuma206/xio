@@ -48,6 +48,10 @@ export default ({ channelId }: props) => {
   }, [channelId]);
 
   useEffect(() => {
+    console.log("messages updated", messages);
+  }, [messages]);
+
+  useEffect(() => {
     if (!channelId || user == "known" || user == "unknown" || !useCachedUser)
       return;
     const error = fetchMessages(

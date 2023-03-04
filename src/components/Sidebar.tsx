@@ -91,6 +91,7 @@ export default ({ setSelected, selected }: props) => {
                 isSelected={isSelected}
                 setSelected={setSelected}
                 channel={channel}
+                key={channel.key}
               />
             );
           })

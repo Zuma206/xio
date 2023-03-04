@@ -54,9 +54,9 @@ export default ({
           };
           setScroll(true);
           setMessages((messages: MessageResult[] | null) => {
+            console.log("old messages passed to client messages", messages);
             if (!messages) return messages;
-            const newMessageSet = [...messages, newMessage];
-            return newMessageSet.slice(newMessageSet.length - 70);
+            return [...messages, newMessage];
           });
           const res = await sendMessage(
             channelId,
