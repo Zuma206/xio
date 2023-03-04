@@ -54,7 +54,6 @@ export default ({
           };
           setScroll(true);
           setMessages((messages: MessageResult[] | null) => {
-            console.log("old messages passed to client messages", messages);
             if (!messages) return messages;
             return [...messages, newMessage];
           });
