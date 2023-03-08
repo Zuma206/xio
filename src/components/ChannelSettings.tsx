@@ -9,10 +9,13 @@ import {
   leaveServer,
   useError,
   useXIOUser,
+  XIOUser,
 } from "../xio";
 import { CachedUserHook } from "../xio/userCache";
+import { getWebhook, setWebhook } from "../xio/webhookDB";
 import Button from "./Button";
 import Spinner from "./Spinner";
+import TextBox from "./TextBox";
 import UserSetting from "./UserSetting";
 
 type props = {
@@ -29,16 +32,33 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
   const [dangerZone, setDangerZone] = useState(false);
   const [channelData, setChannelData] = useState<ChannelResult | null>(null);
   const [displayError] = useError("Uh oh!");
+  const [webhookVal, setWebhookVal] = useState<null | string>(null);
+  const [settingWebhook, setSettingWebhook] = useState(false);
 
   useEffect(() => {
     fetchChannelData();
   }, []);
 
+  async function fetchWebhook(user: XIOUser, authToken?: string) {
+    authToken = authToken ?? (await user.googleUser.getIdToken());
+    const { result, error } = await getWebhook(channelId, authToken);
+    if (error) {
+      displayError({
+        name: "Error viewing webhook",
+        message: "",
+        code: error.response,
+      });
+    } else {
+      setWebhookVal(result);
+    }
+  }
+
   const fetchChannelData = async () => {
     if (user == "known" || user == "unknown") return;
+    const authToken = await user.googleUser.getIdToken();
     const { result: memberData, error } = await getChannelMemberData(
       channelId,
-      await user.googleUser.getIdToken()
+      authToken
     );
     if (error) {
       displayError({
@@ -49,6 +69,7 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
     } else {
       setChannelData(memberData);
     }
+    await fetchWebhook(user, authToken);
   };
 
   return (
@@ -174,6 +195,47 @@ export default ({ channelId, setSettings, useCachedUser }: props) => {
                 </div>
               </div>
             ) : null}
+            <hr />
+            {webhookVal === null || settingWebhook ? (
+              <Spinner />
+            ) : (
+              <div>
+                <h4>Webhook Integration</h4>
+                <TextBox
+                  placeholder="Webhook Disabled"
+                  disabled={!channelData.owners.includes(user.googleUser.uid)}
+                  onChange={(e) => {
+                    setWebhookVal(e.target.value);
+                  }}
+                  value={webhookVal}
+                />
+                {channelData.owners.includes(user.googleUser.uid) ? (
+                  <Button
+                    onClick={async () => {
+                      setSettingWebhook(true);
+                      const token = await user.googleUser.getIdToken();
+                      const res = await setWebhook(
+                        channelId,
+                        webhookVal,
+                        token
+                      );
+                      if (res.error) {
+                        displayError({
+                          name: "Error setting webhook",
+                          message: "",
+                          code: res.error.response,
+                        });
+                      } else {
+                        await fetchWebhook(user);
+                      }
+                      setSettingWebhook(false);
+                    }}
+                  >
+                    Set Webhook
+                  </Button>
+                ) : null}
+              </div>
+            )}
             <hr />
             <h4>{channelData.members.length}/20 Members</h4>
             {channelData && !loading ? (
