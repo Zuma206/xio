@@ -7,7 +7,7 @@ import {
   useXIOUser,
   XIOUser,
 } from "../xio";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import { PropsWithChildren, useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import Button from "./Button";
