@@ -3,7 +3,6 @@ import styles from "../styles/Sidebar.module.scss";
 import { getUserChannels, useXIOUser, ChannelResult, XIOUser } from "../xio";
 import CreateChannel from "./CreateChannel";
 import JoinChannel from "./JoinChannel";
-import sortByProperty, { SortDirections } from "property-sort";
 import Spinner from "./Spinner";
 import Button from "./Button";
 import ChannelBadge from "./ChannelBadge";
@@ -26,12 +25,7 @@ export default ({ setSelected, selected }: props) => {
     const channelsData = await getUserChannels(
       await userData.googleUser.getIdToken()
     );
-    setChannels(
-      sortByProperty(channelsData, {
-        sortKey: ["name"],
-        direction: SortDirections.Ascending,
-      })
-    );
+    setChannels(channelsData);
     setLoading(false);
   };
 
