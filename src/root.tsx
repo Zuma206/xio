@@ -1,0 +1,40 @@
+import { Outlet, Scripts, ScrollRestoration } from "react-router";
+
+export default function App() {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="new.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>XIO</title>
+        <link rel="manifest" href="manifest.json" />
+        <style>
+          {`@import url('https://rsms.me/inter/inter.css');
+
+		:root {
+			font-family: 'Inter', sans-serif;
+		}
+
+		@supports (font-variation-settings: normal) {
+			:root {
+				font-family: 'Inter var', sans-serif;
+			}
+		}
+
+		body {
+			font-family: 'Inter', sans-serif;
+			margin: 0px;
+		}`}
+        </style>
+      </head>
+      <body>
+        <div id="root">
+          <Outlet />
+        </div>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
