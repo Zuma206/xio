@@ -1,9 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import autoprefixer from "autoprefixer";
+import { reactRouter } from "@react-router/dev/vite";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), reactRouter()],
   css: {
     postcss: {
       plugins: [autoprefixer],

@@ -25,6 +25,7 @@
 		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
+		"@react-router/dev": "^7.4.0",
 		"@types/md5": "^2.3.2",
 		"@types/node-emoji": "^1.8.2",
 		"@types/react": "^19.0.12",
