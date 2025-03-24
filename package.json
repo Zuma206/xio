@@ -10,9 +10,11 @@
 		"deploy": "npm run build && netlify deploy --prod"
 	},
 	"dependencies": {
+		"@react-router/node": "^7.4.0",
 		"date-fns": "^2.29.3",
 		"emoji-toolkit": "^7.0.0",
 		"firebase": "^9.13.0",
+		"isbot": "^5",
 		"md5": "^2.3.0",
 		"node-emoji": "^1.11.0",
 		"property-sort": "^2.1.0",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import styles from "../styles/AccountSetup.module.scss";
 import { createUser, useError, useXIOUser } from "../xio";
 import Button from "./Button";
