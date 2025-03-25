@@ -8,7 +8,7 @@ interface props {
   src: string;
   scroll: boolean;
   scrollDirection: "up" | "down";
-  end: RefObject<HTMLDivElement>;
+  end: RefObject<HTMLDivElement | null>;
   subMessage: boolean;
 }
 

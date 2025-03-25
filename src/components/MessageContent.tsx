@@ -8,7 +8,7 @@ interface Props {
   content: string;
   scroll: boolean;
   scrollDirection: "up" | "down";
-  end: RefObject<HTMLDivElement>;
+  end: RefObject<HTMLDivElement | null>;
 }
 
 export default ({ content }: Props) => {
