@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@react-router/node": "^7.4.0",
-		"date-fns": "^2.29.3",
+		"date-fns": "^4.1.0",
 		"emoji-toolkit": "^7.0.0",
 		"firebase": "^9.13.0",
 		"isbot": "^5",

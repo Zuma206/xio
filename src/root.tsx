@@ -1,4 +1,4 @@
-import { Outlet, Scripts, ScrollRestoration } from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 
 export default function App() {
   return (
@@ -27,6 +27,8 @@ export default function App() {
 			margin: 0px;
 		}`}
         </style>
+        <Meta />
+        <Links />
       </head>
       <body>
         <div id="root">
