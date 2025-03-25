@@ -4,10 +4,9 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite --host",
-		"build": "tsc && vite build",
-		"draft": "npm run build && netlify deploy",
-		"deploy": "npm run build && netlify deploy --prod"
+		"dev": "react-router dev",
+		"build": "react-router build",
+		"start": "react-router-serve ./build/server/index.js"
 	},
 	"dependencies": {
 		"@react-router/node": "^7.4.0",
@@ -27,6 +26,7 @@
 	},
 	"devDependencies": {
 		"@react-router/dev": "^7.4.0",
+		"@react-router/serve": "^7.4.0",
 		"@types/md5": "^2.3.2",
 		"@types/node-emoji": "^1.8.2",
 		"@types/react": "^19.0.12",
