@@ -1,4 +1,5 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import "./styles/Root.scss";
 
 export default function App() {
   return (
@@ -9,24 +10,6 @@ export default function App() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>XIO</title>
         <link rel="manifest" href="manifest.json" />
-        <style>
-          {`@import url('https://rsms.me/inter/inter.css');
-
-		:root {
-			font-family: 'Inter', sans-serif;
-		}
-
-		@supports (font-variation-settings: normal) {
-			:root {
-				font-family: 'Inter var', sans-serif;
-			}
-		}
-
-		body {
-			font-family: 'Inter', sans-serif;
-			margin: 0px;
-		}`}
-        </style>
         <Meta />
         <Links />
       </head>
