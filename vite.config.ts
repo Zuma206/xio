@@ -1,14 +1,9 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import autoprefixer from "autoprefixer";
+import { reactRouter } from "@react-router/dev/vite";
 
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    proxy: {
-      "/api": "http://localhost:3000/",
-    },
-  },
+  plugins: [reactRouter()],
   css: {
     postcss: {
       plugins: [autoprefixer],

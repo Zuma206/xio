@@ -1,6 +1,6 @@
 import HeaderBar from "../components/HeaderBar";
 import styles from "../styles/404.module.scss";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import Button from "../components/Button";
 
 export default () => {

@@ -4,37 +4,39 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite --host",
-		"build": "tsc && vite build",
-		"draft": "npm run build && netlify deploy",
-		"deploy": "npm run build && netlify deploy --prod"
+		"dev": "react-router dev",
+		"build": "react-router build",
+		"start": "react-router-serve ./build/server/index.js"
 	},
 	"dependencies": {
-		"date-fns": "^2.29.3",
+		"@fontsource-variable/inter": "^5.2.5",
+		"@react-router/node": "^7.4.0",
+		"date-fns": "^4.1.0",
 		"emoji-toolkit": "^7.0.0",
 		"firebase": "^9.13.0",
+		"isbot": "^5",
 		"md5": "^2.3.0",
 		"node-emoji": "^1.11.0",
-		"property-sort": "^2.1.0",
 		"pusher-js": "^7.5.0",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"react-router-dom": "^6.4.3",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"react-router": "^7.4.0",
 		"react-twemoji": "^0.5.0",
 		"sass": "^1.56.1",
 		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
+		"@react-router/dev": "^7.4.0",
+		"@react-router/serve": "^7.4.0",
 		"@types/md5": "^2.3.2",
 		"@types/node-emoji": "^1.8.2",
-		"@types/react": "^18.0.24",
-		"@types/react-dom": "^18.0.8",
+		"@types/react": "^19.0.12",
+		"@types/react-dom": "^19.0.4",
 		"@types/react-twemoji": "^0.4.0",
 		"@types/uuid": "^8.3.4",
-		"@vitejs/plugin-react": "^2.2.0",
 		"autoprefixer": "^10.4.13",
 		"postcss": "^8.4.21",
-		"typescript": "^4.6.4",
-		"vite": "^3.2.3"
+		"typescript": "^5.8.2",
+		"vite": "^6.2.2"
 	}
 }

@@ -1,8 +1,9 @@
 import styles from "../styles/Autocomplete.module.scss";
 import Twemoji from "react-twemoji";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { emoji } from "node-emoji";
+import nodeEmoji from "node-emoji";
 import TextBox from "./TextBox";
+const { emoji } = nodeEmoji;
 
 interface Props {
   message: string;
