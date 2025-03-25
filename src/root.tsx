@@ -1,4 +1,5 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import "@fontsource-variable/inter";
 import "./styles/Root.scss";
 
 export default function App() {

@@ -9,6 +9,7 @@
 		"start": "react-router-serve ./build/server/index.js"
 	},
 	"dependencies": {
+		"@fontsource-variable/inter": "^5.2.5",
 		"@react-router/node": "^7.4.0",
 		"date-fns": "^4.1.0",
 		"emoji-toolkit": "^7.0.0",
