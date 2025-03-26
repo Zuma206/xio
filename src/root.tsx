@@ -1,6 +1,11 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import HeaderBar from "./components/HeaderBar";
 import "@fontsource-variable/inter";
 import "./styles/Root.scss";
+
+export async function action() {
+  console.log("signing in");
+}
 
 export default function App() {
   return (
@@ -16,7 +21,9 @@ export default function App() {
       </head>
       <body>
         <div id="root">
-          <Outlet />
+          <HeaderBar>
+            <Outlet />
+          </HeaderBar>
         </div>
         <ScrollRestoration />
         <Scripts />

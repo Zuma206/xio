@@ -1,14 +1,10 @@
 import styles from "../styles/HeaderBar.module.scss";
+import { PropsWithChildren } from "react";
 import logo from "../assets/new.svg";
-import UserProfile from "./UserProfile";
+import Button from "./Button";
+import { Form } from "react-router";
 
-interface props extends React.PropsWithChildren {
-  showProfile?: boolean;
-}
-
-export default ({ children, showProfile }: props) => {
-  const renderProfile = showProfile ?? false;
-
+export default function HeaderBar(props: PropsWithChildren) {
   return (
     <div className={styles.container}>
       <div className={styles.headerBar}>
@@ -16,9 +12,13 @@ export default ({ children, showProfile }: props) => {
           <img src={logo} alt="XIO" className={styles.logo} />
         </div>
         <div></div>
-        <div>{renderProfile ? <UserProfile /> : null}</div>
+        <div>
+          <Form method="post">
+            <Button>Sign In</Button>
+          </Form>
+        </div>
       </div>
-      <div className={styles.content}>{children}</div>
+      <div className={styles.content}>{props.children}</div>
     </div>
   );
-};
+}
