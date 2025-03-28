@@ -1,5 +1,4 @@
 import {
-  createCookie,
   Links,
   LoaderFunctionArgs,
   Meta,
@@ -7,19 +6,25 @@ import {
   redirect,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 import HeaderBar from "./components/HeaderBar";
 import "@fontsource-variable/inter";
 import "./styles/Root.scss";
 import { createSigninFlow } from "./server/oauth";
 import { gidCookie, stateCookie } from "./server/cookies";
+import { AuthContext } from "./lib/auth";
 
-export type Loader = typeof loader;
 export async function loader({ request }: LoaderFunctionArgs) {
-  return gidCookie.safeParse(request);
+  const idResult = await gidCookie.safeParse(request);
+  return {
+    auth: idResult.success ? { id: idResult.data } : null,
+  };
 }
 
 export default function App() {
+  const { auth } = useLoaderData<typeof loader>();
+
   return (
     <html lang="en">
       <head>
@@ -33,9 +38,11 @@ export default function App() {
       </head>
       <body>
         <div id="root">
-          <HeaderBar>
-            <Outlet />
-          </HeaderBar>
+          <AuthContext value={auth}>
+            <HeaderBar>
+              <Outlet />
+            </HeaderBar>
+          </AuthContext>
         </div>
         <ScrollRestoration />
         <Scripts />

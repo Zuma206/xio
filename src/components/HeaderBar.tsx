@@ -1,11 +1,12 @@
 import styles from "../styles/HeaderBar.module.scss";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, use } from "react";
+import { AuthContext } from "../lib/auth";
 import logo from "../assets/new.svg";
+import { Form } from "react-router";
 import Button from "./Button";
-import { Form, useLoaderData } from "react-router";
 
 export default function HeaderBar(props: PropsWithChildren) {
-  const auth = useLoaderData<import("../root").Loader>();
+  const auth = use(AuthContext);
 
   return (
     <div className={styles.container}>
@@ -15,8 +16,8 @@ export default function HeaderBar(props: PropsWithChildren) {
         </div>
         <div></div>
         <div>
-          {auth.success ? (
-            <p>{auth.data}</p>
+          {auth ? (
+            <p>{auth.id}</p>
           ) : (
             <Form method="post">
               <Button>Sign In</Button>
