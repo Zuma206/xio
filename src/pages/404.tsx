@@ -5,13 +5,11 @@ import Button from "../components/Button";
 
 export default () => {
   return (
-    <HeaderBar>
-      <div className={styles.notFound}>
-        <h1>Route not found :/</h1>
-        <Link to="/">
-          <Button className={styles.button}>Take me somewhere real</Button>
-        </Link>
-      </div>
-    </HeaderBar>
+    <div className={styles.notFound}>
+      <h1>Route not found :/</h1>
+      <Link to="/">
+        <Button className={styles.button}>Take me somewhere real</Button>
+      </Link>
+    </div>
   );
 };
