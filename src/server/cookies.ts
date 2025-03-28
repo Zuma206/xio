@@ -15,6 +15,11 @@ function createTypedCookie<T>(
     serialize(value: T) {
       return cookie.serialize(value);
     },
+    async safeParse(request: Request) {
+      return schema.safeParse(
+        await cookie.parse(request.headers.get("Cookie"))
+      );
+    },
   };
 }
 
@@ -22,3 +27,8 @@ export const stateCookie = (key: string) =>
   createTypedCookie(`xio-state-${key}`, z.string(), {
     httpOnly: true,
   });
+
+export const gidCookie = createTypedCookie("xio-cookie", z.string(), {
+  httpOnly: true,
+  secrets: [env.APP_SECRET],
+});

@@ -1,6 +1,7 @@
 import {
   createCookie,
   Links,
+  LoaderFunctionArgs,
   Meta,
   Outlet,
   redirect,
@@ -11,15 +12,11 @@ import HeaderBar from "./components/HeaderBar";
 import "@fontsource-variable/inter";
 import "./styles/Root.scss";
 import { createSigninFlow } from "./server/oauth";
-import { stateCookie } from "./server/cookies";
+import { gidCookie, stateCookie } from "./server/cookies";
 
-export async function action() {
-  const { url, state } = createSigninFlow();
-  return redirect(url, {
-    headers: [
-      ["Set-Cookie", await stateCookie(state.key).serialize(state.value)],
-    ],
-  });
+export type Loader = typeof loader;
+export async function loader({ request }: LoaderFunctionArgs) {
+  return gidCookie.safeParse(request);
 }
 
 export default function App() {
@@ -45,4 +42,13 @@ export default function App() {
       </body>
     </html>
   );
+}
+
+export async function action() {
+  const { url, state } = createSigninFlow();
+  return redirect(url, {
+    headers: [
+      ["Set-Cookie", await stateCookie(state.key).serialize(state.value)],
+    ],
+  });
 }
