@@ -1,9 +1,54 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "04a86812-3352-4701-8741-6863a2153e67",
+  "id": "55b50915-750b-40d4-8d1f-1be2c3ff2f82",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "activated_users": {
+      "name": "activated_users",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "gid": {
+          "name": "gid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "activated_users_gid_users_gid_fk": {
+          "name": "activated_users_gid_users_gid_fk",
+          "tableFrom": "activated_users",
+          "tableTo": "users",
+          "columnsFrom": [
+            "gid"
+          ],
+          "columnsTo": [
+            "gid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "users": {
       "name": "users",
       "columns": {
@@ -14,24 +59,9 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
+        "picture": {
+          "name": "picture",
           "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "dev": {
-          "name": "dev",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": 0
-        },
-        "pfp": {
-          "name": "pfp",
-          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
