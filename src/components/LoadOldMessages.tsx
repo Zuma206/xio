@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import styles from "../styles/MessageList.module.scss";
-import { getChunk, MessageResult, useXIOUser } from "../xio";
+import { getChunk, MessageResult, useXIOUser } from "../lib";
 import Button from "./Button";
 import Spinner from "./Spinner";
 

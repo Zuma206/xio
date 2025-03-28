@@ -2,51 +2,51 @@ import { useState, useEffect } from "react";
 import HeaderBar from "../components/HeaderBar";
 import Columns from "../components/Columns";
 import {
-    AuthContext,
-    ErrorContext,
-    ExtendedError,
-    XIOUser,
-    UserStatus,
-    ChannelResult,
-} from "../xio";
+  AuthContext,
+  ErrorContext,
+  ExtendedError,
+  XIOUser,
+  UserStatus,
+  ChannelResult,
+} from "../lib";
 import { auth } from "../firebase";
 import Error from "../components/Error";
 import Content from "../components/Content";
 import Sidebar from "../components/Sidebar";
 
 export default () => {
-    // Create user auth state for auth context
-    const authState = useState<XIOUser | UserStatus>("unknown");
-    const errorState = useState<ExtendedError | null>(null);
-    const [selected, setSelected] = useState<ChannelResult | null>(null);
+  // Create user auth state for auth context
+  const authState = useState<XIOUser | UserStatus>("unknown");
+  const errorState = useState<ExtendedError | null>(null);
+  const [selected, setSelected] = useState<ChannelResult | null>(null);
 
-    useEffect(() => {
-        // Register listener to keep auth state up to date
-        auth.onAuthStateChanged((googleUser) => {
-            if (googleUser) {
-                authState[1]({
-                    googleUser,
-                    username: null,
-                    gravatar: null,
-                    activated: "unknown",
-                });
-            } else {
-                authState[1]("known");
-            }
+  useEffect(() => {
+    // Register listener to keep auth state up to date
+    auth.onAuthStateChanged((googleUser) => {
+      if (googleUser) {
+        authState[1]({
+          googleUser,
+          username: null,
+          gravatar: null,
+          activated: "unknown",
         });
-    }, []);
+      } else {
+        authState[1]("known");
+      }
+    });
+  }, []);
 
-    return (
-        <AuthContext.Provider value={authState}>
-            <ErrorContext.Provider value={errorState}>
-                <HeaderBar showProfile={true}>
-                    <Columns>
-                        <Sidebar {...{ setSelected, selected }} />
-                        <Content {...{ selected }} />
-                    </Columns>
-                </HeaderBar>
-                <Error />
-            </ErrorContext.Provider>
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={authState}>
+      <ErrorContext.Provider value={errorState}>
+        <HeaderBar>
+          <Columns>
+            <Sidebar {...{ setSelected, selected }} />
+            <Content {...{ selected }} />
+          </Columns>
+        </HeaderBar>
+        <Error />
+      </ErrorContext.Provider>
+    </AuthContext.Provider>
+  );
 };

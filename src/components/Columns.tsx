@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Columns.module.scss";
-import { useXIOUser } from "../xio";
+import { useXIOUser } from "../lib";
 
 export default ({ children }: React.PropsWithChildren) => {
   // Take first 2 children to place in left and right columns

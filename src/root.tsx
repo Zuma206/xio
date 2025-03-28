@@ -1,8 +1,30 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import {
+  Links,
+  LoaderFunctionArgs,
+  Meta,
+  Outlet,
+  redirect,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+} from "react-router";
+import HeaderBar from "./components/HeaderBar";
 import "@fontsource-variable/inter";
 import "./styles/Root.scss";
+import { createSigninFlow } from "./server/oauth";
+import { gidCookie, stateCookie } from "./server/cookies";
+import { AuthContext } from "./lib/auth";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const idResult = await gidCookie.safeParse(request);
+  return {
+    auth: idResult.success ? { id: idResult.data } : null,
+  };
+}
 
 export default function App() {
+  const { auth } = useLoaderData<typeof loader>();
+
   return (
     <html lang="en">
       <head>
@@ -16,11 +38,24 @@ export default function App() {
       </head>
       <body>
         <div id="root">
-          <Outlet />
+          <AuthContext value={auth}>
+            <HeaderBar>
+              <Outlet />
+            </HeaderBar>
+          </AuthContext>
         </div>
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
   );
+}
+
+export async function action() {
+  const { url, state } = createSigninFlow();
+  return redirect(url, {
+    headers: [
+      ["Set-Cookie", await stateCookie(state.key).serialize(state.value)],
+    ],
+  });
 }

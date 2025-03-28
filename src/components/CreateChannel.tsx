@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { createChannel, useError, useXIOUser, XIOUser } from "../xio";
+import { createChannel, useError, useXIOUser, XIOUser } from "../lib";
 import styles from "../styles/JoinChannel.module.scss";
 import Button from "./Button";
 import TextBox from "./TextBox";

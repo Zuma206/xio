@@ -23,7 +23,8 @@
 		"react-router": "^7.4.0",
 		"react-twemoji": "^0.5.0",
 		"sass": "^1.56.1",
-		"uuid": "^9.0.0"
+		"uuid": "^9.0.0",
+		"zod": "^3.24.2"
 	},
 	"devDependencies": {
 		"@react-router/dev": "^7.4.0",

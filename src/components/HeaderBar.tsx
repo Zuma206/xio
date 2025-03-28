@@ -1,13 +1,12 @@
 import styles from "../styles/HeaderBar.module.scss";
+import { PropsWithChildren, use } from "react";
+import { AuthContext } from "../lib/auth";
 import logo from "../assets/new.svg";
-import UserProfile from "./UserProfile";
+import { Form } from "react-router";
+import Button from "./Button";
 
-interface props extends React.PropsWithChildren {
-  showProfile?: boolean;
-}
-
-export default ({ children, showProfile }: props) => {
-  const renderProfile = showProfile ?? false;
+export default function HeaderBar(props: PropsWithChildren) {
+  const auth = use(AuthContext);
 
   return (
     <div className={styles.container}>
@@ -16,9 +15,17 @@ export default ({ children, showProfile }: props) => {
           <img src={logo} alt="XIO" className={styles.logo} />
         </div>
         <div></div>
-        <div>{renderProfile ? <UserProfile /> : null}</div>
+        <div>
+          {auth ? (
+            <p>{auth.id}</p>
+          ) : (
+            <Form method="post">
+              <Button>Sign In</Button>
+            </Form>
+          )}
+        </div>
       </div>
-      <div className={styles.content}>{children}</div>
+      <div className={styles.content}>{props.children}</div>
     </div>
   );
-};
+}

@@ -1,4 +1,4 @@
-import { ChannelResult, useXIOUser } from "../xio";
+import { ChannelResult, useXIOUser } from "../lib";
 import AccountSetup from "./AccountSetup";
 import styles from "../styles/Content.module.scss";
 import MessageList from "./MessageList";
