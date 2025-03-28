@@ -4,6 +4,7 @@ export default [
   index("pages/Index.tsx"),
   route("/agreement", "pages/UserAgreement.tsx"),
   route("/join/:id", "pages/JoinPage.tsx"),
+  route("/account-setup", "pages/AccountSetup.tsx"),
   route("/api/callback", "server/api/callback.ts"),
   route("/*", "pages/404.tsx"),
 ] satisfies RouteConfig;

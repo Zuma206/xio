@@ -1,7 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "../database/connection";
-import { users } from "../database/schema";
+import { activatedUsers, users } from "../database/schema";
 import { createHash } from "node:crypto";
+import { z } from "zod";
 
 export async function createUserIfDoesntExist(id: string, email: string) {
   return db.transaction(async (tx) => {
@@ -18,4 +19,8 @@ export async function createUserIfDoesntExist(id: string, email: string) {
       gid: id,
     });
   });
+}
+
+export async function activateUser(gid: string, name: string) {
+  await db.insert(activatedUsers).values({ gid, name });
 }

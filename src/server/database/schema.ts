@@ -7,6 +7,8 @@ export const users = sqliteTable("users", {
 
 export const activatedUsers = sqliteTable("activated_users", {
   id: integer().primaryKey({ autoIncrement: true }),
-  name: text().notNull(),
-  gid: text().references(() => users.gid),
+  name: text().notNull().unique(),
+  gid: text()
+    .references(() => users.gid, { onDelete: "cascade", onUpdate: "cascade" })
+    .unique(),
 });
