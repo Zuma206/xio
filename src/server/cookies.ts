@@ -1,5 +1,6 @@
 import { CookieOptions, createCookie } from "react-router";
 import { z } from "zod";
+import { env } from "./env";
 
 function createTypedCookie<T>(
   name: string,
@@ -8,8 +9,8 @@ function createTypedCookie<T>(
 ) {
   const cookie = createCookie(name, cookieOptions);
   return {
-    parse(request: Request) {
-      return schema.parse(cookie.parse(request.headers.get("Cookie")));
+    async parse(request: Request) {
+      return schema.parse(await cookie.parse(request.headers.get("Cookie")));
     },
     serialize(value: T) {
       return cookie.serialize(value);
@@ -18,4 +19,6 @@ function createTypedCookie<T>(
 }
 
 export const stateCookie = (key: string) =>
-  createTypedCookie(`xio-state-${key}`, z.string());
+  createTypedCookie(`xio-state-${key}`, z.string(), {
+    httpOnly: true,
+  });
