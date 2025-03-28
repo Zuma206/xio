@@ -6,12 +6,16 @@
 	"scripts": {
 		"dev": "react-router dev",
 		"build": "react-router build",
-		"start": "react-router-serve ./build/server/index.js"
+		"start": "react-router-serve ./build/server/index.js",
+		"migrate": "drizzle-kit generate",
+		"migrations": "drizzle-kit migrate"
 	},
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.2.5",
 		"@react-router/node": "^7.4.0",
+		"better-sqlite3": "^11.9.1",
 		"date-fns": "^4.1.0",
+		"drizzle-orm": "^0.41.0",
 		"emoji-toolkit": "^7.0.0",
 		"firebase": "^9.13.0",
 		"isbot": "^5",
@@ -29,6 +33,7 @@
 	"devDependencies": {
 		"@react-router/dev": "^7.4.0",
 		"@react-router/serve": "^7.4.0",
+		"@types/better-sqlite3": "^7.6.12",
 		"@types/md5": "^2.3.2",
 		"@types/node-emoji": "^1.8.2",
 		"@types/react": "^19.0.12",
@@ -36,6 +41,7 @@
 		"@types/react-twemoji": "^0.4.0",
 		"@types/uuid": "^8.3.4",
 		"autoprefixer": "^10.4.13",
+		"drizzle-kit": "^0.30.6",
 		"postcss": "^8.4.21",
 		"typescript": "^5.8.2",
 		"vite": "^6.2.2"

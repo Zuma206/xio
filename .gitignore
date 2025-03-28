@@ -32,3 +32,6 @@ build
 
 # Environment
 .env
+
+# Development Databases
+*.db
