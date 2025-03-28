@@ -1,7 +1,7 @@
-import { blacklistUser, useError, useXIOUser, whitelistUser } from "../xio";
+import { blacklistUser, useError, useXIOUser, whitelistUser } from "../lib";
 import styles from "../styles/UserSetting.module.scss";
 import { Dispatch, SetStateAction } from "react";
-import { CachedUserHook } from "../xio/userCache";
+import { CachedUserHook } from "../lib/userCache";
 import Spinner from "./Spinner";
 import Button from "./Button";
 

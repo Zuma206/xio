@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "../styles/Sidebar.module.scss";
-import { getUserChannels, useXIOUser, ChannelResult, XIOUser } from "../xio";
+import { getUserChannels, useXIOUser, ChannelResult, XIOUser } from "../lib";
 import CreateChannel from "./CreateChannel";
 import JoinChannel from "./JoinChannel";
 import Spinner from "./Spinner";

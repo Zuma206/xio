@@ -8,7 +8,7 @@ import {
   XIOUser,
   UserStatus,
   ChannelResult,
-} from "../xio";
+} from "../lib";
 import { auth } from "../firebase";
 import Error from "../components/Error";
 import Content from "../components/Content";

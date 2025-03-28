@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styles from "../styles/ChannelBadge.module.scss";
-import { ChannelResult } from "../xio";
+import { ChannelResult } from "../lib";
 
 interface Props {
   index: number;

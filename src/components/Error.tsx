@@ -1,5 +1,5 @@
 import styles from "../styles/Error.module.scss";
-import { useError } from "../xio";
+import { useError } from "../lib";
 import Button from "./Button";
 
 export default () => {

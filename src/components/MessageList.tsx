@@ -4,7 +4,7 @@ import Message from "./Message";
 import Pusher from "pusher-js";
 import MessageBox from "./MessageBox";
 import ChannelSettings from "./ChannelSettings";
-import { useUserCache } from "../xio/userCache";
+import { useUserCache } from "../lib/userCache";
 import {
   MessageResult,
   useXIOUser,
@@ -13,7 +13,7 @@ import {
   getPusher,
   useError,
   useAutoScroll,
-} from "../xio";
+} from "../lib";
 import LoadOldMessages from "./LoadOldMessages";
 import Spinner from "./Spinner";
 import Button from "./Button";

@@ -1,9 +1,9 @@
 import styles from "../styles/Message.module.scss";
-import { MessageResult, parseMessage } from "../xio";
+import { MessageResult, parseMessage } from "../lib";
 import formatRelative from "date-fns/formatRelative";
 import Embed from "./Embed";
 import MessageContent from "./MessageContent";
-import { CachedUserHook } from "../xio/userCache";
+import { CachedUserHook } from "../lib/userCache";
 import { RefObject } from "react";
 
 interface props {

@@ -6,7 +6,7 @@ import {
   useError,
   useXIOUser,
   XIOUser,
-} from "../xio";
+} from "../lib";
 import { useNavigate, useParams } from "react-router";
 import { PropsWithChildren, useEffect, useState } from "react";
 import Spinner from "./Spinner";

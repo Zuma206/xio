@@ -6,7 +6,7 @@ import {
   getUserById,
   XIOUser,
   UserStatus,
-} from "../xio";
+} from "../lib";
 import { auth } from "../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useEffect, useState } from "react";

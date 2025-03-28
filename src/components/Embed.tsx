@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useState } from "react";
 import styles from "../styles/Embed.module.scss";
-import { useXIOUser, XIOUser } from "../xio";
-import { fetchAPI } from "../xio/api";
+import { useXIOUser, XIOUser } from "../lib";
+import { fetchAPI } from "../lib/api";
 import YoutubePlayer from "./YoutubePlayer";
 
 interface props {

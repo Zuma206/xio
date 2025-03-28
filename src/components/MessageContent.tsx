@@ -1,5 +1,5 @@
 import styles from "../styles/MessageContent.module.scss";
-import { parseMessage } from "../xio";
+import { parseMessage } from "../lib";
 import emoji from "node-emoji";
 import { RefObject } from "react";
 import Twemoji from "react-twemoji";

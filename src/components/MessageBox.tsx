@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import styles from "../styles/MessageBox.module.scss";
-import { MessageResult, sendMessage, useError, useXIOUser } from "../xio";
+import { MessageResult, sendMessage, useError, useXIOUser } from "../lib";
 import { v4 as uuid } from "uuid";
 import Spinner from "./Spinner";
 import Autocomplete from "./Autocomplete";

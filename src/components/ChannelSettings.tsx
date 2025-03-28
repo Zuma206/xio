@@ -10,9 +10,9 @@ import {
   useError,
   useXIOUser,
   XIOUser,
-} from "../xio";
-import { CachedUserHook } from "../xio/userCache";
-import { getWebhook, setWebhook } from "../xio/webhookDB";
+} from "../lib";
+import { CachedUserHook } from "../lib/userCache";
+import { getWebhook, setWebhook } from "../lib/webhookDB";
 import Button from "./Button";
 import Spinner from "./Spinner";
 import TextBox from "./TextBox";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import styles from "../styles/AccountSetup.module.scss";
-import { createUser, useError, useXIOUser } from "../xio";
+import { createUser, useError, useXIOUser } from "../lib";
 import Button from "./Button";
 import Spinner from "./Spinner";
 import TextBox from "./TextBox";
