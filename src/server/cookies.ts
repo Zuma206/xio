@@ -24,11 +24,11 @@ function createTypedCookie<T>(
 }
 
 export const stateCookie = (key: string) =>
-  createTypedCookie(`xio-state-${key}`, z.string(), {
+  createTypedCookie(`XIO-State-${key}`, z.string(), {
     httpOnly: true,
   });
 
-export const gidCookie = createTypedCookie("xio-cookie", z.string(), {
+export const gidCookie = createTypedCookie("XIO-GID", z.string(), {
   httpOnly: true,
   secrets: [env.APP_SECRET],
 });

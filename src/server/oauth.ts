@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { env } from "./env";
+import { createUserIfDoesntExist } from "./repository/users";
 
 export type State = z.infer<typeof stateSchema>;
 export const stateSchema = z.object({
@@ -22,7 +23,7 @@ export function createSigninFlow() {
         ["client_id", env.GOOGLE_CLIENT_ID],
         ["redirect_uri", redirectUri],
         ["response_type", "code"],
-        ["scope", "openid"],
+        ["scope", "openid email"],
         ["state", JSON.stringify(state)],
       ]),
     state,
@@ -46,14 +47,17 @@ function getUnverifiedJWTPayload(jwt: string) {
 
 const jwtSchema = z.object({
   sub: z.string(),
+  email: z.string(),
+  email_verified: z.literal(true),
 });
 
-export async function getGoogleIDFromCallback(opts: OAuthCallback) {
+export async function getGoogleProfileFromCallback(opts: OAuthCallback) {
   if (opts.expectedState !== opts.providedState)
     throw new Error("State Mismatch");
   const token = await getTokenFromCode(opts.code);
-  const { sub } = jwtSchema.parse(getUnverifiedJWTPayload(token.id_token));
-  return sub;
+  const jwt = jwtSchema.parse(getUnverifiedJWTPayload(token.id_token));
+  await createUserIfDoesntExist(jwt.sub, jwt.email);
+  return jwt.sub;
 }
 
 const tokenSchema = z.object({
@@ -71,5 +75,6 @@ async function getTokenFromCode(code: string) {
     ]),
     method: "post",
   });
-  return tokenSchema.parse(await resp.json());
+  const token = await resp.json();
+  return tokenSchema.parse(token);
 }
