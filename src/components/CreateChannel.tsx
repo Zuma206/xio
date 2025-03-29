@@ -1,24 +1,38 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { createChannel, useError, useXIOUser, XIOUser } from "../lib";
+import { useEffect } from "react";
 import styles from "../styles/JoinChannel.module.scss";
 import Button from "./Button";
 import TextBox from "./TextBox";
-
-type props = {
-  loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-  fetchChannels: (user: XIOUser) => void;
-};
+import { useFetcher } from "react-router";
 
 export default function CreateChannel() {
+  const fetcher = useFetcher<typeof import("../pages/App").action>();
+  const busy = fetcher.state !== "idle";
+
   return (
     <div>
-      <form>
+      <fetcher.Form
+        onSubmit={(e) => {
+          const form = e.currentTarget;
+          requestAnimationFrame(() => form.reset());
+        }}
+        method="post"
+      >
         <div className={styles.container}>
-          <TextBox type="text" placeholder="Channel Name" maxLength={16} />
-          <Button>Create</Button>
+          <TextBox
+            name="name"
+            type="text"
+            placeholder="Channel Name"
+            maxLength={16}
+            disabled={busy}
+          />
+          <Button disabled={busy}>Create</Button>
         </div>
-      </form>
+      </fetcher.Form>
+      {fetcher.data?.map((error) => (
+        <p key={error} style={{ color: "red", maxWidth: "20rem" }}>
+          {error}
+        </p>
+      ))}
     </div>
   );
 }

@@ -42,3 +42,12 @@ export async function getUserName(gid: string) {
   if (results.length < 1) return null;
   return results[0].name;
 }
+
+export async function getUserByGid(gid: string) {
+  const results = await db
+    .select()
+    .from(activatedUsers)
+    .where(eq(activatedUsers.gid, gid));
+  if (results.length < 1) return null;
+  return results[0];
+}
