@@ -1,4 +1,6 @@
 import {
+  ActionFunctionArgs,
+  data,
   Links,
   LoaderFunctionArgs,
   Meta,
@@ -14,16 +16,17 @@ import "./styles/Root.scss";
 import { createSigninFlow } from "./server/oauth";
 import { gidCookie, stateCookie } from "./server/cookies";
 import { AuthContext } from "./lib/auth";
+import { getProfilePicture, getUserName } from "./server/repository/users";
+import { getAuthData } from "./server/auth";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const idResult = await gidCookie.safeParse(request);
-  return {
-    auth: idResult.success ? { id: idResult.data } : null,
-  };
+  const id = await gidCookie.safeParse(request);
+  if (!id.success) return;
+  return getAuthData(id.data);
 }
 
 export default function App() {
-  const { auth } = useLoaderData<typeof loader>();
+  const auth = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
@@ -51,11 +54,17 @@ export default function App() {
   );
 }
 
-export async function action() {
-  const { url, state } = createSigninFlow();
-  return redirect(url, {
-    headers: [
-      ["Set-Cookie", await stateCookie(state.key).serialize(state.value)],
-    ],
-  });
+export async function action({ request }: ActionFunctionArgs) {
+  if ((await gidCookie.safeParse(request)).success) {
+    return data(undefined, {
+      headers: [["Set-Cookie", await gidCookie.serialize("", { maxAge: 0 })]],
+    });
+  } else {
+    const { url, state } = createSigninFlow();
+    return redirect(url, {
+      headers: [
+        ["Set-Cookie", await stateCookie(state.key).serialize(state.value)],
+      ],
+    });
+  }
 }

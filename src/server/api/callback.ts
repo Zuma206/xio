@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, redirect } from "react-router";
-import { getGoogleIDFromCallback, stateSchema } from "../oauth";
+import { getGoogleProfileFromCallback, stateSchema } from "../oauth";
 import { gidCookie, stateCookie } from "../cookies";
 import { z } from "zod";
 
@@ -17,7 +17,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const providedState = stateSchema.parse(JSON.parse(stateString));
   const expectedState = await stateCookie(providedState.key).parse(request);
 
-  const googleID = await getGoogleIDFromCallback({
+  const googleID = await getGoogleProfileFromCallback({
     providedState: providedState.value,
     expectedState,
     code,

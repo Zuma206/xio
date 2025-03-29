@@ -4,6 +4,7 @@ import { AuthContext } from "../lib/auth";
 import logo from "../assets/new.svg";
 import { Form } from "react-router";
 import Button from "./Button";
+import UserProfile from "./UserProfile";
 
 export default function HeaderBar(props: PropsWithChildren) {
   const auth = use(AuthContext);
@@ -16,12 +17,11 @@ export default function HeaderBar(props: PropsWithChildren) {
         </div>
         <div></div>
         <div>
-          {auth ? (
-            <p>{auth.id}</p>
-          ) : (
-            <Form method="post">
-              <Button>Sign In</Button>
-            </Form>
+          <Form method="post">
+            <Button>Sign {auth ? "Out" : "In"}</Button>
+          </Form>
+          {auth != null && (
+            <UserProfile name={auth.name} picture={auth.picture} />
           )}
         </div>
       </div>

@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "55b50915-750b-40d4-8d1f-1be2c3ff2f82",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "ecc78c32-0d8f-4620-aa33-d039cdcd23ba",
+  "prevId": "55b50915-750b-40d4-8d1f-1be2c3ff2f82",
   "tables": {
     "activated_users": {
       "name": "activated_users",
@@ -29,7 +29,22 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "activated_users_name_unique": {
+          "name": "activated_users_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        },
+        "activated_users_gid_unique": {
+          "name": "activated_users_gid_unique",
+          "columns": [
+            "gid"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "activated_users_gid_users_gid_fk": {
           "name": "activated_users_gid_users_gid_fk",
@@ -41,8 +56,8 @@
           "columnsTo": [
             "gid"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
