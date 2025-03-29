@@ -14,16 +14,17 @@ import "./styles/Root.scss";
 import { createSigninFlow } from "./server/oauth";
 import { gidCookie, stateCookie } from "./server/cookies";
 import { AuthContext } from "./lib/auth";
+import { getProfilePicture, getUserName } from "./server/repository/users";
+import { getAuthData } from "./server/auth";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const idResult = await gidCookie.safeParse(request);
-  return {
-    auth: idResult.success ? { id: idResult.data } : null,
-  };
+  const id = await gidCookie.safeParse(request);
+  if (!id.success) return;
+  return getAuthData(id.data);
 }
 
 export default function App() {
-  const { auth } = useLoaderData<typeof loader>();
+  const auth = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
