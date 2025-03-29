@@ -1,4 +1,6 @@
 import {
+  ActionFunctionArgs,
+  data,
   Links,
   LoaderFunctionArgs,
   Meta,
@@ -52,11 +54,17 @@ export default function App() {
   );
 }
 
-export async function action() {
-  const { url, state } = createSigninFlow();
-  return redirect(url, {
-    headers: [
-      ["Set-Cookie", await stateCookie(state.key).serialize(state.value)],
-    ],
-  });
+export async function action({ request }: ActionFunctionArgs) {
+  if ((await gidCookie.safeParse(request)).success) {
+    return data(undefined, {
+      headers: [["Set-Cookie", await gidCookie.serialize("", { maxAge: 0 })]],
+    });
+  } else {
+    const { url, state } = createSigninFlow();
+    return redirect(url, {
+      headers: [
+        ["Set-Cookie", await stateCookie(state.key).serialize(state.value)],
+      ],
+    });
+  }
 }

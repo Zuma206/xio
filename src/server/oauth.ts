@@ -25,6 +25,7 @@ export function createSigninFlow() {
         ["response_type", "code"],
         ["scope", "openid email"],
         ["state", JSON.stringify(state)],
+        ["prompt", "select_account"],
       ]),
     state,
   };

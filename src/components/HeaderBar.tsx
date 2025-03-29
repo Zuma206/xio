@@ -20,7 +20,7 @@ export default function HeaderBar(props: PropsWithChildren) {
           <Form method="post">
             <Button>Sign {auth ? "Out" : "In"}</Button>
           </Form>
-          {auth !== undefined && (
+          {auth != null && (
             <UserProfile name={auth.name} picture={auth.picture} />
           )}
         </div>
