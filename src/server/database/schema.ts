@@ -12,3 +12,14 @@ export const activatedUsers = sqliteTable("activated_users", {
     .references(() => users.gid, { onDelete: "cascade", onUpdate: "cascade" })
     .unique(),
 });
+
+export const channels = sqliteTable("channels", {
+  id: integer().primaryKey({ autoIncrement: true }),
+  name: text().notNull(),
+  owner: integer()
+    .references(() => activatedUsers.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    })
+    .notNull(),
+});
