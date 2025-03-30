@@ -1,14 +1,14 @@
 import { ActionFunctionArgs, Outlet } from "react-router";
 import Columns from "../components/Columns";
 import Sidebar from "../components/Sidebar";
-import { db } from "../server/database/connection";
-import { channels } from "../server/database/schema";
 import { requireActivatedUser } from "../server/helpers";
-import { createChannel } from "../server/repository/channels";
+import { createChannel, getChannels } from "../server/repository/channels";
 import { z } from "zod";
+import { Route } from "./+types/App";
 
-export function loader() {
-  return db.select().from(channels);
+export async function loader({ request }: Route.LoaderArgs) {
+  const user = await requireActivatedUser(request);
+  return getChannels(user.id);
 }
 
 export default function App() {

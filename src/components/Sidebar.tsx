@@ -15,7 +15,7 @@ export default function Sidebar() {
       </div>
       <div className={styles.channels}>
         {channels.map((channel) => (
-          <ChannelBadge key={channel.id} name={channel.name} />
+          <ChannelBadge key={channel.id} id={channel.id} name={channel.name} />
         ))}
       </div>
     </div>
