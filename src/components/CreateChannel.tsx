@@ -1,59 +1,38 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { createChannel, useError, useXIOUser, XIOUser } from "../lib";
+import { useEffect } from "react";
 import styles from "../styles/JoinChannel.module.scss";
 import Button from "./Button";
 import TextBox from "./TextBox";
+import { useFetcher } from "react-router";
 
-type props = {
-  loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-  fetchChannels: (user: XIOUser) => void;
-};
-
-export default ({ loading, setLoading, fetchChannels }: props) => {
-  const [user] = useXIOUser();
-  const [channelName, setChannelName] = useState("");
-  const [displayError] = useError("Uh Oh!", setLoading);
-
-  async function submitForm() {
-    if (user == "known" || user == "unknown") return;
-    setLoading(true);
-    const err = await createChannel(
-      channelName,
-      await user.googleUser.getIdToken()
-    );
-    if (err) {
-      return displayError({
-        name: "There was an error creating your channel",
-        code: err.response,
-        message: err.response,
-      });
-    }
-    setChannelName("");
-    await fetchChannels(user);
-    setLoading(false);
-  }
+export default function CreateChannel() {
+  const fetcher = useFetcher<typeof import("../pages/App").action>();
+  const busy = fetcher.state !== "idle";
 
   return (
     <div>
-      <form
+      <fetcher.Form
         onSubmit={(e) => {
-          e.preventDefault();
-          submitForm();
+          const form = e.currentTarget;
+          requestAnimationFrame(() => form.reset());
         }}
+        method="post"
       >
         <div className={styles.container}>
           <TextBox
-            disabled={loading}
+            name="name"
             type="text"
             placeholder="Channel Name"
-            value={channelName}
-            onChange={(e) => setChannelName(e.target.value)}
             maxLength={16}
+            disabled={busy}
           />
-          <Button disabled={loading}>Create</Button>
+          <Button disabled={busy}>Create</Button>
         </div>
-      </form>
+      </fetcher.Form>
+      {fetcher.data?.map((error) => (
+        <p key={error} style={{ color: "red", maxWidth: "20rem" }}>
+          {error}
+        </p>
+      ))}
     </div>
   );
-};
+}

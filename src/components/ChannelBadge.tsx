@@ -2,28 +2,14 @@ import { Dispatch, SetStateAction } from "react";
 import styles from "../styles/ChannelBadge.module.scss";
 import { ChannelResult } from "../lib";
 
-interface Props {
-  index: number;
-  isSelected: boolean;
-  setSelected: Dispatch<SetStateAction<ChannelResult | null>>;
-  channel: ChannelResult;
-}
+type Props = {
+  name: string;
+};
 
-export default function ChannelBadge({
-  index,
-  isSelected,
-  setSelected,
-  channel,
-}: Props) {
+export default function ChannelBadge(props: Props) {
   return (
-    <div
-      key={index}
-      className={isSelected ? styles.badgeSelected : styles.badge}
-      onClick={(e) => {
-        setSelected(isSelected ? null : channel);
-      }}
-    >
-      <div className={styles.text}>{channel.name}</div>
+    <div className={false ? styles.badgeSelected : styles.badge}>
+      <div className={styles.text}>{props.name}</div>
     </div>
   );
 }
