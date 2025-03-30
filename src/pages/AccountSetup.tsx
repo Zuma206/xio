@@ -59,7 +59,7 @@ export async function action({ request }: ActionFunctionArgs) {
     .string({ message: "Please enter a username" })
     .min(3, "Username must be at least 3 characters long")
     .max(16, "Username must be less than 16 characters long")
-    .regex(/[A-z]|[0-9]/g, "Username can only contain letters or numbers")
+    .regex(/^([A-z]|[0-9])+$/g, "Username can only contain letters or numbers")
     .safeParse((await request.formData()).get("username") ?? "");
   if (username.error) return username.error.format()._errors;
   try {

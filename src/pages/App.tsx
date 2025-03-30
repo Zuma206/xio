@@ -41,7 +41,7 @@ export async function action({ request }: ActionFunctionArgs) {
       .min(3, "Channel names must be at least 3 characters")
       .max(16, "Channel names can be at most 16 characters")
       .regex(
-        /[A-z]|\ |[0-9]/g,
+        /^([A-z]|\ |[0-9])+$/g,
         "Channel names can only contain letters, numbers, and spaces"
       )
       .safeParse(name);
