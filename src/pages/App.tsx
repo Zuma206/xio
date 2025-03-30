@@ -1,11 +1,8 @@
-import { ActionFunctionArgs } from "react-router";
+import { ActionFunctionArgs, Outlet } from "react-router";
 import Columns from "../components/Columns";
-import ContentContainer from "../components/ContentContainer";
 import Sidebar from "../components/Sidebar";
 import { db } from "../server/database/connection";
 import { channels } from "../server/database/schema";
-import styles from "../styles/Content.module.scss";
-import { gidCookie } from "../server/cookies";
 import { requireActivatedUser } from "../server/helpers";
 import { createChannel } from "../server/repository/channels";
 import { z } from "zod";
@@ -18,15 +15,7 @@ export default function App() {
   return (
     <Columns>
       <Sidebar />
-      <ContentContainer>
-        <h1 className={styles.title}>
-          Welcome, <span className={styles.logoText}>Zuma</span>
-        </h1>
-        <p>
-          You've been signed in successfully, and your account is fully setup.
-          Start chatting!
-        </p>
-      </ContentContainer>
+      <Outlet />
     </Columns>
   );
 }
