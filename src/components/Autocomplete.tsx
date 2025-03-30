@@ -75,6 +75,7 @@ export default ({ message, setMessage, disabled }: Props) => {
         disabled={disabled}
         minLength={1}
         maxLength={280}
+        name="message"
         onKeyDown={(e) => {
           if (!match) return;
           if (

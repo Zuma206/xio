@@ -1,8 +1,8 @@
-import { useEffect } from "react";
 import styles from "../styles/JoinChannel.module.scss";
 import Button from "./Button";
 import TextBox from "./TextBox";
 import { useFetcher } from "react-router";
+import { onSubmitResetForm } from "../lib/forms";
 
 export default function CreateChannel() {
   const fetcher = useFetcher<typeof import("../pages/App").action>();
@@ -10,13 +10,7 @@ export default function CreateChannel() {
 
   return (
     <div>
-      <fetcher.Form
-        onSubmit={(e) => {
-          const form = e.currentTarget;
-          requestAnimationFrame(() => form.reset());
-        }}
-        method="post"
-      >
+      <fetcher.Form onSubmit={onSubmitResetForm} method="post">
         <div className={styles.container}>
           <TextBox
             name="name"

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../database/connection";
-import { activatedUsers, channels, messages } from "../database/schema";
+import { activatedUsers, channels, messages, users } from "../database/schema";
 
 export function createChannel(userId: number, name: string) {
   return db.transaction(async (tx) => {
@@ -20,8 +20,29 @@ export function getChannels(id: number) {
 
 export function getMessages(channelId: number) {
   return db
-    .select()
+    .select({
+      id: messages.id,
+      name: activatedUsers.name,
+      picture: users.picture,
+      content: messages.content,
+      date: messages.date,
+    })
     .from(messages)
+    .innerJoin(activatedUsers, eq(messages.author, activatedUsers.id))
+    .innerJoin(users, eq(activatedUsers.gid, users.gid))
     .where(eq(messages.channel, channelId))
     .orderBy(messages.date);
+}
+
+export async function createMessage(
+  userId: number,
+  channelId: number,
+  content: string
+) {
+  await db.insert(messages).values({
+    channel: channelId,
+    date: Date.now(),
+    author: userId,
+    content,
+  });
 }
