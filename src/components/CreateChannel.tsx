@@ -5,12 +5,12 @@ import { useFetcher } from "react-router";
 import { onSubmitResetForm } from "../lib/forms";
 
 export default function CreateChannel() {
-  const fetcher = useFetcher<typeof import("../pages/App").action>();
+  const fetcher = useFetcher<typeof import("../pages/Dashboard").action>();
   const busy = fetcher.state !== "idle";
 
   return (
     <div>
-      <fetcher.Form onSubmit={onSubmitResetForm} method="post">
+      <fetcher.Form action="/app" onSubmit={onSubmitResetForm} method="post">
         <div className={styles.container}>
           <TextBox
             name="name"

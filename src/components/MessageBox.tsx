@@ -2,15 +2,18 @@ import { useState } from "react";
 import styles from "../styles/MessageBox.module.scss";
 import Autocomplete from "./Autocomplete";
 import Button from "./Button";
-import { Form } from "react-router";
-import { onSubmitResetForm } from "../lib/forms";
+import { useFetcher } from "react-router";
 
 export default function MessageBox() {
   const [message, setMessage] = useState("");
+  const fetcher = useFetcher();
 
   return (
     <div className={styles.messageBox}>
-      <Form method="post" onSubmit={() => setTimeout(() => setMessage(""), 0)}>
+      <fetcher.Form
+        method="post"
+        onSubmit={() => setTimeout(() => setMessage(""), 0)}
+      >
         <Autocomplete
           message={message}
           setMessage={setMessage}
@@ -26,7 +29,7 @@ export default function MessageBox() {
         >
           {280 - message.length}
         </span>
-      </Form>
+      </fetcher.Form>
       <div className={styles.buttons}>
         <Button>Settings</Button>
       </div>
