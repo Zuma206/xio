@@ -11,6 +11,8 @@
   margin: 1em 1.5em;
   box-shadow: $shadow;
   transition: 0.1s;
+  text-decoration: none;
+  color: inherit;
 }
 
 .badge:hover {

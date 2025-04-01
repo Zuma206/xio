@@ -23,3 +23,21 @@ export const channels = sqliteTable("channels", {
     })
     .notNull(),
 });
+
+export const messages = sqliteTable("messages", {
+  id: integer().primaryKey({ autoIncrement: true }),
+  author: integer()
+    .references(() => activatedUsers.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    })
+    .notNull(),
+  content: text().notNull(),
+  date: integer().notNull(),
+  channel: integer()
+    .references(() => channels.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    })
+    .notNull(),
+});

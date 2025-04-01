@@ -1,87 +1,31 @@
+import { useMemo } from "react";
 import styles from "../styles/Message.module.scss";
-import { MessageResult, parseMessage } from "../lib";
-import formatRelative from "date-fns/formatRelative";
-import Embed from "./Embed";
-import MessageContent from "./MessageContent";
-import { CachedUserHook } from "../lib/userCache";
-import { RefObject } from "react";
 
-interface props {
-  data: MessageResult;
-  useCachedUser: CachedUserHook;
-  scroll: boolean;
-  scrollDirection: "up" | "down";
-  end: RefObject<HTMLDivElement | null>;
-  subMessage: boolean;
-}
+type Props = {
+  username: string;
+  content: string;
+  picture: string;
+  date: number;
+};
 
-export default ({
-  data,
-  useCachedUser,
-  scroll,
-  scrollDirection,
-  end,
-  subMessage,
-}: props) => {
-  const userData = useCachedUser(data.user);
+export default function Message(props: Props) {
+  const dateFormat = useMemo(() => {
+    const date = new Date(props.date);
+    return `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`;
+  }, [props.date]);
 
   return (
-    <>
-      <div
-        className={
-          data.clientSide
-            ? subMessage
-              ? styles.clientSubMessage
-              : styles.clientMessage
-            : subMessage
-            ? styles.subMessage
-            : styles.message
-        }
-      >
-        <div className={styles.messageContent}>
-          {!subMessage ? (
-            <img
-              src={userData?.gravatar ?? ""}
-              alt=" "
-              className={styles.picture}
-            />
-          ) : null}
-          <div>
-            {!subMessage ? (
-              <div
-                className={
-                  data.clientSide === true ? undefined : styles.username
-                }
-              >
-                {userData?.username ?? ""} {userData?.dev ? "🛠️ " : null}
-                <span className={styles.date}>
-                  {formatRelative(data.timestamp, Date.now())}
-                </span>
-              </div>
-            ) : null}
-            <div className={styles.wrap}>
-              <MessageContent
-                content={data.content.trimEnd()}
-                scroll={scroll}
-                scrollDirection={scrollDirection}
-                end={end}
-              />
-            </div>
+    <div className={true ? styles.message : styles.clientMessage}>
+      <div className={styles.messageContent}>
+        <img className={styles.picture} src={props.picture} />
+        <div>
+          <div className={styles.username}>
+            {props.username}
+            <span className={styles.date}> {dateFormat}</span>
           </div>
+          <div className={styles.wrap}>{props.content}</div>
         </div>
-        {parseMessage(data.content)
-          .filter(({ type }) => type == "link")
-          .map(({ value }, index) => (
-            <Embed
-              subMessage={subMessage}
-              src={value}
-              key={index}
-              scroll={scroll}
-              scrollDirection={scrollDirection}
-              end={end}
-            />
-          ))}
       </div>
-    </>
+    </div>
   );
-};
+}
