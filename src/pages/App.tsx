@@ -6,7 +6,7 @@ import { getChannels } from "../server/repository/channels";
 import { Route } from "./+types/App";
 import { authority } from "../server/socktopus";
 import { env } from "../server/env";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { SocktopusClient } from "../lib/socktopus";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -23,17 +23,19 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function App() {
   const { grant, socktopusURL } = useLoaderData<typeof loader>();
 
+  const socktopus = useMemo(
+    () =>
+      new SocktopusClient({
+        rootURL: socktopusURL,
+        messageListener(data) {
+          console.log(data);
+        },
+      }),
+    []
+  );
+
   useEffect(() => {
-    new SocktopusClient({
-      rootURL: socktopusURL,
-      initialGrant: grant,
-      messageListener(data) {
-        console.log(data);
-      },
-      getGrant() {
-        throw new Error("Connection failed");
-      },
-    });
+    socktopus.open(grant);
   }, []);
 
   return (
