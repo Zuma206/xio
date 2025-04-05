@@ -5,7 +5,7 @@ import ChannelBadge from "./ChannelBadge";
 import { useLoaderData } from "react-router";
 
 export default function Sidebar() {
-  const channels = useLoaderData<typeof import("../pages/App").loader>();
+  const { channels } = useLoaderData<typeof import("../pages/App").loader>();
 
   return (
     <div className={styles.sidebar}>

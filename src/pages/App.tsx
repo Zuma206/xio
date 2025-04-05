@@ -1,16 +1,41 @@
-import { Outlet } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 import Columns from "../components/Columns";
 import Sidebar from "../components/Sidebar";
 import { requireActivatedUser } from "../server/helpers";
 import { getChannels } from "../server/repository/channels";
 import { Route } from "./+types/App";
+import { authority } from "../server/socktopus";
+import { env } from "../server/env";
+import { useEffect } from "react";
+import { SocktopusClient } from "../lib/socktopus";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const user = await requireActivatedUser(request);
-  return getChannels(user.id);
+  const [channels, grant] = await Promise.all([
+    getChannels(user.id),
+    authority(env.SOCKTOPUS_NAME, env.SOCKTOPUS_SECRET).grant(
+      user.id.toString()
+    ),
+  ]);
+  return { channels, grant, socktopusURL: env.SOCKTOPUS_ROOT_URL };
 }
 
 export default function App() {
+  const { grant, socktopusURL } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    new SocktopusClient({
+      rootURL: socktopusURL,
+      initialGrant: grant,
+      messageListener(data) {
+        console.log(data);
+      },
+      getGrant() {
+        throw new Error("Connection failed");
+      },
+    });
+  }, []);
+
   return (
     <Columns>
       <Sidebar />
