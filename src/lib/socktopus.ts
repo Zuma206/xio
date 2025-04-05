@@ -1,7 +1,7 @@
 type SocktopusClientOptions = Readonly<{
   rootURL: string;
   initialGrant?: string;
-  messageListener: (data: unknown) => void;
+  messageListener: (data: string) => void;
   getGrant: () => string | Promise<string>;
   connectionOpenListener?: () => void;
   connectionClosedListener?: () => void;
@@ -9,7 +9,8 @@ type SocktopusClientOptions = Readonly<{
 
 const PING = "PING",
   PONG = "PONG",
-  CLOSE = "CLOSE";
+  CLOSE = "CLOSE",
+  DATA = "DATA:";
 
 export class SocktopusClient {
   private pingTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -32,14 +33,16 @@ export class SocktopusClient {
     this.webSocket.onmessage = ({ data }) => this.handleMessage(data);
   }
 
-  private handleMessage(message: string) {
-    switch (message) {
+  private handleMessage(data: unknown) {
+    if (typeof data !== "string") return;
+    switch (data) {
       case PONG:
         return this.setPingTimeout();
       case CLOSE:
         return this.webSocket?.close();
     }
-    console.log(message);
+    if (data.startsWith(DATA))
+      this.options.messageListener(data.substring(DATA.length));
   }
 
   private setPingTimeout() {
