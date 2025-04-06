@@ -39,10 +39,18 @@ export async function createMessage(
   channelId: number,
   content: string
 ) {
-  await db.insert(messages).values({
+  const date = Date.now();
+  const { lastInsertRowid } = await db.insert(messages).values({
     channel: channelId,
-    date: Date.now(),
     author: userId,
     content,
+    date,
   });
+  return { id: lastInsertRowid, date };
+}
+
+export async function getChannel(id: number) {
+  const results = await db.select().from(channels).where(eq(channels.id, id));
+  if (results.length < 1) return null;
+  return results[0];
 }

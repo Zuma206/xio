@@ -45,8 +45,14 @@ export async function getUserName(gid: string) {
 
 export async function getUserByGid(gid: string) {
   const results = await db
-    .select()
+    .select({
+      id: activatedUsers.id,
+      name: activatedUsers.name,
+      picture: users.picture,
+      gid: users.gid,
+    })
     .from(activatedUsers)
+    .innerJoin(users, eq(users.gid, activatedUsers.gid))
     .where(eq(activatedUsers.gid, gid));
   if (results.length < 1) return null;
   return results[0];

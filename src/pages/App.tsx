@@ -4,44 +4,46 @@ import Sidebar from "../components/Sidebar";
 import { requireActivatedUser } from "../server/helpers";
 import { getChannels } from "../server/repository/channels";
 import { Route } from "./+types/App";
-import { authority } from "../server/socktopus";
+import { socktopusAuthority } from "../server/socktopus";
 import { env } from "../server/env";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { SocktopusClient } from "../lib/socktopus";
+import { MessageDB, MessageDBContext, messageSchema } from "../lib/messages";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const user = await requireActivatedUser(request);
-  const [channels, grant] = await Promise.all([
-    getChannels(user.id),
-    authority(env.SOCKTOPUS_NAME, env.SOCKTOPUS_SECRET).grant(
-      user.id.toString()
-    ),
-  ]);
-  return { channels, grant, socktopusURL: env.SOCKTOPUS_ROOT_URL };
+  return {
+    channels: await getChannels(user.id),
+    grant: socktopusAuthority.grant(user.id.toString()),
+    socktopusURL: env.SOCKTOPUS_ROOT_URL,
+  };
 }
 
 export default function App() {
   const { grant, socktopusURL } = useLoaderData<typeof loader>();
-
-  const socktopus = useMemo(
-    () =>
-      new SocktopusClient({
-        rootURL: socktopusURL,
-        messageListener(data) {
-          console.log(data);
-        },
-      }),
-    []
-  );
+  const [messageDB, setMessageDB] = useState<MessageDB>({});
 
   useEffect(() => {
+    const socktopus = new SocktopusClient({
+      rootURL: socktopusURL,
+      messageListener(message) {
+        const { data, success } = messageSchema.safeParse(JSON.parse(message));
+        if (!success) return;
+        setMessageDB((messageDB) => ({
+          ...messageDB,
+          [data.channel]: [...(messageDB[data.channel] ?? []), data],
+        }));
+      },
+    });
     socktopus.open(grant);
   }, []);
 
   return (
-    <Columns>
-      <Sidebar />
-      <Outlet />
-    </Columns>
+    <MessageDBContext value={messageDB}>
+      <Columns>
+        <Sidebar />
+        <Outlet />
+      </Columns>
+    </MessageDBContext>
   );
 }
