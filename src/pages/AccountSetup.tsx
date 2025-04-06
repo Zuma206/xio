@@ -4,14 +4,14 @@ import styles from "../styles/AccountSetup.module.scss";
 import Button from "../components/Button";
 import Columns from "../components/Columns";
 import ContentContainer from "../components/ContentContainer";
-import { gidCookie } from "../server/cookies";
+import { idCookie } from "../server/cookies";
 import { activateUser } from "../server/repository/users";
 import { z } from "zod";
 import { getAuthData } from "../server/auth";
 import { Route } from "./+types/AccountSetup";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const { data, success } = await gidCookie.safeParse(request);
+  const { data, success } = await idCookie.safeParse(request);
   if (!success) return redirect("/");
   const auth = await getAuthData(data);
   if (auth.name !== null) return redirect("/app");
@@ -63,7 +63,7 @@ export default function AccountSetup() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const gid = await gidCookie.parse(request);
+  const gid = await idCookie.parse(request);
   const username = z
     .string({ message: "Please enter a username" })
     .min(3, "Username must be at least 3 characters long")

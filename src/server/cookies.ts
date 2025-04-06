@@ -32,7 +32,12 @@ export const stateCookie = (key: string) =>
     httpOnly: true,
   });
 
-export const gidCookie = createTypedCookie("XIO-GID", z.string(), {
+export const idCookie = createTypedCookie("XIO-GID", z.string(), {
+  httpOnly: true,
+  secrets: [env.APP_SECRET],
+});
+
+export const pictureCookie = createTypedCookie("XIO-Picture", z.string(), {
   httpOnly: true,
   secrets: [env.APP_SECRET],
 });
