@@ -55,7 +55,10 @@ export default function App() {
 export async function action({ request }: ActionFunctionArgs) {
   if ((await idCookie.safeParse(request)).success) {
     return data(undefined, {
-      headers: [["Set-Cookie", await idCookie.serialize("", { maxAge: 0 })]],
+      headers: [
+        ["Set-Cookie", await idCookie.serialize("", { maxAge: 0 })],
+        ["Set-Cookie", await pictureCookie.serialize("", { maxAge: 0 })],
+      ],
     });
   } else {
     const { url, state } = createSigninFlow();

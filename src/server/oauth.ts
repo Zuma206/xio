@@ -54,7 +54,7 @@ const jwtSchema = z.object({
 function getGravatar(email: string) {
   return (
     "https://gravatar.com/avatar/" +
-    createHash("sha256").update(email).digest("base64")
+    createHash("sha256").update(email).digest("hex")
   );
 }
 

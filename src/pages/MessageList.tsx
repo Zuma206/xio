@@ -2,7 +2,7 @@ import styles from "../styles/MessageList.module.scss";
 import Message from "../components/Message";
 import MessageBox from "../components/MessageBox";
 import { Route } from "./+types/MessageList";
-import { createMessage, getMessages } from "../server/repository/channels";
+import { createMessage, getMessages } from "../server/repository/channels.ts";
 import { useLoaderData } from "react-router";
 import { requireActivatedUser } from "../server/helpers";
 import { z } from "zod";

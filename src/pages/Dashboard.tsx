@@ -3,13 +3,21 @@ import ContentContainer from "../components/ContentContainer";
 import { requireActivatedUser } from "../server/helpers";
 import styles from "../styles/Content.module.scss";
 import { Route } from "./+types/Dashboard";
-import { createChannel } from "../server/repository/channels";
+import { getUserById } from "../server/repository/users";
+import { idCookie } from "../server/cookies";
+import { redirect, useLoaderData } from "react-router";
+
+export function loader({ request }: Route.LoaderArgs) {
+  return requireActivatedUser(request);
+}
 
 export default function Dashboard() {
+  const { name } = useLoaderData<typeof loader>();
+
   return (
     <ContentContainer>
       <h1 className={styles.title}>
-        Welcome, <span className={styles.logoText}>Zuma</span>
+        Welcome, <span className={styles.logoText}>{name}</span>
       </h1>
       <p>
         You've been signed in successfully, and your account is fully setup.
