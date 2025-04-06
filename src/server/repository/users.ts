@@ -9,7 +9,7 @@ export async function createUserIfDoesntExist(id: string, email: string) {
     const results = await tx
       .select()
       .from(users)
-      .where(eq(users.gid, id))
+      .where(eq(users.id, id))
       .limit(1);
     if (results.length > 0) return;
     await tx.insert(users).values({
@@ -29,7 +29,7 @@ export async function getProfilePicture(gid: string) {
   const results = await db
     .select({ picture: users.picture })
     .from(users)
-    .where(eq(users.gid, gid));
+    .where(eq(users.id, gid));
   if (results.length < 1) return null;
   return results[0].picture;
 }
