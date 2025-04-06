@@ -7,6 +7,15 @@ import ContentContainer from "../components/ContentContainer";
 import { gidCookie } from "../server/cookies";
 import { activateUser } from "../server/repository/users";
 import { z } from "zod";
+import { getAuthData } from "../server/auth";
+import { Route } from "./+types/AccountSetup";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const { data, success } = await gidCookie.safeParse(request);
+  if (!success) return redirect("/");
+  const auth = await getAuthData(data);
+  if (auth.name !== null) return redirect("/app");
+}
 
 export default function AccountSetup() {
   const fetcher = useFetcher<typeof action>();
