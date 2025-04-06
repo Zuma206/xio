@@ -1,11 +1,14 @@
+import { InferSelectModel } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+export type User = InferSelectModel<typeof users>;
 export const users = sqliteTable("users", {
   id: text().primaryKey(),
   name: text().notNull().unique(),
   picture: text().notNull(),
 });
 
+export type Channel = InferSelectModel<typeof channels>;
 export const channels = sqliteTable("channels", {
   id: text().primaryKey(),
   name: text().notNull(),
@@ -17,6 +20,7 @@ export const channels = sqliteTable("channels", {
     }),
 });
 
+export type Message = InferSelectModel<typeof messages>;
 export const messages = sqliteTable("messages", {
   id: text().primaryKey(),
   content: text().notNull(),

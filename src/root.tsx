@@ -14,14 +14,15 @@ import HeaderBar from "./components/HeaderBar";
 import "@fontsource-variable/inter";
 import "./styles/Root.scss";
 import { createSigninFlow } from "./server/oauth";
-import { idCookie, stateCookie } from "./server/cookies";
-import { AuthContext } from "./lib/auth";
-import { getAuthData } from "./server/auth";
+import { idCookie, pictureCookie, stateCookie } from "./server/cookies";
+import { getUserById } from "./server/repository/users";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const id = await idCookie.safeParse(request);
-  if (!id.success) return;
-  return getAuthData(id.data);
+  const { data: id, success: idExists } = await idCookie.safeParse(request);
+  if (!idExists) return {};
+  const user = await getUserById(id);
+  if (!user) return { id, picture: await pictureCookie.parse(request) };
+  return user;
 }
 
 export default function App() {
@@ -40,11 +41,9 @@ export default function App() {
       </head>
       <body>
         <div id="root">
-          <AuthContext value={auth}>
-            <HeaderBar>
-              <Outlet />
-            </HeaderBar>
-          </AuthContext>
+          <HeaderBar>
+            <Outlet />
+          </HeaderBar>
         </div>
         <ScrollRestoration />
         <Scripts />
