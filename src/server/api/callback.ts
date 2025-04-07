@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs, redirect } from "react-router";
-import { getGoogleProfileFromCallback, stateSchema } from "../oauth";
-import { gidCookie, stateCookie } from "../cookies";
+import { getCallbackInfo, stateSchema } from "../oauth";
+import { idCookie, pictureCookie, stateCookie } from "../cookies";
 import { z } from "zod";
 
 const searchParamsSchema = z.object({
@@ -17,13 +17,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const providedState = stateSchema.parse(JSON.parse(stateString));
   const expectedState = await stateCookie(providedState.key).parse(request);
 
-  const googleID = await getGoogleProfileFromCallback({
+  const { id, picture } = await getCallbackInfo({
     providedState: providedState.value,
     expectedState,
     code,
   });
 
   return redirect("/", {
-    headers: [["Set-Cookie", await gidCookie.serialize(googleID)]],
+    headers: [
+      ["Set-Cookie", await idCookie.serialize(id)],
+      ["Set-Cookie", await pictureCookie.serialize(picture)],
+    ],
   });
 }

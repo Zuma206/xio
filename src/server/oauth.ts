@@ -1,7 +1,6 @@
-import { randomBytes } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { z } from "zod";
 import { env } from "./env";
-import { createUserIfDoesntExist } from "./repository/users";
 
 export type State = z.infer<typeof stateSchema>;
 export const stateSchema = z.object({
@@ -52,13 +51,22 @@ const jwtSchema = z.object({
   email_verified: z.literal(true),
 });
 
-export async function getGoogleProfileFromCallback(opts: OAuthCallback) {
+function getGravatar(email: string) {
+  return (
+    "https://gravatar.com/avatar/" +
+    createHash("sha256").update(email).digest("hex")
+  );
+}
+
+export async function getCallbackInfo(opts: OAuthCallback) {
   if (opts.expectedState !== opts.providedState)
     throw new Error("State Mismatch");
   const token = await getTokenFromCode(opts.code);
   const jwt = jwtSchema.parse(getUnverifiedJWTPayload(token.id_token));
-  await createUserIfDoesntExist(jwt.sub, jwt.email);
-  return jwt.sub;
+  return {
+    picture: getGravatar(jwt.email),
+    id: jwt.sub,
+  };
 }
 
 const tokenSchema = z.object({

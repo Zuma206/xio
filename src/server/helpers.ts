@@ -1,10 +1,10 @@
 import { redirect } from "react-router";
-import { gidCookie } from "./cookies";
-import { getUserByGid, getUserName } from "./repository/users";
+import { idCookie } from "./cookies";
+import { getUserById } from "./repository/users";
 
-export async function requireActivatedUser(request: Request) {
-  const gid = await gidCookie.safeParse(request);
-  const user = gid.success ? await getUserByGid(gid.data) : null;
+export async function requireAuth(request: Request) {
+  const { data: id, success: idExists } = await idCookie.safeParse(request);
+  const user = idExists ? await getUserById(id) : null;
   if (!user) throw redirect("/account-setup");
   return user;
 }

@@ -5,10 +5,11 @@
 	"type": "module",
 	"scripts": {
 		"dev": "react-router dev",
-		"build": "react-router build",
+		"build": "tsc && react-router build",
 		"start": "react-router-serve ./build/server/index.js",
 		"migrate": "drizzle-kit generate",
-		"migrations": "drizzle-kit migrate"
+		"migrations": "drizzle-kit migrate",
+		"typecheck": "tsc"
 	},
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.2.5",
@@ -20,6 +21,7 @@
 		"firebase": "^9.13.0",
 		"isbot": "^5",
 		"md5": "^2.3.0",
+		"nanoid": "^5.1.5",
 		"node-emoji": "^1.11.0",
 		"pusher-js": "^7.5.0",
 		"react": "^19.0.0",

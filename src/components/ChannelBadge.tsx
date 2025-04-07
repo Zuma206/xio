@@ -2,10 +2,10 @@ import { Dispatch, SetStateAction } from "react";
 import styles from "../styles/ChannelBadge.module.scss";
 import { ChannelResult } from "../lib";
 import { Link, useParams } from "react-router";
+import type { Channel } from "../server/database/schema";
 
 type Props = {
-  id: number;
-  name: string;
+  channel: Channel;
 };
 
 export default function ChannelBadge(props: Props) {
@@ -13,12 +13,12 @@ export default function ChannelBadge(props: Props) {
 
   return (
     <Link
-      to={`/app/${props.id}`}
+      to={`/app/${props.channel.id}`}
       className={
-        channelId == props.id.toString() ? styles.badgeSelected : styles.badge
+        channelId == props.channel.id ? styles.badgeSelected : styles.badge
       }
     >
-      <div className={styles.text}>{props.name}</div>
+      <div className={styles.text}>{props.channel.name}</div>
     </Link>
   );
 }

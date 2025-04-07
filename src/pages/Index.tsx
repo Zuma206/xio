@@ -3,11 +3,11 @@ import background from "../assets/background.svg";
 import Credits from "../components/Credits";
 import Columns from "../components/Columns";
 import { Route } from "./+types/Index";
-import { gidCookie } from "../server/cookies";
+import { idCookie } from "../server/cookies";
 import { redirect } from "react-router";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const { success } = await gidCookie.safeParse(request);
+  const { success } = await idCookie.safeParse(request);
   if (success) return redirect("/app");
 }
 
