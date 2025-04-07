@@ -3,9 +3,18 @@ import Button from "./Button";
 import TextBox from "./TextBox";
 import { useFetcher } from "react-router";
 import { onSubmitResetForm } from "../lib/forms";
+import type { action } from "../pages/Dashboard";
 
-export default function CreateChannel() {
-  const fetcher = useFetcher<typeof import("../pages/Dashboard").action>();
+type Props = {
+  placeholder: string;
+  name: string;
+  maxLength: number;
+  minLength?: number;
+  buttonText: string;
+};
+
+export default function ChannelForm(props: Props) {
+  const fetcher = useFetcher<typeof action>();
   const busy = fetcher.state !== "idle";
 
   return (
@@ -13,13 +22,14 @@ export default function CreateChannel() {
       <fetcher.Form action="/app" onSubmit={onSubmitResetForm} method="post">
         <div className={styles.container}>
           <TextBox
-            name="name"
+            name={props.name}
             type="text"
-            placeholder="Channel Name"
-            maxLength={16}
+            placeholder={props.placeholder}
+            maxLength={props.maxLength}
+            minLength={props.minLength}
             disabled={busy}
           />
-          <Button disabled={busy}>Create</Button>
+          <Button disabled={busy}>{props.buttonText}</Button>
         </div>
       </fetcher.Form>
       {fetcher.data?.map((error) => (
