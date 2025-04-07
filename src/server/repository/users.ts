@@ -7,6 +7,6 @@ export function getUserById(id: string) {
   return first(db.select().from(users).where(eq(users.id, id)));
 }
 
-export function insertUser(user: InferInsertModel<typeof users>) {
-  return db.insert(users).values(user);
+export async function insertUser(user: InferInsertModel<typeof users>) {
+  await db.insert(users).values(user);
 }
