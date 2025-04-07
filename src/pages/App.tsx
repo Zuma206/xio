@@ -1,17 +1,17 @@
 import { Outlet, useLoaderData } from "react-router";
 import Columns from "../components/Columns";
 import Sidebar from "../components/Sidebar";
-import { requireActivatedUser } from "../server/helpers";
+import { requireAuth } from "../server/helpers";
 import { getChannels } from "../server/repository/channels";
 import { Route } from "./+types/App";
 import { socktopusAuthority } from "../server/socktopus";
 import { env } from "../server/env";
 import { useEffect, useState } from "react";
 import { SocktopusClient } from "../lib/socktopus";
-import { MessageDB, MessageDBContext, messageSchema } from "../lib/messages";
+import { JoinedMessage, MessageDB, MessageDBContext } from "../lib/messages";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const user = await requireActivatedUser(request);
+  const user = await requireAuth(request);
   return {
     channels: await getChannels(user.id),
     grant: socktopusAuthority.grant(user.id.toString()),
@@ -26,12 +26,14 @@ export default function App() {
   useEffect(() => {
     const socktopus = new SocktopusClient({
       rootURL: socktopusURL,
-      messageListener(message) {
-        const { data, success } = messageSchema.safeParse(JSON.parse(message));
-        if (!success) return;
+      messageListener(messageString) {
+        const message = JSON.parse(messageString) as JoinedMessage;
         setMessageDB((messageDB) => ({
           ...messageDB,
-          [data.channel]: [...(messageDB[data.channel] ?? []), data],
+          [message.messages.channelId]: [
+            ...(messageDB[message.messages.channelId] ?? []),
+            message,
+          ],
         }));
       },
     });

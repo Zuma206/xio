@@ -14,14 +14,15 @@ import HeaderBar from "./components/HeaderBar";
 import "@fontsource-variable/inter";
 import "./styles/Root.scss";
 import { createSigninFlow } from "./server/oauth";
-import { gidCookie, stateCookie } from "./server/cookies";
-import { AuthContext } from "./lib/auth";
-import { getAuthData } from "./server/auth";
+import { idCookie, pictureCookie, stateCookie } from "./server/cookies";
+import { getUserById } from "./server/repository/users";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const id = await gidCookie.safeParse(request);
-  if (!id.success) return;
-  return getAuthData(id.data);
+  const { data: id, success: idExists } = await idCookie.safeParse(request);
+  if (!idExists) return {};
+  const user = await getUserById(id);
+  if (!user) return { id, picture: await pictureCookie.parse(request) };
+  return user;
 }
 
 export default function App() {
@@ -40,11 +41,9 @@ export default function App() {
       </head>
       <body>
         <div id="root">
-          <AuthContext value={auth}>
-            <HeaderBar>
-              <Outlet />
-            </HeaderBar>
-          </AuthContext>
+          <HeaderBar>
+            <Outlet />
+          </HeaderBar>
         </div>
         <ScrollRestoration />
         <Scripts />
@@ -54,9 +53,12 @@ export default function App() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  if ((await gidCookie.safeParse(request)).success) {
+  if ((await idCookie.safeParse(request)).success) {
     return data(undefined, {
-      headers: [["Set-Cookie", await gidCookie.serialize("", { maxAge: 0 })]],
+      headers: [
+        ["Set-Cookie", await idCookie.serialize("", { maxAge: 0 })],
+        ["Set-Cookie", await pictureCookie.serialize("", { maxAge: 0 })],
+      ],
     });
   } else {
     const { url, state } = createSigninFlow();

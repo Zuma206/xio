@@ -25,7 +25,7 @@ export default () => {
 
   return (
     <AuthContext.Provider value={authState}>
-      <HeaderBar showProfile={true}>
+      <HeaderBar>
         <JoinScreen />
       </HeaderBar>
     </AuthContext.Provider>

@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1743166366140,
-      "tag": "0000_bumpy_siren",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1743175886650,
-      "tag": "0001_lyrical_flatman",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1743260340741,
-      "tag": "0002_cheerful_night_nurse",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1743326133780,
-      "tag": "0003_colorful_black_tom",
+      "when": 1743981163575,
+      "tag": "0000_optimal_otto_octavius",
       "breakpoints": true
     }
   ]

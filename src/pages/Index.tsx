@@ -2,6 +2,14 @@ import styles from "../styles/Content.module.scss";
 import background from "../assets/background.svg";
 import Credits from "../components/Credits";
 import Columns from "../components/Columns";
+import { Route } from "./+types/Index";
+import { idCookie } from "../server/cookies";
+import { redirect } from "react-router";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const { success } = await idCookie.safeParse(request);
+  if (success) return redirect("/app");
+}
 
 export default function Index() {
   return (
