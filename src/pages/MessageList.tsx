@@ -2,7 +2,11 @@ import styles from "../styles/MessageList.module.scss";
 import Message from "../components/Message";
 import MessageBox from "../components/MessageBox";
 import { Route } from "./+types/MessageList";
-import { redirect, useLoaderData } from "react-router";
+import {
+  redirect,
+  ShouldRevalidateFunctionArgs,
+  useLoaderData,
+} from "react-router";
 import { requireAuth } from "../server/helpers";
 import { z } from "zod";
 import { use } from "react";
@@ -18,7 +22,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   return getMessages(params.channelId);
 }
 
-export const shouldRevalidate = () => false;
+export const shouldRevalidate = (args: ShouldRevalidateFunctionArgs) =>
+  args.currentParams.channelId != args.nextParams.channelId;
 
 export default function MessageList({ params }: Route.ComponentProps) {
   const messageDB = use(MessageDBContext);
