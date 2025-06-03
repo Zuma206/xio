@@ -1,17 +1,29 @@
-import CreateChannel from "./CreateChannel";
-import JoinChannel from "./JoinChannel";
+import ChannelForm from "./ChannelForm";
 import styles from "../styles/Sidebar.module.scss";
 import ChannelBadge from "./ChannelBadge";
 import { useLoaderData } from "react-router";
 
 export default function Sidebar() {
-  const channels = useLoaderData<typeof import("../pages/App").loader>();
+  const { channels } = useLoaderData<typeof import("../pages/App").loader>();
 
   return (
     <div className={styles.sidebar}>
       <div className={styles.box}>
-        <JoinChannel />
-        <CreateChannel />
+        <ChannelForm
+          action="join"
+          placeholder="Channel ID"
+          name="id"
+          buttonText="Join"
+          maxLength={13}
+          minLength={13}
+        />
+        <ChannelForm
+          action="create"
+          placeholder="Channel Name"
+          name="name"
+          buttonText="Create"
+          maxLength={16}
+        />
       </div>
       <div className={styles.channels}>
         {channels.map((channel) => (

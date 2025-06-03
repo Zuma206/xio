@@ -17,8 +17,8 @@ type InsertMessageOptions = {
   content: string;
 };
 
-export async function insertMessage(message: InsertMessageOptions) {
-  await db
-    .insert(messages)
-    .values({ ...message, id: generateId(), date: Date.now() });
+export async function insertMessage(messageOptions: InsertMessageOptions) {
+  const message = { ...messageOptions, id: generateId(), date: Date.now() };
+  await db.insert(messages).values(message);
+  return message;
 }

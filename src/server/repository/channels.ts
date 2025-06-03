@@ -1,11 +1,23 @@
-import { eq, InferInsertModel } from "drizzle-orm";
+import {
+  eq,
+  exists,
+  InferInsertModel,
+  and,
+  sql,
+  or,
+  getTableColumns,
+} from "drizzle-orm";
 import { db, Transaction } from "../database/connection";
-import { channels } from "../database/schema";
+import { channels, userInChannel, users } from "../database/schema";
 import { first, generateId } from "./utils";
-import { getUserById } from "./users";
+import { union } from "drizzle-orm/sqlite-core";
 
-export function getChannels(userId: string) {
-  return db.select().from(channels).where(eq(channels.ownerId, userId));
+export function getChannels(userId: string, tx: Transaction = db) {
+  return tx
+    .selectDistinct({ ...getTableColumns(channels) })
+    .from(channels)
+    .leftJoin(userInChannel, eq(userInChannel.channelId, channels.id))
+    .where(or(eq(channels.ownerId, userId), eq(userInChannel.userId, userId)));
 }
 
 export function insertChannel(
@@ -23,11 +35,59 @@ export function insertChannel(
   });
 }
 
-function getChannelById(channelId: string, tx: Transaction = db) {
-  return first(tx.select().from(channels).where(eq(channels.id, channelId)));
+export async function isInChannel(
+  userId: string,
+  channelId: string,
+  tx: Transaction = db
+) {
+  return Boolean(
+    await first(
+      tx
+        .select({ exists: sql`1` })
+        .from(users)
+        .where(
+          and(
+            eq(users.id, userId),
+            exists(
+              union(
+                tx
+                  .select({ exists: sql`1` })
+                  .from(channels)
+                  .where(
+                    and(
+                      eq(channels.ownerId, userId),
+                      eq(channels.id, channelId)
+                    )
+                  ),
+                tx
+                  .select({ exists: sql`1` })
+                  .from(userInChannel)
+                  .where(
+                    and(
+                      eq(userInChannel.userId, userId),
+                      eq(userInChannel.channelId, channelId)
+                    )
+                  )
+              )
+            )
+          )
+        )
+    )
+  );
 }
 
-export async function isInChannel(userId: string, channelId: string) {
-  const channel = await getChannelById(channelId);
-  return channel?.ownerId == userId;
+export function joinUserToChannel(
+  userId: string,
+  channelId: string,
+  tx: Transaction = db
+) {
+  return tx.transaction(async (tx) => {
+    if (await isInChannel(userId, channelId, tx)) return false;
+    try {
+      await tx.insert(userInChannel).values({ userId, channelId });
+    } catch (_) {
+      return false;
+    }
+    return true;
+  });
 }
