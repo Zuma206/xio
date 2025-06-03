@@ -35,10 +35,6 @@ export function insertChannel(
   });
 }
 
-function getChannelById(channelId: string, tx: Transaction = db) {
-  return first(tx.select().from(channels).where(eq(channels.id, channelId)));
-}
-
 export async function isInChannel(
   userId: string,
   channelId: string,
