@@ -1,5 +1,10 @@
 import { InferSelectModel } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+} from "drizzle-orm/sqlite-core";
 
 export type User = InferSelectModel<typeof users>;
 export const users = sqliteTable("users", {
@@ -38,3 +43,21 @@ export const messages = sqliteTable("messages", {
       onUpdate: "cascade",
     }),
 });
+
+export type UserInChannel = InferSelectModel<typeof userInChannel>;
+export const userInChannel = sqliteTable(
+  "user_in_channel",
+  {
+    userId: text().references(() => users.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    channelId: text().references(() => channels.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+  },
+  (userInChannel) => [
+    primaryKey({ columns: [userInChannel.userId, userInChannel.channelId] }),
+  ]
+);
