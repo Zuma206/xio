@@ -48,14 +48,18 @@ export type UserInChannel = InferSelectModel<typeof userInChannel>;
 export const userInChannel = sqliteTable(
   "user_in_channel",
   {
-    userId: text().references(() => users.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-    channelId: text().references(() => channels.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
+    userId: text()
+      .notNull()
+      .references(() => users.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    channelId: text()
+      .notNull()
+      .references(() => channels.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
   },
   (userInChannel) => [
     primaryKey({ columns: [userInChannel.userId, userInChannel.channelId] }),
