@@ -75,3 +75,19 @@ export async function isInChannel(
     )
   );
 }
+
+export function joinUserToChannel(
+  userId: string,
+  channelId: string,
+  tx: Transaction = db
+) {
+  return tx.transaction(async (tx) => {
+    if (await isInChannel(userId, channelId, tx)) return false;
+    try {
+      await tx.insert(userInChannel).values({ userId, channelId });
+    } catch (_) {
+      return false;
+    }
+    return true;
+  });
+}
