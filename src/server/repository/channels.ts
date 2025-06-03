@@ -1,11 +1,23 @@
-import { eq, exists, InferInsertModel, and, sql } from "drizzle-orm";
+import {
+  eq,
+  exists,
+  InferInsertModel,
+  and,
+  sql,
+  or,
+  getTableColumns,
+} from "drizzle-orm";
 import { db, Transaction } from "../database/connection";
 import { channels, userInChannel, users } from "../database/schema";
 import { first, generateId } from "./utils";
 import { union } from "drizzle-orm/sqlite-core";
 
-export function getChannels(userId: string) {
-  return db.select().from(channels).where(eq(channels.ownerId, userId));
+export function getChannels(userId: string, tx: Transaction = db) {
+  return tx
+    .selectDistinct({ ...getTableColumns(channels) })
+    .from(channels)
+    .leftJoin(userInChannel, eq(userInChannel.channelId, channels.id))
+    .where(or(eq(channels.ownerId, userId), eq(userInChannel.userId, userId)));
 }
 
 export function insertChannel(
