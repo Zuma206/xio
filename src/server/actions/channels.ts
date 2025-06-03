@@ -1,4 +1,4 @@
-import { insertChannel } from "../repository/channels";
+import { insertChannel, joinUserToChannel } from "../repository/channels";
 import { User } from "../database/schema";
 import { z } from "zod";
 
@@ -26,5 +26,7 @@ export async function createChannelAction(user: User, formData: FormData) {
 }
 
 export async function joinChannelAction(user: User, formData: FormData) {
-  return ["TODO!"];
+  const channelId = z.string().parse(formData.get("id"));
+  const success = await joinUserToChannel(user.id, channelId);
+  if (!success) return ["Channel does not exist, or you're already in it"];
 }
