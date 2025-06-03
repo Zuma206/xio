@@ -5,7 +5,9 @@ export async function first<T>(arrayPromise: Promise<T[]>) {
   return array.length > 0 ? array[0] : null;
 }
 
+export const DEFAULT_ID_SIZE = 13;
+
 export const generateId = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-  13
+  DEFAULT_ID_SIZE
 );
