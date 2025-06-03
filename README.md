@@ -1,6 +1,6 @@
 # XIO Nouveau
 
-_License: GPLv3_
+_License: AGPLv3_
 
 XIO's redesigned React client and server built with [React Router](https://github.com/remix-run/react-router) v7, and [Socktopus](https://github.com/zuma206/socktopus)
 
