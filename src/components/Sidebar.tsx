@@ -10,6 +10,7 @@ export default function Sidebar() {
     <div className={styles.sidebar}>
       <div className={styles.box}>
         <ChannelForm
+          action="join"
           placeholder="Channel ID"
           name="id"
           buttonText="Join"
@@ -17,6 +18,7 @@ export default function Sidebar() {
           minLength={13}
         />
         <ChannelForm
+          action="create"
           placeholder="Channel Name"
           name="name"
           buttonText="Create"

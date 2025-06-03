@@ -11,6 +11,7 @@ type Props = {
   maxLength: number;
   minLength?: number;
   buttonText: string;
+  action: string;
 };
 
 export default function ChannelForm(props: Props) {
@@ -31,6 +32,7 @@ export default function ChannelForm(props: Props) {
           />
           <Button disabled={busy}>{props.buttonText}</Button>
         </div>
+        <input type="hidden" name="action" value={props.action} />
       </fetcher.Form>
       {fetcher.data?.map((error) => (
         <p key={error} style={{ color: "red", maxWidth: "20rem" }}>
