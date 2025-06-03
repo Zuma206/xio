@@ -6,15 +6,16 @@ XIO's redesigned React client and server built with [React Router](https://githu
 
 ### Environment Variables:
 
-| Key                    | Function                                                                 |
-| ---------------------- | ------------------------------------------------------------------------ |
-| `GOOGLE_CLIENT_ID`     | Your Google application's Client ID                                      |
-| `GOOGLE_CLIENT_SECRET` | A corresponding secret for your Google application                       |
-| `APP_ROOT_URL`         | The root URL for the instance. Example: `http://localhost:3400/`         |
-| `APP_SECRET`           | A randomly generated secret for cryptography                             |
-| `SOCKTOPUS_ROOT_URL`   | The root URL of the socktopus instance. Example: `http://localhost:3401` |
-| `SOCKTOPUS_SECRET`     | A randomly generated secret for secure communication with socktopus      |
-| `SOCKTOPUS_NAME`       | The name of this app registered in the socktopus instance                |
+| Key                    | Function                                                                  |
+| ---------------------- | ------------------------------------------------------------------------- |
+| `GOOGLE_CLIENT_ID`     | Your Google application's Client ID                                       |
+| `GOOGLE_CLIENT_SECRET` | A corresponding secret for your Google application                        |
+| `APP_ROOT_URL`         | The root URL for the instance. Example: `http://localhost:3400/`          |
+| `APP_SECRET`           | A randomly generated secret for cryptography                              |
+| `SOCKTOPUS_ROOT_URL`   | The root URL of the socktopus instance. Example: `http://localhost:3401/` |
+| `SOCKTOPUS_SECRET`     | A randomly generated secret for secure communication with socktopus       |
+| `SOCKTOPUS_NAME`       | The name of this app registered in the socktopus instance                 |
+| `APP_DB_URL`           | The path for the SQLite DB                                                |
 
 ### Package Scripts:
 
