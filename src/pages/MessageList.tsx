@@ -14,6 +14,7 @@ import { JoinedMessage, MessageDBContext } from "../lib/messages";
 import { socktopusAuthority } from "../server/socktopus";
 import { getMessages, insertMessage } from "../server/repository/messages";
 import { isInChannel } from "../server/repository/channels";
+import { getUsersInChannel } from "../server/repository/users";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const user = await requireAuth(request);
@@ -59,13 +60,17 @@ export async function action({ request, params }: Route.ActionArgs) {
     content,
   });
 
-  socktopusAuthority.send([
-    {
-      recipient: user.id,
-      content: JSON.stringify({
-        messages: message,
-        users: user,
-      } satisfies JoinedMessage),
-    },
-  ]);
+  (async () => {
+    const users = await getUsersInChannel(params.channelId);
+    const content = JSON.stringify({
+      messages: message,
+      users: user,
+    } satisfies JoinedMessage);
+    await socktopusAuthority.send(
+      users.map((user) => ({
+        recipient: user.id,
+        content,
+      }))
+    );
+  })();
 }
